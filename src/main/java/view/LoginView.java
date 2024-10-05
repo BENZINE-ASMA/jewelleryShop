@@ -1,0 +1,49 @@
+package view;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+public class LoginView extends JPanel {
+	
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton loginButton;
+
+    public LoginView(MainView mainView) {
+        this.setLayout(null);
+        // setting the layout to null means that i will position manually all the components
+
+        JLabel userLabel = new JLabel("Username:");
+        userLabel.setBounds(50, 50, 80, 25);
+        this.add(userLabel);
+
+        usernameField = new JTextField(20);
+        usernameField.setBounds(150, 50, 150, 25);
+        this.add(usernameField);
+
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setBounds(50, 100, 80, 25);
+        this.add(passwordLabel);
+
+        passwordField = new JPasswordField(20);
+        passwordField.setBounds(150, 100, 150, 25);
+        this.add(passwordField);
+
+        loginButton = new JButton("Login");
+        loginButton.setBounds(150, 150, 100, 25);
+        this.add(loginButton);
+        
+        loginButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		mainView.showPanel("DashboardView");
+        	}
+        });
+    }
+}
