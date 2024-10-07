@@ -1,0 +1,8 @@
+model\Client.class
+view\LoginView$2.class
+view\LoginView.class
+view\LoginView$1.class
+view\MainView.class
+view\MainDashboardView$1.class
+view\MainDashboardView.class
+controller\MainController.class

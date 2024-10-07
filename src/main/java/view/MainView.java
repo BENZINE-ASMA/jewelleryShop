@@ -22,6 +22,9 @@ public class MainView extends JFrame {
       
         LoginView loginView = new LoginView(this);
         mainPanel.add(loginView, "Login");
+        
+        MainDashboardView mainDashboardView = new MainDashboardView(this);
+        mainPanel.add(mainDashboardView, "mainDashboardView");
 
     
         add(mainPanel);

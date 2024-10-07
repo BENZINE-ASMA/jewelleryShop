@@ -14,6 +14,7 @@ public class LoginView extends JPanel {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
+    private JButton signUpButton;
 
     public LoginView(MainView mainView) {
         this.setLayout(null);
@@ -36,13 +37,24 @@ public class LoginView extends JPanel {
         this.add(passwordField);
 
         loginButton = new JButton("Login");
-        loginButton.setBounds(150, 150, 100, 25);
+        loginButton.setBounds(110, 150, 100, 25);
         this.add(loginButton);
         
         loginButton.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		mainView.showPanel("DashboardView");
+        		mainView.showPanel("mainDashboardView");
+        	}
+        });
+        
+        signUpButton = new JButton("Login");
+        signUpButton.setBounds(230, 150, 100, 25);
+        this.add(signUpButton);
+        
+        signUpButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		mainView.showPanel("Signup");
         	}
         });
     }
