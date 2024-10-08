@@ -3,14 +3,18 @@ package view;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import controller.DBManager;
+
 import java.awt.CardLayout;
 
 public class MainView extends JFrame {
     private CardLayout cardLayout;
     private JPanel mainPanel;
+   
 
     public MainView() {
-      
+    	
+    	
         setTitle("Vente de bijoux");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,6 +30,9 @@ public class MainView extends JFrame {
         MainDashboardView mainDashboardView = new MainDashboardView(this);
         mainPanel.add(mainDashboardView, "mainDashboardView");
 
+        SignUpView signUpView = new SignUpView(this);
+        mainPanel.add(signUpView, "Signup");
+        
     
         add(mainPanel);
 

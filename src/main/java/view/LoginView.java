@@ -5,9 +5,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import controller.DBManager;
 
 public class LoginView extends JPanel {
 	
@@ -15,8 +18,12 @@ public class LoginView extends JPanel {
     private JPasswordField passwordField;
     private JButton loginButton;
     private JButton signUpButton;
+    private DBManager dbManager;
+    
 
     public LoginView(MainView mainView) {
+    	dbManager = new DBManager();
+    	
         this.setLayout(null);
         // setting the layout to null means that i will position manually all the components
 
@@ -41,13 +48,20 @@ public class LoginView extends JPanel {
         this.add(loginButton);
         
         loginButton.addActionListener(new ActionListener() {
+        	
         	@Override
         	public void actionPerformed(ActionEvent e) {
-        		mainView.showPanel("mainDashboardView");
+        		System.out.println(new String(passwordField.getPassword()));
+        		Boolean authenticated = dbManager.authenticateUser(usernameField.getText(),new String(passwordField.getPassword()));
+        		if(authenticated ) {
+        			mainView.showPanel("mainDashboardView");        			
+        		}else {
+        			JOptionPane.showMessageDialog(null, "Failed to authenticate", "Authentication Error", JOptionPane.ERROR_MESSAGE);
+                }
         	}
         });
         
-        signUpButton = new JButton("Login");
+        signUpButton = new JButton("signUp");
         signUpButton.setBounds(230, 150, 100, 25);
         this.add(signUpButton);
         
