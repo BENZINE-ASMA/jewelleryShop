@@ -1,9 +1,11 @@
 package view;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controller.DBManager;
+import controller.MainController;
 import model.Client;
 
 import java.awt.CardLayout;
@@ -12,7 +14,7 @@ public class MainView extends JFrame {
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private static Client loggedInClient;
-   
+    private MainController mainController;
 
     public MainView() {
    
@@ -24,16 +26,13 @@ public class MainView extends JFrame {
         
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
-
+        DBManager dbManager = new DBManager(); 
+        mainController = new MainController(this, dbManager); 
       
-        LoginView loginView = new LoginView(this);
+        LoginView loginView = new LoginView(mainController);
         mainPanel.add(loginView, "Login");
         
-        MainDashboardView mainDashboardView = new MainDashboardView(this);
-        mainPanel.add(mainDashboardView, "mainDashboardView");
-
-        SignUpView signUpView = new SignUpView(this);
-        mainPanel.add(signUpView, "Signup");
+       
         
        
         
@@ -45,6 +44,7 @@ public class MainView extends JFrame {
 
         setVisible(true);
     }
+
 
   
     public CardLayout getCardLayout() {
@@ -84,4 +84,30 @@ public class MainView extends JFrame {
 	public void setLoggedInClient(Client loggedInClient) {
 		this.loggedInClient = loggedInClient;
 	}
+	
+    
+    public void loadMaindashboardView() {
+    	MainDashboardView mainDashboardView = new MainDashboardView(mainController);
+        mainPanel.add(mainDashboardView, "MainDashboard");
+    }
+    public void loadProfileInfoView() {
+        ProfileInfoView profileInfoView = new ProfileInfoView(mainController);
+        mainPanel.add(profileInfoView, "ProfileInfo");
+    }
+    public void showAuthenticationError() {
+        JOptionPane.showMessageDialog(this, "Failed to authenticate", "Authentication Error", JOptionPane.ERROR_MESSAGE);
+    }
+    public void showEditPofileSucess() {
+        JOptionPane.showMessageDialog(this, "Profile updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+    }
+    public void showEditProfileError() {
+        JOptionPane.showMessageDialog(this, "Failed to update Profile", " Error updating profile", JOptionPane.ERROR_MESSAGE);
+    }
+    public void loadSignUpView() {
+    	SignUpView SignUpView = new SignUpView(mainController);
+        mainPanel.add(SignUpView, "Signup");
+		
+	}
+
+	
 }

@@ -11,75 +11,64 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.DBManager;
+import controller.MainController;
 import model.Client;
 
 public class LoginView extends JPanel {
-	
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JButton loginButton;
-    private JButton signUpButton;
-    private DBManager dbManager;
-    
 
-    public LoginView(MainView mainView) {
-    	dbManager = new DBManager();
-    	
-        this.setLayout(null);
-        // setting the layout to null means that i will position manually all the components
+	private JTextField usernameField;
+	private JPasswordField passwordField;
+	private JButton loginButton;
+	private JButton signUpButton;
+	private MainController mainController;
 
-        JLabel userLabel = new JLabel("Username:");
-        userLabel.setBounds(50, 50, 80, 25);
-        this.add(userLabel);
+	public LoginView(MainController mainController) {
+		this.mainController = mainController;
 
-        usernameField = new JTextField(20);
-        usernameField.setBounds(150, 50, 150, 25);
-        this.add(usernameField);
+		this.setLayout(null);
+		// setting the layout to null means that i will position manually all the
+		// components
 
-        JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(50, 100, 80, 25);
-        this.add(passwordLabel);
+		JLabel userLabel = new JLabel("Username:");
+		userLabel.setBounds(50, 50, 80, 25);
+		this.add(userLabel);
 
-        passwordField = new JPasswordField(20);
-        passwordField.setBounds(150, 100, 150, 25);
-        this.add(passwordField);
+		usernameField = new JTextField(20);
+		usernameField.setBounds(150, 50, 150, 25);
+		usernameField.setText("asma");
+		this.add(usernameField);
 
-        loginButton = new JButton("Login");
-        loginButton.setBounds(110, 150, 100, 25);
-        this.add(loginButton);
-        
-        loginButton.addActionListener(new ActionListener() {
-        	
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		System.out.println(new String(passwordField.getPassword()));
-        		Client authenticatedUser = dbManager.authenticateUser(usernameField.getText(),new String(passwordField.getPassword()));
-        		if(authenticatedUser!=null ) {
-        			System.out.println("hello"+authenticatedUser.toString());
-        			mainView.setLoggedInClient(authenticatedUser);
-        			System.out.println("hello" +mainView.getLoggedInClient().toString());
-        			 ProfileInfoView profileInfoView = new ProfileInfoView(mainView);
-        			 mainView.getMainPanel().add(profileInfoView, "ProfileInfo");
-        			 
-        			
-        			mainView.showPanel("mainDashboardView");        			
-        		}else {
-        			JOptionPane.showMessageDialog(null, "Failed to authenticate", "Authentication Error", JOptionPane.ERROR_MESSAGE);
-                }
-        	}
-        });
-        
-        signUpButton = new JButton("signUp");
-        signUpButton.setBounds(230, 150, 100, 25);
-        this.add(signUpButton);
-        
-        signUpButton.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(ActionEvent e) {
-        		mainView.showPanel("Signup");
-        	}
-        });
-    }
-    
-    
+		JLabel passwordLabel = new JLabel("Password:");
+		passwordLabel.setBounds(50, 100, 80, 25);
+		this.add(passwordLabel);
+
+		passwordField = new JPasswordField(20);
+		passwordField.setBounds(150, 100, 150, 25);
+		passwordField.setText("123");
+		this.add(passwordField);
+
+		loginButton = new JButton("Login");
+		loginButton.setBounds(110, 150, 100, 25);
+		this.add(loginButton);
+
+		loginButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainController.authenticateUser(usernameField.getText(), new String(passwordField.getPassword()));
+			}
+		});
+
+		signUpButton = new JButton("signUp");
+		signUpButton.setBounds(230, 150, 100, 25);
+		this.add(signUpButton);
+
+		signUpButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainController.showSignUpView();
+			}
+		});
+	}
+
 }

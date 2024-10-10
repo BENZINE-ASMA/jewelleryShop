@@ -92,6 +92,8 @@ public class DBManager {
 			preparedStatement.setString(4, c.getEmail());
 
 			int result = preparedStatement.executeUpdate();
+			System.out.println(" updating user successfull " + (result > 0));
+			
 
 			return result > 0;
 		} catch (SQLException e) {

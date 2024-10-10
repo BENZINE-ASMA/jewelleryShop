@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.MainController;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,8 +24,9 @@ import lombok.Setter;
 @Setter
 public class MainDashboardView extends JPanel {
     private JLabel profileIcon;
-
-    public MainDashboardView(MainView mainView) {
+    private MainController mainController;
+    public MainDashboardView(MainController mainController) {
+    	this.mainController = mainController;
         setLayout(new BorderLayout());
 
         JPanel navBar = new JPanel();
@@ -41,7 +43,7 @@ public class MainDashboardView extends JPanel {
         profileIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainView.showPanel("ProfileInfo");
+            	mainController.showProfileInfoView();
             }
         });
 

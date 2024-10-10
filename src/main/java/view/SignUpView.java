@@ -11,6 +11,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.DBManager;
+import controller.MainController;
 import model.Client;
 
 public class SignUpView extends JPanel {
@@ -19,10 +20,10 @@ public class SignUpView extends JPanel {
 	 	private JTextField emailField;
 	    private JPasswordField passwordField;
 	    private JButton submitButton;
-	    private DBManager dbManager;
+	    private MainController mainController;
 	    
-	    public SignUpView(MainView mainView) {
-	    	this.dbManager = new DBManager();
+	    public SignUpView(MainController mainController) {
+	    	this.mainController = mainController;
 	    	
 	        this.setLayout(null);
 	        // setting the layout to null means that i will position manually all the components
@@ -71,7 +72,7 @@ public class SignUpView extends JPanel {
 					if(!firstNameField.getText().isEmpty() &&! lastNameField.getText().isEmpty() && !emailField.getText().isEmpty() && !password.isEmpty() ) {
 						Client newClient = new Client(firstNameField.getText(),lastNameField.getText(),emailField.getText(),password);
 						
-						if (SignUpView.this.dbManager.addUser(newClient)) {
+						if (mainController.getDbManager().addUser(newClient)) {
 	                        System.out.println("User added successfully!");
 	                    } else {
 	                        System.out.println("Failed to add the user.");
