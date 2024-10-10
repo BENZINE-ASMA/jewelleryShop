@@ -4,16 +4,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import controller.DBManager;
+import model.Client;
 
 import java.awt.CardLayout;
 
 public class MainView extends JFrame {
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private static Client loggedInClient;
    
 
     public MainView() {
-    	
+   
     	
         setTitle("Vente de bijoux");
         setSize(400, 300);
@@ -33,6 +35,8 @@ public class MainView extends JFrame {
         SignUpView signUpView = new SignUpView(this);
         mainPanel.add(signUpView, "Signup");
         
+       
+        
     
         add(mainPanel);
 
@@ -43,11 +47,41 @@ public class MainView extends JFrame {
     }
 
   
-    public void showPanel(String panelName) {
+    public CardLayout getCardLayout() {
+		return cardLayout;
+	}
+
+
+	public void setCardLayout(CardLayout cardLayout) {
+		this.cardLayout = cardLayout;
+	}
+
+
+	public JPanel getMainPanel() {
+		return mainPanel;
+	}
+
+
+	public void setMainPanel(JPanel mainPanel) {
+		this.mainPanel = mainPanel;
+	}
+
+
+	public void showPanel(String panelName) {
         cardLayout.show(mainPanel, panelName);
     }
 
     public static void main(String[] args) {
         new MainView();
     }
+
+
+	public Client getLoggedInClient() {
+		return loggedInClient;
+	}
+
+
+	public void setLoggedInClient(Client loggedInClient) {
+		this.loggedInClient = loggedInClient;
+	}
 }

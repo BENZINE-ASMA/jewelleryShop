@@ -11,6 +11,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import controller.DBManager;
+import model.Client;
 
 public class LoginView extends JPanel {
 	
@@ -52,8 +53,15 @@ public class LoginView extends JPanel {
         	@Override
         	public void actionPerformed(ActionEvent e) {
         		System.out.println(new String(passwordField.getPassword()));
-        		Boolean authenticated = dbManager.authenticateUser(usernameField.getText(),new String(passwordField.getPassword()));
-        		if(authenticated ) {
+        		Client authenticatedUser = dbManager.authenticateUser(usernameField.getText(),new String(passwordField.getPassword()));
+        		if(authenticatedUser!=null ) {
+        			System.out.println("hello"+authenticatedUser.toString());
+        			mainView.setLoggedInClient(authenticatedUser);
+        			System.out.println("hello" +mainView.getLoggedInClient().toString());
+        			 ProfileInfoView profileInfoView = new ProfileInfoView(mainView);
+        			 mainView.getMainPanel().add(profileInfoView, "ProfileInfo");
+        			 
+        			
         			mainView.showPanel("mainDashboardView");        			
         		}else {
         			JOptionPane.showMessageDialog(null, "Failed to authenticate", "Authentication Error", JOptionPane.ERROR_MESSAGE);
@@ -72,4 +80,6 @@ public class LoginView extends JPanel {
         	}
         });
     }
+    
+    
 }

@@ -11,12 +11,37 @@ public class Client {
 	private String email;
 	private String password;
 	
-	public Client(String firstName, String lastName, String email , String password) {
-		this.setFirstName(firstName);
-		this.setLastName(lastName);
-		this.setEmail(email);
-		this.setPassword(password);
+	public Client(Long id,String firstName, String lastName, String email , String password) {
+		this.id = id;
+		this.firstName=firstName;
+		this.lastName=lastName;
+		this.email=email;
+		this.password=password;
 	}
+	public Client(String firstName, String lastName, String email , String password) {
+		this.firstName=firstName;
+		this.lastName=lastName;
+		this.email=email;
+		this.password=password;
+	}
+
+
+	public Client() {
+		this.id=-1L;
+		this.firstName="";
+		this.lastName="";
+		this.email="";
+		this.password="";
+	}
+	 @Override
+	    public String toString() {
+	        return "Client {" +
+	                "id=" + id +
+	                ", firstName='" + firstName + '\'' +
+	                ", lastName='" + lastName + '\'' +
+	                ", email='" + email + '\'' +
+	                '}';
+	    }
 
 	public Long getId() {
 		return id;

@@ -41,7 +41,7 @@ public class MainDashboardView extends JPanel {
         profileIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainView.showPanel("Login");
+                mainView.showPanel("ProfileInfo");
             }
         });
 
