@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 import model.Bijoux;
+import model.Cart;
 import model.Client;
 import view.MainView;
 
@@ -12,13 +13,7 @@ public class MainController {
 	private MainView mainView;
 	private DBManager dbManager;
 	private HashMap<Bijoux,Integer> products;
-	public DBManager getDbManager() {
-		return dbManager;
-	}
-
-	public void setDbManager(DBManager dbManager) {
-		this.dbManager = dbManager;
-	}
+	private Cart clientCart;
 
 	private Client loggedInClient;
 
@@ -26,6 +21,7 @@ public class MainController {
 		this.mainView = mainView;
 		this.dbManager = dbManager;
 		this.products= new HashMap<Bijoux,Integer>();
+		this.clientCart = new Cart();
 	}
 
 	public void authenticateUser(String username, String password) {
@@ -75,7 +71,13 @@ public class MainController {
 		mainView.loadProfileInfoView();
 		mainView.showPanel("ProfileInfo");
 	}
-	
+	public DBManager getDbManager() {
+		return dbManager;
+	}
+
+	public void setDbManager(DBManager dbManager) {
+		this.dbManager = dbManager;
+	}
 	
 
 	public Client getLoggedInClient() {
