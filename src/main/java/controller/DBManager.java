@@ -5,10 +5,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
 
 import lombok.Getter;
 import lombok.Setter;
+import model.Bijoux;
 import model.Client;
+import model.Necklace;
+import model.Ring;
 
 @Getter
 @Setter
@@ -27,6 +32,46 @@ public class DBManager {
 			System.out.println("Failed to connect to the database.");
 			e.printStackTrace();
 		}
+		
+	}
+	
+	public HashMap<Bijoux,Integer> getAllProducts(HashMap<Bijoux,Integer> results){
+		String query="Select * from products";
+		Statement stmt;
+		try {
+			stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				String type = rs.getString("type");
+				String name = rs.getString("name");
+				String brand = rs.getString("brand");
+				String description = rs.getString("description");
+				double price = rs.getDouble("price");
+				String material = rs.getString("material");
+				String imagePath = rs.getString("image_path");
+				int stock = rs.getInt("stock");
+				switch(type) {
+				case "Ring":
+					int size = rs.getInt("size");
+					
+					Ring ring = new Ring(name,brand,description,price,material,size,imagePath);
+					results.put(ring, stock);
+					
+					break;
+				case "Necklace":
+					double length = rs.getDouble("length");
+					Necklace necklace = new Necklace(name, brand,description,price, material,length, imagePath);
+					results.put(necklace, stock);
+					break;
+				}
+			}
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+	return  null;
+        
 	}
 
 	public Client authenticateUser(String email, String password) {

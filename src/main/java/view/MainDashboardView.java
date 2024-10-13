@@ -24,44 +24,54 @@ import lombok.Setter;
 @Setter
 public class MainDashboardView extends JPanel {
     private JLabel profileIcon;
+    private JLabel cartIcon;
     private MainController mainController;
+
     public MainDashboardView(MainController mainController) {
-    	this.mainController = mainController;
+        this.mainController = mainController;
         setLayout(new BorderLayout());
 
         JPanel navBar = new JPanel();
-        navBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        navBar.setLayout(new FlowLayout(FlowLayout.RIGHT)); 
+        navBar.setBackground(Color.WHITE);
 
-        
         profileIcon = new JLabel();
-        loadProfileIcon("ressources/profileIcon.png");
+        loadIcon(profileIcon, "ressources/profileIcon.png", 20, 15); 
 
-       navBar.setBorder(BorderFactory.createLineBorder(Color.black, 2, false));
-        //profileIcon.setBorder(BorderFactory.createLineBorder(Color.black, 2, true));
-        
-      
+        cartIcon = new JLabel();
+        loadIcon(cartIcon, "ressources/cartIcon.png", 20, 15);
+
+        navBar.setBorder(BorderFactory.createLineBorder(Color.black, 2, false));
+
         profileIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	mainController.showProfileInfoView();
+                mainController.showProfileInfoView();
             }
         });
+        cartIcon.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        		mainController.fetchAllProducts();
+        		
+        	}
+        });
 
-      
         navBar.add(profileIcon);
+        navBar.add(cartIcon);
         add(navBar, BorderLayout.NORTH);
     }
 
-    private void loadProfileIcon(String path) {
+   
+    private void loadIcon(JLabel label, String path, int width, int height) {
         try {
-           
             InputStream input = getClass().getClassLoader().getResourceAsStream(path);
             if (input != null) {
                 Image image = ImageIO.read(input);
-                Image scaledImage = image.getScaledInstance(30, 30, Image.SCALE_SMOOTH); 
-                profileIcon.setIcon(new ImageIcon(scaledImage));
+                label.setIcon(new ImageIcon(image));
+                label.setPreferredSize(new java.awt.Dimension(width, height)); 
             } else {
-                System.out.println("Resource "+path +"   not found in the classpath!");
+                System.out.println("Resource " + path + " not found in the classpath!");
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,13 +1,17 @@
 package controller;
 
+import java.util.HashMap;
+
 import javax.swing.JOptionPane;
 
+import model.Bijoux;
 import model.Client;
 import view.MainView;
 
 public class MainController {
 	private MainView mainView;
 	private DBManager dbManager;
+	private HashMap<Bijoux,Integer> products;
 	public DBManager getDbManager() {
 		return dbManager;
 	}
@@ -21,6 +25,7 @@ public class MainController {
 	public MainController(MainView mainView, DBManager dbManager) {
 		this.mainView = mainView;
 		this.dbManager = dbManager;
+		this.products= new HashMap<Bijoux,Integer>();
 	}
 
 	public void authenticateUser(String username, String password) {
@@ -28,9 +33,18 @@ public class MainController {
 		if (authenticatedUser != null) {
 			this.setLoggedInClient(authenticatedUser);
 			mainView.setLoggedInClient(authenticatedUser);
-			this.showMaindashboardView();
+			this.createAndShowMaindashboardView();
 		} else {
 			mainView.showAuthenticationError();
+		}
+	}
+	
+	public void fetchAllProducts() {
+		System.out.println("i got clickd yayay");
+		this.dbManager.getAllProducts(this.products);
+		for(Bijoux b : this.products.keySet()) {
+			System.out.println(b.toString() );
+			System.out.println(this.products.get(b));
 		}
 	}
 	
@@ -44,8 +58,12 @@ public class MainController {
 			this.mainView.showEditProfileError();
 		}
 	}
-	public void showMaindashboardView() {
+	public void createAndShowMaindashboardView() {
 		mainView.loadMaindashboardView();
+		mainView.showPanel("MainDashboard");
+	}
+	
+	public void showMainDashboardView() {
 		mainView.showPanel("MainDashboard");
 	}
 

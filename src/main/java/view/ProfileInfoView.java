@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -20,10 +21,13 @@ public class ProfileInfoView extends JPanel {
 	private JTextField emailField;
 	private JTextField passwordField;
 	private JButton editProfileButton;
+	private JButton closeButton;
 	private JButton deleteAccButton;
 	private MainController mainController;
-
+	
+	
 	public ProfileInfoView(MainController mainController) {
+		this.setBackground(Color.WHITE);
 		this.mainController = mainController;
 
 		Client loggedInClient = mainController.getLoggedInClient();
@@ -85,11 +89,19 @@ public class ProfileInfoView extends JPanel {
 						ProfileInfoView.this.getPasswordField().getText());
 				
 				ProfileInfoView.this.mainController.getDbManager().UpdateUser(updatedClient);
-				
-
 			}
-			
-
+		});
+		
+		closeButton = new JButton("close");
+		closeButton.setBounds(5, 2, 70, 17);
+		this.add(closeButton);
+		
+		closeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ProfileInfoView.this.mainController.showMainDashboardView();
+				
+			}
 		});
 
 	}
