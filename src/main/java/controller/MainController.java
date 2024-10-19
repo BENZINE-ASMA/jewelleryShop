@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
@@ -12,15 +13,17 @@ import view.MainView;
 public class MainController {
 	private MainView mainView;
 	private DBManager dbManager;
-	private HashMap<Bijoux,Integer> products;
+	private ArrayList<Bijoux> products;
+
 	private Cart clientCart;
+
 
 	private Client loggedInClient;
 
 	public MainController(MainView mainView, DBManager dbManager) {
 		this.mainView = mainView;
 		this.dbManager = dbManager;
-		this.products= new HashMap<Bijoux,Integer>();
+		this.products= new ArrayList<Bijoux>();
 		this.clientCart = new Cart();
 	}
 
@@ -34,21 +37,19 @@ public class MainController {
 			mainView.showAuthenticationError();
 		}
 	}
-	
+
 	public void fetchAllProducts() {
-		System.out.println("i got clickd yayay");
 		this.dbManager.getAllProducts(this.products);
-		for(Bijoux b : this.products.keySet()) {
-			System.out.println(b.toString() );
-			System.out.println(this.products.get(b));
-		}
 	}
-	
+	public void displayCart() {
+		System.out.println(this.clientCart.toString());
+	}
+
 	public void updateUser(Client c) {
 		boolean updated = this.dbManager.UpdateUser(c);
 		System.out.println("helloeoeleo" + updated);
 		if (updated == true) {
-		
+
 			this.mainView.showEditPofileSucess();
 		}else {
 			this.mainView.showEditProfileError();
@@ -58,7 +59,7 @@ public class MainController {
 		mainView.loadMaindashboardView();
 		mainView.showPanel("MainDashboard");
 	}
-	
+
 	public void showMainDashboardView() {
 		mainView.showPanel("MainDashboard");
 	}
@@ -78,7 +79,7 @@ public class MainController {
 	public void setDbManager(DBManager dbManager) {
 		this.dbManager = dbManager;
 	}
-	
+
 
 	public Client getLoggedInClient() {
 		return loggedInClient;
@@ -87,4 +88,21 @@ public class MainController {
 	public void setLoggedInClient(Client loggedInClient) {
 		this.loggedInClient = loggedInClient;
 	}
+	public ArrayList<Bijoux> getProducts() {
+		return products;
+	}
+
+	public void setProducts(ArrayList<Bijoux> products) {
+		this.products = products;
+	}
+	
+	public Cart getClientCart() {
+		return clientCart;
+	}
+
+	public void setClientCart(Cart clientCart) {
+		this.clientCart = clientCart;
+	}
+
+
 }

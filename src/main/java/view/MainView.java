@@ -88,7 +88,9 @@ public class MainView extends JFrame {
     
     public void loadMaindashboardView() {
     	MainDashboardView mainDashboardView = new MainDashboardView(mainController);
+    	this.setSize(1000,700);
         mainPanel.add(mainDashboardView, "MainDashboard");
+        
     }
     public void loadProfileInfoView() {
         ProfileInfoView profileInfoView = new ProfileInfoView(mainController);

@@ -41,5 +41,13 @@ public class Cart {
 		return total;
 	}
 	
+	public String toString() {
+		StringBuilder res = new StringBuilder();
+		for (Bijoux b : this.cart.keySet()) {
+			res.append(b.toString() +" quantité: " + this.cart.get(b) + "\n");
+		}
+		return res.toString();
+	}
+	
 
 }

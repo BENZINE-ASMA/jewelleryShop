@@ -56,16 +56,18 @@ public class Bijoux {
 	protected double price;
 	protected String materiel;
 	protected String imagePath;
-	public Bijoux(String name, String brand, String description, double price, String materiel,String imagePath) {
+	protected int stock;
+	public Bijoux(String name, String brand, String description, double price, String materiel,String imagePath, int stock) {
         this.name = name;
         this.brand = brand;
         this.description = description;
         this.price = price;
         this.materiel = materiel;
         this.imagePath = imagePath;
-    }
+        this.stock=stock;    }
 	
 	public String toString() {
-		return "Name: " + name +"brand: " + brand +"description: " + description + "price: " + price +"maetrial: "+materiel;
+		return "Name: " + name +" brand: " + brand +" description: " + description + " price: " + price +" material: "+materiel + " stock : " + this.stock +" imagePath: " + imagePath
+				;
 	}
 }

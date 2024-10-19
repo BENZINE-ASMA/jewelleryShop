@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import lombok.Getter;
@@ -35,7 +36,7 @@ public class DBManager {
 		
 	}
 	
-	public HashMap<Bijoux,Integer> getAllProducts(HashMap<Bijoux,Integer> results){
+	public ArrayList<Bijoux> getAllProducts(ArrayList<Bijoux> results){
 		String query="Select * from products";
 		Statement stmt;
 		try {
@@ -55,14 +56,14 @@ public class DBManager {
 				case "Ring":
 					int size = rs.getInt("size");
 					
-					Ring ring = new Ring(name,brand,description,price,material,size,imagePath);
-					results.put(ring, stock);
+					Ring ring = new Ring(name,brand,description,price,material,size,imagePath,stock);
+					results.add(ring);
 					
 					break;
 				case "Necklace":
 					double length = rs.getDouble("length");
-					Necklace necklace = new Necklace(name, brand,description,price, material,length, imagePath);
-					results.put(necklace, stock);
+					Necklace necklace = new Necklace(name, brand,description,price, material,length, imagePath,stock);
+					results.add(necklace);
 					break;
 				}
 			}
