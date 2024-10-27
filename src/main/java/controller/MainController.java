@@ -8,12 +8,14 @@ import javax.swing.JOptionPane;
 import model.Bijoux;
 import model.Cart;
 import model.Client;
+import model.Order;
 import view.MainView;
 
 public class MainController {
 	private MainView mainView;
 	private DBManager dbManager;
 	private ArrayList<Bijoux> products;
+	private Order currentOrder;
 
 	private Cart clientCart;
 
@@ -72,6 +74,19 @@ public class MainController {
 		mainView.loadProfileInfoView();
 		mainView.showPanel("ProfileInfo");
 	}
+	public void showCartView() {
+		mainView.loadCartView();;
+		mainView.showPanel("cart");
+	}
+	
+	 public void addToCart(Bijoux b) {
+		 if(currentOrder ==null) {
+			// currentOrder = new Order();
+			 
+		 }
+	    	this.clientCart.addToCart(b);
+	    }
+	
 	public DBManager getDbManager() {
 		return dbManager;
 	}

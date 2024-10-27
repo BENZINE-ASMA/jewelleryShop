@@ -5,15 +5,29 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class Cart {
+	public HashMap<Bijoux, Integer> getCart() {
+		return cart;
+	}
+
+	public void setCart(HashMap<Bijoux, Integer> cart) {
+		this.cart = cart;
+	}
+
 	private HashMap<Bijoux,Integer> cart;
 	
 	public Cart() {
 		this.cart = new HashMap<>();
 	}
 	
-	public void addToCart(Bijoux b) {
+	public int  addToCart(Bijoux b) {
+		int stockmax = b.getStock();
 		int currentQuantity = cart.getOrDefault(b, 0);
-		this.cart.put(b, currentQuantity++);
+		while((currentQuantity+1)<=stockmax ) {
+			currentQuantity++;
+			this.cart.put(b, currentQuantity);
+			return currentQuantity;			
+		}
+		return currentQuantity;
 	}
 	
 	public void removeFromCart(Bijoux b) {

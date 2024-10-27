@@ -23,12 +23,12 @@ public class ProfileInfoView extends JPanel {
 	private JButton editProfileButton;
 	private JButton closeButton;
 	private JButton deleteAccButton;
-	private MainController mainController;
+
 	
 	
 	public ProfileInfoView(MainController mainController) {
 		this.setBackground(Color.WHITE);
-		this.mainController = mainController;
+		
 
 		Client loggedInClient = mainController.getLoggedInClient();
 		this.setLayout(null);
@@ -82,13 +82,13 @@ public class ProfileInfoView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Long id = ProfileInfoView.this.mainController.getLoggedInClient().getId();
+				Long id = mainController.getLoggedInClient().getId();
 				Client updatedClient = new Client(id, ProfileInfoView.this.getFirstNameField().getText(),
 						ProfileInfoView.this.getLastNameField().getText(),
 						ProfileInfoView.this.getEmailField().getText(),
 						ProfileInfoView.this.getPasswordField().getText());
 				
-				ProfileInfoView.this.mainController.getDbManager().UpdateUser(updatedClient);
+				mainController.getDbManager().UpdateUser(updatedClient);
 			}
 		});
 		
@@ -99,7 +99,7 @@ public class ProfileInfoView extends JPanel {
 		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ProfileInfoView.this.mainController.showMainDashboardView();
+				mainController.showMainDashboardView();
 				
 			}
 		});

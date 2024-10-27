@@ -57,6 +57,14 @@ public class Bijoux {
 	protected String materiel;
 	protected String imagePath;
 	protected int stock;
+	public int getStock() {
+		return stock;
+	}
+
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
+
 	public Bijoux(String name, String brand, String description, double price, String materiel,String imagePath, int stock) {
         this.name = name;
         this.brand = brand;

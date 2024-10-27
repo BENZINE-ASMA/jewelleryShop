@@ -29,6 +29,7 @@ import controller.MainController;
 import lombok.Getter;
 import lombok.Setter;
 import model.Bijoux;
+import shared.Utils;
 
 @Getter
 @Setter
@@ -63,7 +64,7 @@ public class MainDashboardView extends JPanel {
         cartIcon.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		mainController.displayCart();
+        		mainController.showCartView();
         		
         	}
         });
@@ -127,59 +128,60 @@ public class MainDashboardView extends JPanel {
     }
         
     }
-    private Image loadImageBijou(String path) {
-    	
-    	try {
-    		InputStream input= this.getClass().getClassLoader().getResourceAsStream(path);
-    		if (input != null) {
-    			BufferedImage image= ImageIO.read(input);
-    			return image;
-    		}else {
-    			throw new RuntimeException("icon " + path + " not found in the classpath!");
-    		}
-    	}catch(IOException e) {
-    		throw new RuntimeException("image " + path + " not found in the classpath!");
-    	}
-    }
+
     
     private JPanel createBijouxPanel(Bijoux bijou, MainController mainController) {
-    	JPanel bijouPanel = new JPanel();
-    	bijouPanel.setBackground(Color.white);
-    	
-    	bijouPanel.setLayout(new BorderLayout());
-    	bijouPanel.setPreferredSize(new Dimension(100,150));
-    	bijouPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-    	
-    	JPanel imagePanel = new JPanel();
-    	imagePanel.setLayout(new BoxLayout(imagePanel,BoxLayout.Y_AXIS));
-    	imagePanel.setBackground(Color.white);
-    	
-    	Image bijouImg = this.loadImageBijou(bijou.getImagePath());
-    	if(bijouImg !=null) {
-    		Image scaledImage = bijouImg.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-    		JLabel bijouLabel = new JLabel(new ImageIcon(scaledImage));
-    		JButton addToCartButton = new JButton("Add to Cart");
-    		
-    		addToCartButton.addActionListener(new ActionListener() {
+        JPanel bijouPanel = new JPanel();
+        bijouPanel.setBackground(Color.white);
+        bijouPanel.setLayout(new BorderLayout());
+        bijouPanel.setPreferredSize(new Dimension(150, 180));
+        bijouPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					mainController.getClientCart().addToCart(bijou);
-					
-					
-				}
-    			
-    		});
-    		
-    		imagePanel.add(bijouLabel);
-    		imagePanel.add(Box.createRigidArea(new Dimension(0, 5))); 
-            imagePanel.add(addToCartButton);
-            bijouPanel.add(imagePanel, BorderLayout.CENTER);
+        JPanel imagePanel = new JPanel();
+        imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
+        imagePanel.setBackground(Color.white);
+
+        // Load and display image
+        Image bijouImg = Utils.loadImageBijou(bijou.getImagePath());
+        if (bijouImg != null) {
+            Image scaledImage = bijouImg.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+            JLabel bijouLabel = new JLabel(new ImageIcon(scaledImage));
+            bijouLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);  
+            imagePanel.add(bijouLabel);
         } else {
-            bijouPanel.add(new JLabel("Image not available"), BorderLayout.CENTER); 
+            imagePanel.add(new JLabel("Image not available"));
         }
 
+   
+        JLabel descriptionLabel = new JLabel("<html><center>" + bijou.getDescription() + "</center></html>");
+        descriptionLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        imagePanel.add(descriptionLabel);
+
+    
+        int stock =bijou.getStock();
+        JLabel quantityLabel = new JLabel("Stock: " + stock);
+        quantityLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        imagePanel.add(quantityLabel);
+
+     
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        JButton addButton = new JButton("add to cart");
+      
+
+        addButton.addActionListener(e -> {
+            mainController.getClientCart().addToCart(bijou);
+            
+          
+        });
+
+       
+
+    
+        buttonPanel.add(addButton);
+        imagePanel.add(buttonPanel);
+
+        bijouPanel.add(imagePanel, BorderLayout.CENTER);
         return bijouPanel;
-    	
     }
+
 }

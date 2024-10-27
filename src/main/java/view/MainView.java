@@ -68,7 +68,14 @@ public class MainView extends JFrame {
 
 
 	public void showPanel(String panelName) {
-        cardLayout.show(mainPanel, panelName);
+		if(panelName=="MainDashboard"||panelName=="cart") {
+			setSize(1000,700);
+			cardLayout.show(mainPanel, panelName);
+		}else {
+			setSize(400, 300);
+			cardLayout.show(mainPanel, panelName);
+			
+		}
     }
 
     public static void main(String[] args) {
@@ -88,11 +95,12 @@ public class MainView extends JFrame {
     
     public void loadMaindashboardView() {
     	MainDashboardView mainDashboardView = new MainDashboardView(mainController);
-    	this.setSize(1000,700);
+    	
         mainPanel.add(mainDashboardView, "MainDashboard");
         
     }
     public void loadProfileInfoView() {
+    	
         ProfileInfoView profileInfoView = new ProfileInfoView(mainController);
         mainPanel.add(profileInfoView, "ProfileInfo");
     }
@@ -108,6 +116,11 @@ public class MainView extends JFrame {
     public void loadSignUpView() {
     	SignUpView SignUpView = new SignUpView(mainController);
         mainPanel.add(SignUpView, "Signup");
+		
+	}
+    public void loadCartView() {
+    	CartView cartView = new CartView(mainController);
+        mainPanel.add(cartView, "cart");
 		
 	}
 
