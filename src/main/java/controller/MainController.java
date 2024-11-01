@@ -9,6 +9,7 @@ import model.Bijoux;
 import model.Cart;
 import model.Client;
 import model.Order;
+import model.OrderStatus;
 import view.MainView;
 
 public class MainController {
@@ -80,12 +81,20 @@ public class MainController {
 	}
 	
 	 public void addToCart(Bijoux b) {
-		 if(currentOrder ==null) {
-			// currentOrder = new Order();
+		 if(currentOrder == null) {
 			 
+			 currentOrder = new Order(this.loggedInClient);
 		 }
 	    	this.clientCart.addToCart(b);
 	    }
+	 
+	 public void ChangeOrderStatus(OrderStatus status) {
+		 this.currentOrder.setStatus(status);
+		 if (status == OrderStatus.VALIDEE) {
+			 this.currentOrder.setCartItems(clientCart);
+			// System.out.println("thisssssss " + this.currentOrder.getStatus() + "    "+ this.currentOrder.getCartItems().toString()); 
+		 }
+	 }
 	
 	public DBManager getDbManager() {
 		return dbManager;

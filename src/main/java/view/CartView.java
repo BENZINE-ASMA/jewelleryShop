@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import controller.MainController;
 import model.Bijoux;
 import model.Cart;
+import model.OrderStatus;
 import shared.Utils;
 
 public class CartView extends JPanel {
@@ -73,6 +74,12 @@ public class CartView extends JPanel {
 			}
 		});
     	JButton  confirmButton = new JButton("Confirm Purchase");
+    	confirmButton.addActionListener(new ActionListener() {
+    		@Override
+    		public void actionPerformed(ActionEvent e) {
+    			mainController.ChangeOrderStatus(OrderStatus.VALIDEE);
+    		}
+    	});
 		panelImages.add(confirmButton, BorderLayout.SOUTH);
     	
    

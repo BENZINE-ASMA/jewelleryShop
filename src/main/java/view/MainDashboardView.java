@@ -169,7 +169,7 @@ public class MainDashboardView extends JPanel {
       
 
         addButton.addActionListener(e -> {
-            mainController.getClientCart().addToCart(bijou);
+            mainController.addToCart(bijou);
             
           
         });

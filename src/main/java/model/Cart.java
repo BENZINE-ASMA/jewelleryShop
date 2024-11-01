@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class Cart {
+	private HashMap<Bijoux,Integer> cart;
+	
 	public HashMap<Bijoux, Integer> getCart() {
 		return cart;
 	}
@@ -13,7 +15,6 @@ public class Cart {
 		this.cart = cart;
 	}
 
-	private HashMap<Bijoux,Integer> cart;
 	
 	public Cart() {
 		this.cart = new HashMap<>();

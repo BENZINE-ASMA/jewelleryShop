@@ -1,19 +1,22 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class Order {
-	private List<Bijoux> cartItems;
+	private Cart clientCart;
 	private OrderStatus status;
-	private Date orderDate;
+	private LocalDate currentDate;
 	private Client client;
 	
-	 public Order(Long orderId, List<Bijoux> items, Client client) {
-	        this.setCartItems(items);
+	 public Order(Client client) {
+	        this.clientCart = new Cart();
 	        this.setClient(client);
 	        this.setStatus(OrderStatus.EN_COURS);
-	        this.setOrderDate(new Date());
+	        this.currentDate = LocalDate.now();
+	       
 	    }
 	 public void validateOrder() {
 	        this.setStatus(OrderStatus.VALIDEE);
@@ -21,11 +24,11 @@ public class Order {
 	 public void orderDelivered() {
 	        this.setStatus(OrderStatus.LIVREE);
 	    }
-	public List<Bijoux> getCartItems() {
-		return cartItems;
+	public Cart getCartItems() {
+		return clientCart;
 	}
-	public void setCartItems(List<Bijoux> cartItems) {
-		this.cartItems = cartItems;
+	public void setCartItems(Cart cartItems) {
+		this.clientCart = cartItems;
 	}
 	public OrderStatus getStatus() {
 		return status;
@@ -33,12 +36,7 @@ public class Order {
 	public void setStatus(OrderStatus status) {
 		this.status = status;
 	}
-	public Date getOrderDate() {
-		return orderDate;
-	}
-	public void setOrderDate(Date orderDate) {
-		this.orderDate = orderDate;
-	}
+	
 	public Client getClient() {
 		return client;
 	}
