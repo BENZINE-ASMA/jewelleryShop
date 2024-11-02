@@ -49,7 +49,14 @@ public class Bijoux {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+	protected Long id;
 	protected String name;
 	protected String brand;
 	protected String description;
@@ -65,8 +72,9 @@ public class Bijoux {
 		this.stock = stock;
 	}
 
-	public Bijoux(String name, String brand, String description, double price, String materiel,String imagePath, int stock) {
-        this.name = name;
+	public Bijoux(Long id,String name, String brand, String description, double price, String materiel,String imagePath, int stock) {
+		this.id =id;
+		this.name = name;
         this.brand = brand;
         this.description = description;
         this.price = price;

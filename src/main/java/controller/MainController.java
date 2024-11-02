@@ -17,6 +17,7 @@ public class MainController {
 	private DBManager dbManager;
 	private ArrayList<Bijoux> products;
 	private Order currentOrder;
+	private InvoiceController invoiceController;
 
 	private Cart clientCart;
 
@@ -28,6 +29,7 @@ public class MainController {
 		this.dbManager = dbManager;
 		this.products= new ArrayList<Bijoux>();
 		this.clientCart = new Cart();
+		this.invoiceController = new InvoiceController();
 	}
 
 	public void authenticateUser(String username, String password) {
@@ -93,6 +95,10 @@ public class MainController {
 		 if (status == OrderStatus.VALIDEE) {
 			 this.currentOrder.setCartItems(clientCart);
 			// System.out.println("thisssssss " + this.currentOrder.getStatus() + "    "+ this.currentOrder.getCartItems().toString()); 
+		 
+			 // we ll generate the invoice 
+			 System.out.println("generating invoice for client "+  this.loggedInClient.toString());
+			 this.invoiceController.generateInvoice(this.loggedInClient,this.currentOrder,this.dbManager);
 		 }
 	 }
 	

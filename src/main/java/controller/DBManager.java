@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 import model.Bijoux;
 import model.Client;
+import model.Invoice;
 import model.Necklace;
 import model.Ring;
 
@@ -44,6 +45,7 @@ public class DBManager {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			while(rs.next()) {
+				Long id = rs.getLong("id");
 				String type = rs.getString("type");
 				String name = rs.getString("name");
 				String brand = rs.getString("brand");
@@ -56,13 +58,13 @@ public class DBManager {
 				case "Ring":
 					int size = rs.getInt("size");
 					
-					Ring ring = new Ring(name,brand,description,price,material,size,imagePath,stock);
+					Ring ring = new Ring(id,name,brand,description,price,material,size,imagePath,stock);
 					results.add(ring);
 					
 					break;
 				case "Necklace":
 					double length = rs.getDouble("length");
-					Necklace necklace = new Necklace(name, brand,description,price, material,length, imagePath,stock);
+					Necklace necklace = new Necklace(id,name, brand,description,price, material,length, imagePath,stock);
 					results.add(necklace);
 					break;
 				}
@@ -160,5 +162,44 @@ public class DBManager {
 			}
 		}
 	}
+	
+	public boolean addInvoice(Invoice invoice) {
+	    String query = "INSERT INTO Invoices (client_id, invoice_number, file_path, total_amount, status) VALUES (?, ?, ?, ?, ?)";
+
+	    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+	        preparedStatement.setLong(1, invoice.getClientId());
+	        preparedStatement.setString(2, invoice.getInvoiceNumber());
+	        preparedStatement.setString(3, invoice.getFilePath());
+	        preparedStatement.setDouble(4, invoice.getTotalAmount());
+	        preparedStatement.setString(5, invoice.getStatus());
+
+	        int result = preparedStatement.executeUpdate();
+
+	        return result > 0;
+	    } catch (SQLException e) {
+	        System.out.println("Error inserting new invoice");
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	
+	public String getLastInvoiceNumberOfDB() {
+		String query = "SELECT invoice_number from Invoices";
+		try(PreparedStatement preparedStatement = connection.prepareStatement(query);
+				ResultSet resultSet = preparedStatement.executeQuery()
+				){
+			
+			 if (resultSet.next()) {
+		            return resultSet.getString("invoice_number");
+		        } else {
+		            return null; 
+		        }
+		    } catch (SQLException e) {
+		        System.out.println("Error retrieving last invoice number from the database");
+		        e.printStackTrace();
+		        return null;
+		    }
+	}
+
 
 }
