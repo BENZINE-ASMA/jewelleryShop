@@ -145,5 +145,19 @@ public class MainController {
 		this.clientCart = clientCart;
 	}
 
+	public ArrayList<? extends Bijoux> searchByKey(String query){
+		ArrayList<?> result = new ArrayList<>();
+		String[] orKeys = query.split("(?i)\\s+ou\\s+");
+		for(String orkey : orKeys) {
+			String[] andKeys = orkey.split("(?i)\\s+et\\s+");
+			ArrayList<?> temp = new ArrayList<>(this.products);
+			
+			for(String andKey: andKeys ) {
+				// gotta finish logic here 
+			}
+		}
+		return null;
+	}
+	
 
 }

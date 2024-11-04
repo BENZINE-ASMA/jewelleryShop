@@ -22,7 +22,6 @@ public class RingsDashboardView extends JPanel {
 		this.mainController = mainController;
 		this.rings = new ArrayList<Ring>();
 	        for(Bijoux b : mainController.getProducts()) {
-	        	System.out.println(b.toString());
 	        	if (b instanceof Ring) {
 	        		rings.add((Ring) b);
 	        	}

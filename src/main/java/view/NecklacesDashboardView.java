@@ -23,7 +23,6 @@ public class NecklacesDashboardView extends JPanel {
 		this.mainController = mainController;
 		this.necklaces = new ArrayList<Necklace>();
 			for(Bijoux b : mainController.getProducts()) {
-		       	System.out.println(b.toString());
 		        	if (b instanceof Necklace) {
 		        		necklaces.add((Necklace) b);
 		        	}

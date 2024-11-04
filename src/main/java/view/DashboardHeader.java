@@ -19,16 +19,18 @@ public class DashboardHeader extends JPanel {
     private JTextField searchField;
     private MainController mainController;
 
-    // Constructor to initialize the header with a reference to the MainController
     public DashboardHeader(MainController mainController) {
         this.mainController = mainController;
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        // Create left panel with buttons and search field
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setBackground(Color.WHITE);
 
+        JButton allButton = new JButton("All");
+        allButton.addActionListener(e->{
+        	mainController.showMainDashboardView();
+        });
         JButton ringButton = new JButton("Ring");
         ringButton.addActionListener(e -> {
             mainController.showRingDashboardsView();
@@ -47,16 +49,15 @@ public class DashboardHeader extends JPanel {
                 // Implement search logic if needed
             }
         });
-
+        
+        leftPanel.add(allButton);
         leftPanel.add(ringButton);
         leftPanel.add(necklaceButton);
         leftPanel.add(searchField);
         leftPanel.add(searchButton);
 
-        // Add the left panel to the left side of the header
         add(leftPanel, BorderLayout.WEST);
 
-        // Create right panel with profile and cart icons
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         rightPanel.setBackground(Color.WHITE);
 
@@ -83,7 +84,6 @@ public class DashboardHeader extends JPanel {
         rightPanel.add(profileIcon);
         rightPanel.add(cartIcon);
 
-        // Add the right panel to the right side of the header
         add(rightPanel, BorderLayout.EAST);
 
         setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, false));
