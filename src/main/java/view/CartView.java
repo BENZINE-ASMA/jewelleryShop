@@ -22,7 +22,8 @@ import controller.MainController;
 import model.Bijoux;
 import model.Cart;
 import model.OrderStatus;
-import shared.Utils;
+import shared.UtilDisplayingDashboards;
+
 
 public class CartView extends JPanel {
 	private Cart cart;
@@ -101,7 +102,7 @@ public class CartView extends JPanel {
 	    bijouPanel.add(imagePanel, BorderLayout.CENTER);
 
 	    
-	    Image bijouImg = Utils.loadImageBijou(bijou.getImagePath());
+	    Image bijouImg = UtilDisplayingDashboards.loadImageBijou(bijou.getImagePath());
 	    if (bijouImg != null) {
 	        Image scaledImage = bijouImg.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
 	        JLabel bijouLabel = new JLabel(new ImageIcon(scaledImage));

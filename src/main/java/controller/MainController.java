@@ -82,6 +82,17 @@ public class MainController {
 		mainView.showPanel("cart");
 	}
 	
+	public void showRingDashboardsView() {
+		mainView.loadRingsDashboardView();
+		mainView.showPanel("ringsDashbaord");
+	}
+	public void showNecklaceDashboardsView() {
+		mainView.loadNecklacesDashboardView();
+		mainView.showPanel("necklacesDashbaord");
+	}
+	
+	
+	
 	 public void addToCart(Bijoux b) {
 		 if(currentOrder == null) {
 			 

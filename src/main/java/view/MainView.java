@@ -68,7 +68,7 @@ public class MainView extends JFrame {
 
 
 	public void showPanel(String panelName) {
-		if(panelName=="MainDashboard"||panelName=="cart") {
+		if(panelName=="MainDashboard"||panelName=="cart" || panelName== "ringsDashbaord" || panelName=="necklacesDashbaord") {
 			setSize(1000,700);
 			cardLayout.show(mainPanel, panelName);
 		}else {
@@ -95,9 +95,7 @@ public class MainView extends JFrame {
     
     public void loadMaindashboardView() {
     	MainDashboardView mainDashboardView = new MainDashboardView(mainController);
-    	
         mainPanel.add(mainDashboardView, "MainDashboard");
-        
     }
     public void loadProfileInfoView() {
     	
@@ -123,6 +121,16 @@ public class MainView extends JFrame {
         mainPanel.add(cartView, "cart");
 		
 	}
+    
+    public void loadRingsDashboardView() {
+    	RingsDashboardView ringsDashboardView = new RingsDashboardView(mainController);
+    	mainPanel.add(ringsDashboardView,"ringsDashbaord");
+    }
+    
+    public void loadNecklacesDashboardView() {
+    	NecklacesDashboardView necklacesDashboardView = new NecklacesDashboardView(mainController);
+    	mainPanel.add(necklacesDashboardView,"necklacesDashbaord");
+    }
 
 	
 }
