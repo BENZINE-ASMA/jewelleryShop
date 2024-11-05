@@ -92,9 +92,10 @@ public class DBManager {
 				String lastName = resultSet.getString("lastName");
 				String emailResult = resultSet.getString("email");
 				String passwordResult = resultSet.getString("password");
+				String role = resultSet.getString("role");
 
 				
-				Client client = new Client(id, firstName, lastName, emailResult, passwordResult);
+				Client client = new Client(id, firstName, lastName, emailResult, passwordResult,role);
 				
 				return client;
 			} else {

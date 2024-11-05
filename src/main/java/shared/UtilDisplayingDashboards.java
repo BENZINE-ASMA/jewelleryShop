@@ -97,7 +97,13 @@ public class UtilDisplayingDashboards {
         try {
             InputStream input = MainDashboardView.class.getClassLoader().getResourceAsStream(path);
             if (input != null) {
+            	
+            	
                 Image image = ImageIO.read(input);
+                
+                if (path.contains("hotlineIcon")) {
+                	image =image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                }
                 label.setIcon(new ImageIcon(image));
                 label.setPreferredSize(new java.awt.Dimension(width, height)); 
                 

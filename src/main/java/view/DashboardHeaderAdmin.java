@@ -13,14 +13,14 @@ import javax.swing.JTextField;
 import controller.MainController;
 import shared.UtilDisplayingDashboards;
 
-public class DashboardHeader extends JPanel {
+public class DashboardHeaderAdmin extends JPanel {
     private JLabel profileIcon;
     private JLabel cartIcon;
     private JLabel hotlineIcon;
     private JTextField searchField;
     private MainController mainController;
 
-    public DashboardHeader(MainController mainController) {
+    public DashboardHeaderAdmin(MainController mainController) {
         this.mainController = mainController;
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
@@ -39,6 +39,20 @@ public class DashboardHeader extends JPanel {
 
         JButton necklaceButton = new JButton("Necklace");
         necklaceButton.addActionListener(e -> {
+            mainController.showNecklaceDashboardsView();
+        });
+        
+        JButton invoices = new JButton("Invoices");
+        invoices.addActionListener(e -> {
+            mainController.showNecklaceDashboardsView();
+        });
+        JButton clients = new JButton("Clients");
+        clients.addActionListener(e -> {
+            mainController.showNecklaceDashboardsView();
+        });
+        
+        JButton orders = new JButton("Orders");
+        orders.addActionListener(e -> {
             mainController.showNecklaceDashboardsView();
         });
 

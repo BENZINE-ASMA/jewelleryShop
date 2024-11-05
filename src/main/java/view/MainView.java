@@ -68,7 +68,8 @@ public class MainView extends JFrame {
 
 
 	public void showPanel(String panelName) {
-		if(panelName=="MainDashboard"||panelName=="cart" || panelName== "ringsDashbaord" || panelName=="necklacesDashbaord") {
+		if(panelName=="MainDashboard"||panelName=="cart" || panelName== "ringsDashbaord" || panelName=="necklacesDashbaord" ||
+				panelName=="mainDashboardAdminView") {
 			setSize(1000,700);
 			cardLayout.show(mainPanel, panelName);
 		}else {
@@ -130,6 +131,10 @@ public class MainView extends JFrame {
     public void loadNecklacesDashboardView() {
     	NecklacesDashboardView necklacesDashboardView = new NecklacesDashboardView(mainController);
     	mainPanel.add(necklacesDashboardView,"necklacesDashbaord");
+    }
+    public void loadMainDashboardAdminView() {
+    	MainDashboardAdminView mainDashboardAdminView = new MainDashboardAdminView(mainController);
+    	mainPanel.add(mainDashboardAdminView,"mainDashboardAdminView");
     }
     
 

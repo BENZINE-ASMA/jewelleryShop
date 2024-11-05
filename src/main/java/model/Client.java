@@ -10,13 +10,15 @@ public class Client {
 	private String lastName;
 	private String email;
 	private String password;
+	private String role;
 	
-	public Client(Long id,String firstName, String lastName, String email , String password) {
+	public Client(Long id,String firstName, String lastName, String email , String password ,String role ) {
 		this.id = id;
 		this.firstName=firstName;
 		this.lastName=lastName;
 		this.email=email;
 		this.password=password;
+		this.setRole(role);
 	}
 	public Client(String firstName, String lastName, String email , String password) {
 		this.firstName=firstName;
@@ -81,6 +83,12 @@ public class Client {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 

@@ -87,7 +87,7 @@ public class ProfileInfoView extends JPanel {
 				Client updatedClient = new Client(id, ProfileInfoView.this.getFirstNameField().getText(),
 						ProfileInfoView.this.getLastNameField().getText(),
 						ProfileInfoView.this.getEmailField().getText(),
-						ProfileInfoView.this.getPasswordField().getText());
+						ProfileInfoView.this.getPasswordField().getText() ,mainController.getLoggedInClient().getRole() );
 				
 				mainController.getDbManager().UpdateUser(updatedClient);
 			}

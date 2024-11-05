@@ -39,7 +39,14 @@ public class MainController {
 		if (authenticatedUser != null) {
 			this.setLoggedInClient(authenticatedUser);
 			mainView.setLoggedInClient(authenticatedUser);
-			this.createAndShowMaindashboardView();
+			
+			if (authenticatedUser.getRole().equals("admin")) {
+				this.createAndShowMaindashboardAdminView();
+			}else {
+				
+				this.createAndShowMaindashboardView();
+			}
+			
 		} else {
 			mainView.showAuthenticationError();
 		}
@@ -75,6 +82,10 @@ public class MainController {
 		mainView.showPanel("MainDashboard");
 	}
 
+	public void createAndShowMaindashboardAdminView() {
+		mainView.loadMainDashboardAdminView();
+		mainView.showPanel("mainDashboardAdminView");
+	}
 	public void showMainDashboardView() {
 		mainView.showPanel("MainDashboard");
 	}
