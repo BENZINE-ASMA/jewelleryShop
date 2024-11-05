@@ -21,12 +21,25 @@ public class SignUpView extends JPanel {
 	    private JPasswordField passwordField;
 	    private JButton submitButton;
 	    private MainController mainController;
+	    private JButton closeButton;
 	    
 	    public SignUpView(MainController mainController) {
 	    	this.mainController = mainController;
 	    	
 	        this.setLayout(null);
 	        // setting the layout to null means that i will position manually all the components
+	        
+	        closeButton = new JButton("close");
+			closeButton.setBounds(5, 2, 70, 17);
+			this.add(closeButton);
+			
+			closeButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					mainController.showLoginView(false,"");
+					
+				}
+			});
 
 	        JLabel firstNameLabel = new JLabel("First Name:");
 	        firstNameLabel.setBounds(50, 30, 80, 25);

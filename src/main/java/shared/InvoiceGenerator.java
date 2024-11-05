@@ -12,16 +12,19 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.properties.TextAlignment;
 
 import model.Bijoux;
+import model.Cart;
 import model.Client;
 import model.Order;
 
 public class InvoiceGenerator {
     private Order clientOrder;
+    private Cart clientCart;
     private Client loggedInClient;
 
-    public InvoiceGenerator(Order order, Client client) {
+    public InvoiceGenerator(Order order, Client client, Cart clientCart) {
         this.clientOrder = order;
         this.loggedInClient = client;
+        this.clientCart =clientCart;
     }
 
     public  void generateInvoice(String path) {
@@ -59,7 +62,7 @@ public class InvoiceGenerator {
             table.addCell(new Cell().add(new Paragraph("Prix Total eur"))); // Total price per item
 
             // Adding data for each item in the order
-            for (Map.Entry<Bijoux, Integer> entry : clientOrder.getCartItems().getCart().entrySet()) {
+            for (Map.Entry<Bijoux, Integer> entry : clientCart.getCart().entrySet()) {
                 Bijoux item = entry.getKey();
                 int quantity = entry.getValue();
 

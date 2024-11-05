@@ -131,6 +131,18 @@ public class MainView extends JFrame {
     	NecklacesDashboardView necklacesDashboardView = new NecklacesDashboardView(mainController);
     	mainPanel.add(necklacesDashboardView,"necklacesDashbaord");
     }
+    
 
+    public void loadLoginView(boolean displayOptionPanes ,String toDisplay) {
+    	if(displayOptionPanes) {
+    		LoginView loginView = new LoginView(mainController);
+        	mainPanel.add(loginView,"loginView");
+            JOptionPane.showMessageDialog(this, toDisplay, "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        	
+    	}
+    	LoginView loginView = new LoginView(mainController);
+    	mainPanel.add(loginView,"loginView");
+    }
 	
 }

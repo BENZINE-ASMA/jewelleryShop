@@ -15,6 +15,7 @@ import model.Bijoux;
 import model.Client;
 import model.Invoice;
 import model.Necklace;
+import model.Order;
 import model.Ring;
 
 @Getter
@@ -129,6 +130,24 @@ public class DBManager {
 		}
 	}
 
+	public boolean deleteUser(Client c) {
+		
+		String query = "DELETE FROM client WHERE email = ?";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+			preparedStatement.setString(1, c.getEmail());
+
+			 int rowsAffected = preparedStatement.executeUpdate();
+
+			return rowsAffected != 0;
+		} catch (SQLException e) {
+			System.out.println("Error inserting new client");
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public boolean UpdateUser(Client c) {
 		String query = "UPDATE client SET firstName = ?, lastName = ?, password = ? WHERE email = ?";
 
@@ -163,15 +182,42 @@ public class DBManager {
 		}
 	}
 	
-	public boolean addInvoice(Invoice invoice) {
-	    String query = "INSERT INTO Invoices (client_id, invoice_number, file_path, total_amount, status) VALUES (?, ?, ?, ?, ?)";
+	public boolean addOrder(Order order) {
+	    String query = "INSERT INTO Orders (client_id, status, total_amount) VALUES (?, ?, ?)";
 
+	    try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+	        preparedStatement.setLong(1, order.getClient().getId()); 
+	        preparedStatement.setString(2, order.getStatus().name());
+	        preparedStatement.setDouble(3, order.getCartItems().getTotalPrice()); 
+
+	        int result = preparedStatement.executeUpdate();
+
+	    
+	        if (result > 0) {
+	            ResultSet rs = preparedStatement.getGeneratedKeys();
+	            if (rs.next()) {
+	                long orderId = rs.getLong(1);
+	                order.setOrderId(orderId); 
+	            }
+	        }
+
+	        return result > 0;
+	    } catch (SQLException e) {
+	        System.out.println("Error inserting new order");
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	
+	public boolean addInvoice(Invoice invoice, Long orderId) {
+	    String query = "INSERT INTO Invoices (client_id, order_id, invoice_number, file_path, total_amount, status) VALUES (?, ?, ?, ?, ?, ?)";
 	    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 	        preparedStatement.setLong(1, invoice.getClientId());
-	        preparedStatement.setString(2, invoice.getInvoiceNumber());
-	        preparedStatement.setString(3, invoice.getFilePath());
-	        preparedStatement.setDouble(4, invoice.getTotalAmount());
-	        preparedStatement.setString(5, invoice.getStatus());
+	        preparedStatement.setLong(2, orderId);
+	        preparedStatement.setString(3, invoice.getInvoiceNumber());
+	        preparedStatement.setString(4, invoice.getFilePath());
+	        preparedStatement.setDouble(5, invoice.getTotalAmount());
+	        preparedStatement.setString(6, invoice.getStatus());
 
 	        int result = preparedStatement.executeUpdate();
 
@@ -182,6 +228,7 @@ public class DBManager {
 	        return false;
 	    }
 	}
+
 	
 	public String getLastInvoiceNumberOfDB() {
 		String query = "SELECT invoice_number from Invoices";

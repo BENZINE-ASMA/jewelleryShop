@@ -1,21 +1,19 @@
 package model;
 
-import java.time.LocalDate;
-import java.util.Date;
+
 import java.util.HashMap;
 import java.util.List;
 
 public class Order {
+	private Long orderId;
 	private Cart clientCart;
 	private OrderStatus status;
-	private LocalDate currentDate;
 	private Client client;
 	
-	 public Order(Client client) {
+	 public Order(Client client) { 
 	        this.clientCart = new Cart();
 	        this.setClient(client);
 	        this.setStatus(OrderStatus.EN_COURS);
-	        this.currentDate = LocalDate.now();
 	       
 	    }
 	 public void validateOrder() {
@@ -42,6 +40,12 @@ public class Order {
 	}
 	public void setClient(Client client) {
 		this.client = client;
+	}
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
 	}
 	
 

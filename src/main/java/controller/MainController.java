@@ -17,6 +17,8 @@ public class MainController {
 	private DBManager dbManager;
 	private ArrayList<Bijoux> products;
 	private Order currentOrder;
+
+
 	private InvoiceController invoiceController;
 
 	private Cart clientCart;
@@ -52,12 +54,20 @@ public class MainController {
 
 	public void updateUser(Client c) {
 		boolean updated = this.dbManager.UpdateUser(c);
-		System.out.println("helloeoeleo" + updated);
 		if (updated == true) {
 
 			this.mainView.showEditPofileSucess();
 		}else {
 			this.mainView.showEditProfileError();
+		}
+	}
+	
+	public void deleteUser() {
+		boolean rowsAffected = this.dbManager.deleteUser(loggedInClient);
+		if(rowsAffected) {
+			this.showLoginView(true, "user was successfully deleted");
+		}else {
+			this.showLoginView(true, "issue with deleting the user");
 		}
 	}
 	public void createAndShowMaindashboardView() {
@@ -91,6 +101,12 @@ public class MainController {
 		mainView.showPanel("necklacesDashbaord");
 	}
 	
+	public void showLoginView(boolean displayOptionPane, String todisplay) {
+		mainView.loadLoginView(displayOptionPane,todisplay);
+		mainView.showPanel("loginView");
+	}
+	
+	
 	
 	
 	 public void addToCart(Bijoux b) {
@@ -101,15 +117,19 @@ public class MainController {
 	    	this.clientCart.addToCart(b);
 	    }
 	 
+	 public void addOrderToDB() {
+		 this.dbManager.addOrder(currentOrder);
+	 }
 	 public void ChangeOrderStatus(OrderStatus status) {
 		 this.currentOrder.setStatus(status);
 		 if (status == OrderStatus.VALIDEE) {
 			 this.currentOrder.setCartItems(clientCart);
+			 this.addOrderToDB();
 			// System.out.println("thisssssss " + this.currentOrder.getStatus() + "    "+ this.currentOrder.getCartItems().toString()); 
 		 
 			 // we ll generate the invoice 
 			 System.out.println("generating invoice for client "+  this.loggedInClient.toString());
-			 this.invoiceController.generateInvoice(this.loggedInClient,this.currentOrder,this.dbManager);
+			 this.invoiceController.generateInvoice(this.loggedInClient,this.currentOrder,this.dbManager,this);
 		 }
 	 }
 	
@@ -143,6 +163,13 @@ public class MainController {
 
 	public void setClientCart(Cart clientCart) {
 		this.clientCart = clientCart;
+	}
+	public Order getCurrentOrder() {
+		return currentOrder;
+	}
+
+	public void setCurrentOrder(Order currentOrder) {
+		this.currentOrder = currentOrder;
 	}
 
 	public ArrayList<? extends Bijoux> searchByKey(String query){

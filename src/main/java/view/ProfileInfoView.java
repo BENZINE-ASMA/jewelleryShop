@@ -21,6 +21,7 @@ public class ProfileInfoView extends JPanel {
 	private JTextField emailField;
 	private JTextField passwordField;
 	private JButton editProfileButton;
+	private JButton deleteAcc;
 	private JButton closeButton;
 	private JButton deleteAccButton;
 
@@ -75,7 +76,7 @@ public class ProfileInfoView extends JPanel {
 		this.add(passwordField);
 
 		editProfileButton = new JButton("Edit Profile");
-		editProfileButton.setBounds(110, 195, 100, 25);
+		editProfileButton.setBounds(80, 195, 100, 25);
 		this.add(editProfileButton);
 
 		editProfileButton.addActionListener(new ActionListener() {
@@ -89,6 +90,18 @@ public class ProfileInfoView extends JPanel {
 						ProfileInfoView.this.getPasswordField().getText());
 				
 				mainController.getDbManager().UpdateUser(updatedClient);
+			}
+		});
+		
+		deleteAcc = new JButton("delete account");
+		deleteAcc.setBounds(190, 195, 120, 25);
+		this.add(deleteAcc);
+
+		deleteAcc.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainController.deleteUser();
 			}
 		});
 		

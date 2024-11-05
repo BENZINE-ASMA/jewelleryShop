@@ -14,13 +14,13 @@ public class InvoiceController {
 		
 	}
 	
-	public void generateInvoice(Client loggedInClient, Order order, DBManager dbManager) {
+	public void generateInvoice(Client loggedInClient, Order order, DBManager dbManager ,MainController mainController) {
 		String invoiceNumber = generateInvoiceNumber(loggedInClient.getId(),dbManager);
-		InvoiceGenerator invoiceGenerator = new InvoiceGenerator(order, loggedInClient) ;
+		InvoiceGenerator invoiceGenerator = new InvoiceGenerator(order, loggedInClient,mainController.getClientCart()) ;
 		invoiceGenerator.generateInvoice(invoiceNumber+".pdf");
-		Invoice invoice = new Invoice(loggedInClient.getId(), invoiceNumber,invoiceNumber+".pdf",order.getCartItems().getTotalPrice(),"Pending");
-		dbManager.addInvoice(invoice);
-		// public Invoice(int clientId, String invoiceNumber, String filePath, double totalAmount, String status) {
+		Invoice invoice = new Invoice(loggedInClient.getId(), invoiceNumber,invoiceNumber+".pdf",mainController.getClientCart().getTotalPrice(),"Pending");
+		dbManager.addInvoice(invoice ,mainController.getCurrentOrder().getOrderId());
+		
 		
 	}
 	
