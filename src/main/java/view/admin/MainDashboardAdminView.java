@@ -1,4 +1,4 @@
-package view;
+package view.admin;
 
 import java.awt.BorderLayout;
 import controller.MainController;

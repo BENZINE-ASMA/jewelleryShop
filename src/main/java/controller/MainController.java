@@ -104,8 +104,12 @@ public class MainController {
 	}
 	
 	public void showRingDashboardsView() {
+		mainView.loadClientDashbaordView();
+		mainView.showPanel("client");
+		/*
 		mainView.loadRingsDashboardView();
 		mainView.showPanel("ringsDashbaord");
+		*/
 	}
 	public void showNecklaceDashboardsView() {
 		mainView.loadNecklacesDashboardView();

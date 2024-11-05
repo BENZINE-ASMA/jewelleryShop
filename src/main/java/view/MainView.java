@@ -4,9 +4,12 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import controller.AdminController;
 import controller.DBManager;
 import controller.MainController;
 import model.Client;
+import view.admin.ClientDashbaord;
+import view.admin.MainDashboardAdminView;
 
 import java.awt.CardLayout;
 
@@ -69,7 +72,7 @@ public class MainView extends JFrame {
 
 	public void showPanel(String panelName) {
 		if(panelName=="MainDashboard"||panelName=="cart" || panelName== "ringsDashbaord" || panelName=="necklacesDashbaord" ||
-				panelName=="mainDashboardAdminView") {
+				panelName=="mainDashboardAdminView" ||panelName=="client") {
 			setSize(1000,700);
 			cardLayout.show(mainPanel, panelName);
 		}else {
@@ -137,6 +140,10 @@ public class MainView extends JFrame {
     	mainPanel.add(mainDashboardAdminView,"mainDashboardAdminView");
     }
     
+    public void loadClientDashbaordView() {
+    	ClientDashbaord mainDashboardAdminView = new ClientDashbaord(new AdminController());
+    	mainPanel.add(mainDashboardAdminView,"client");
+    }
 
     public void loadLoginView(boolean displayOptionPanes ,String toDisplay) {
     	if(displayOptionPanes) {
