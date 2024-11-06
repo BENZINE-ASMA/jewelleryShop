@@ -20,6 +20,14 @@ public class Client {
 		this.password=password;
 		this.setRole(role);
 	}
+	public Client(Long id,String firstName, String lastName, String email  ,String role ) {
+		this.id = id;
+		this.firstName=firstName;
+		this.lastName=lastName;
+		this.email=email;
+		this.password=null;
+		this.setRole(role);
+	}
 	public Client(String firstName, String lastName, String email , String password) {
 		this.firstName=firstName;
 		this.lastName=lastName;

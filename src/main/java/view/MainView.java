@@ -141,7 +141,7 @@ public class MainView extends JFrame {
     }
     
     public void loadClientDashbaordView() {
-    	ClientDashbaord mainDashboardAdminView = new ClientDashbaord(new AdminController());
+    	ClientDashbaord mainDashboardAdminView = new ClientDashbaord(new AdminController(this.mainController.getDbManager()));
     	mainPanel.add(mainDashboardAdminView,"client");
     }
 

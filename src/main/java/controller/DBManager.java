@@ -249,5 +249,29 @@ public class DBManager {
 		    }
 	}
 
+	public void getClients(ArrayList<Client> clients) {
+		String query = "SELECT * from client";
+		try(PreparedStatement preparedStatement = connection.prepareStatement(query);
+				ResultSet result = preparedStatement.executeQuery()){
+			while(result.next()) {
+				long id = result.getLong("id");
+				String firstName = result.getString("firstName");
+				String lastName = result.getString("lastName");
+				String email = result.getString("email");
+				String password = result.getString("password");
+				String role = result.getString("role");
+				
+				Client client = new Client(id,firstName,lastName,email,password,role);
+				clients.add(client);
+				//Long id,String firstName, String lastName, String email , String password ,String role 
+				
+			}
+			
+		}catch(SQLException e){
+			 System.out.println("Error retrieving clients from the database");
+			 e.printStackTrace();
+		}
+				
+	}
 
 }
