@@ -59,6 +59,14 @@ public class Bijoux {
 	protected Long id;
 	protected String name;
 	protected String brand;
+	protected String type;
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 	protected String description;
 	protected double price;
 	protected String materiel;
@@ -72,7 +80,7 @@ public class Bijoux {
 		this.stock = stock;
 	}
 
-	public Bijoux(Long id,String name, String brand, String description, double price, String materiel,String imagePath, int stock) {
+	public Bijoux(Long id,String name, String brand , String type, String description, double price, String materiel,String imagePath, int stock) {
 		this.id =id;
 		this.name = name;
         this.brand = brand;
@@ -80,7 +88,8 @@ public class Bijoux {
         this.price = price;
         this.materiel = materiel;
         this.imagePath = imagePath;
-        this.stock=stock;    }
+        this.stock=stock;   
+        this.type= type;}
 	
 	public String toString() {
 		return "Name: " + name +" brand: " + brand +" description: " + description + " price: " + price +" material: "+materiel + " stock : " + this.stock +" imagePath: " + imagePath

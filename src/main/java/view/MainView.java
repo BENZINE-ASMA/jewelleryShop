@@ -10,6 +10,7 @@ import controller.MainController;
 import model.Client;
 import view.admin.ClientDashbaord;
 import view.admin.MainDashboardAdminView;
+import view.admin.ProductDashboard;
 
 import java.awt.CardLayout;
 
@@ -18,6 +19,7 @@ public class MainView extends JFrame {
     private JPanel mainPanel;
     private static Client loggedInClient;
     private MainController mainController;
+    private MainController admiNController;
 
     public MainView() {
    
@@ -143,6 +145,11 @@ public class MainView extends JFrame {
     public void loadClientDashbaordView() {
     	ClientDashbaord mainDashboardAdminView = new ClientDashbaord(new AdminController(this.mainController.getDbManager()));
     	mainPanel.add(mainDashboardAdminView,"client");
+    }
+    
+    public void loadProductDashbaordView() {
+    	ProductDashboard mainDashboardAdminView = new ProductDashboard(new AdminController(this.mainController.getDbManager()));
+    	mainPanel.add(mainDashboardAdminView,"product");
     }
 
     public void loadLoginView(boolean displayOptionPanes ,String toDisplay) {

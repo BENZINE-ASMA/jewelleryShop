@@ -59,13 +59,13 @@ public class DBManager {
 				case "Ring":
 					int size = rs.getInt("size");
 					
-					Ring ring = new Ring(id,name,brand,description,price,material,size,imagePath,stock);
+					Ring ring = new Ring(id,name,brand,type,description,price,material,size,imagePath,stock);
 					results.add(ring);
 					
 					break;
 				case "Necklace":
 					double length = rs.getDouble("length");
-					Necklace necklace = new Necklace(id,name, brand,description,price, material,length, imagePath,stock);
+					Necklace necklace = new Necklace(id,name, brand,type,description,price, material,length, imagePath,stock);
 					results.add(necklace);
 					break;
 				}
@@ -336,6 +336,87 @@ public class DBManager {
 		}
 	}
 	
+	public boolean updateProduct(Bijoux b) {
+	    String query = "UPDATE products SET name = ?, type = ?, description = ?, price = ?, material = ?, size = ?, length = ?, stock = ?, image_path = ? WHERE id = ?";
+
+	    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+	        preparedStatement.setString(1, b.getName());
+	        preparedStatement.setString(2, b.getType());
+	        preparedStatement.setString(3, b.getDescription());
+	        preparedStatement.setDouble(4, b.getPrice());
+	        preparedStatement.setString(5, b.getMateriel());
+	        
+	       
+	        if ("Ring".equalsIgnoreCase(b.getType())) {
+	            preparedStatement.setDouble(6, ((Ring) b).getSize());
+	            preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+	        } 
+	        
+	        else if ("Necklace".equalsIgnoreCase(b.getType())) {
+	            preparedStatement.setNull(6, java.sql.Types.DOUBLE); 
+	            preparedStatement.setDouble(7, ((Necklace) b).getLength());
+	        }
+	        preparedStatement.setInt(8, b.getStock());
+	        preparedStatement.setString(9, b.getImagePath());
+	        preparedStatement.setLong(10, b.getId()); 
+
+	        int rowsAffected = preparedStatement.executeUpdate();
+	        if (rowsAffected > 0) {
+	            System.out.println("Product updated successfully.");
+	            return true;
+	        } else {
+	            System.out.println("No product found with the specified ID.");
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error updating product");
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
+	public boolean addProduct(Bijoux b) {
+		String query = "INSERT INTO products (name, type, description, price, material, size, length, stock, image_path) VALUES (?, ?, ?,?,?, ?, ?, ?,?)";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+			preparedStatement.setString(1, b.getName());
+			preparedStatement.setString(2, b.getType());
+			preparedStatement.setString(3, b.getDescription());
+			preparedStatement.setDouble(4, b.getPrice());
+			preparedStatement.setString(5,b.getMateriel());
+			preparedStatement.setDouble(6,b.getType().equals("Ring")? ((Ring)b).getSize():null);
+			preparedStatement.setDouble(7,b.getType().equals("NeckLace")? ((Necklace)b).getLength():null);
+			preparedStatement.setInt(8,b.getStock());
+			preparedStatement.setString(9,b.getImagePath());
+			
+
+			int result = preparedStatement.executeUpdate();
+
+			return result > 0;
+		} catch (SQLException e) {
+			System.out.println("Error inserting new client");
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public boolean deleteProduct(Long id) {
+		
+		String query = "DELETE FROM pruducts WHERE id = ?";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+			preparedStatement.setLong(1,id);
+
+			 int rowsAffected = preparedStatement.executeUpdate();
+
+			return rowsAffected != 0;
+		} catch (SQLException e) {
+			System.out.println("Error inserting new client");
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 
 }
