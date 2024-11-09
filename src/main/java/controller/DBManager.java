@@ -273,5 +273,69 @@ public class DBManager {
 		}
 				
 	}
+	//--------------------------------------------------------ADMIN---------------------------------------------------------------------------------
+	public boolean updateClient(Client c) {
+	    String query = "UPDATE client SET firstName = ?,lastName = ? , email = ?, role = ? WHERE id = ?";
+
+	    try ( PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+	    	preparedStatement.setString(1, c.getFirstName());
+	        preparedStatement.setString(2, c.getLastName());
+	        preparedStatement.setString(3, c.getEmail());
+	        preparedStatement.setString(4, c.getRole());
+	        preparedStatement.setLong(5, c.getId());
+
+	
+	        int rowsAffected = preparedStatement.executeUpdate();
+	        if (rowsAffected > 0) {
+	            System.out.println("Client updated successfully.");
+	            return true;
+	        } else {
+	            System.out.println("No client found with the specified ID.");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+	public boolean addClient(Client c) {
+		String query = "INSERT INTO client (firstName, lastName, email, role,password) VALUES (?, ?, ?, ?,?)";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+			preparedStatement.setString(1, c.getFirstName());
+			preparedStatement.setString(2, c.getLastName());
+			preparedStatement.setString(3, c.getEmail());
+			preparedStatement.setString(4, c.getRole());
+			preparedStatement.setString(5, c.getPassword());
+
+			int result = preparedStatement.executeUpdate();
+
+			return result > 0;
+		} catch (SQLException e) {
+			System.out.println("Error inserting new client");
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public boolean deleteCLient(Long id) {
+		
+		String query = "DELETE FROM client WHERE id = ?";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+			preparedStatement.setLong(1,id);
+
+			 int rowsAffected = preparedStatement.executeUpdate();
+
+			return rowsAffected != 0;
+		} catch (SQLException e) {
+			System.out.println("Error inserting new client");
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
 
 }

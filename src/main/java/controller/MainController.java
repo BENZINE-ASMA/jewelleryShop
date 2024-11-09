@@ -53,6 +53,7 @@ public class MainController {
 	}
 
 	public void fetchAllProducts() {
+		this.products =new ArrayList<Bijoux>();
 		this.dbManager.getAllProducts(this.products);
 	}
 	public void displayCart() {

@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import controller.AdminController;
 import model.Client;
 
+
 public class ClientDashbaord extends JPanel{
 	private JTable clientTable;
 	private DefaultTableModel tableModel;
@@ -22,7 +23,7 @@ public class ClientDashbaord extends JPanel{
 		this.adminController =adminController;
 		setLayout(new BorderLayout());
 		
-		tableModel = new DefaultTableModel(new String[] {"ID", "FirstName","LastName", "Email", "Role"},0);
+		tableModel = new DefaultTableModel(new String[] {"ID", "FirstName","LastName", "Email", "Role","Password"},0);
 		clientTable = new JTable(tableModel);
 		this.loadClientData();
 		add(new JScrollPane(clientTable), BorderLayout.CENTER);
@@ -30,22 +31,22 @@ public class ClientDashbaord extends JPanel{
 		JPanel buttonPanel = new JPanel();
 		JButton addClient = new JButton("Add");
 		addClient.addActionListener(e->{
+			 this.openEditClientView(null);
+	        loadClientData(); 
+		});	
+		JButton editClient = new JButton("Edit");
+		editClient.addActionListener(e->{
 			int selectedRow = clientTable.getSelectedRow();
 			 if (selectedRow != -1) {
 	                Client selectedClient = getClientFromTable(selectedRow);
-	                openEditClientView(selectedClient); // Pass selectedClient to AddClientView for editing
+	                openEditClientView(selectedClient); 
 	            } else {
 	                JOptionPane.showMessageDialog(this, "Please select a client to edit.");
 	            }
-			
-			
-		});	
-		JButton editClient = new JButton("Edit");
-		addClient.addActionListener(e->{
-			
 		});	
 		JButton deleteClient = new JButton("Delete");
-		addClient.addActionListener(e->{
+		deleteClient.addActionListener(e->{
+			this.deteletclient();
 			
 		});	
 		buttonPanel.add(addClient);
@@ -56,9 +57,10 @@ public class ClientDashbaord extends JPanel{
 	}
 	
 	private void loadClientData() {
+		
 		this.tableModel.setRowCount(0);
 		for(Client client: this.adminController.fetchAllClients()) {
-			tableModel.addRow(new Object[]{client.getId(), client.getFirstName(), client.getLastName(),client.getEmail(),client.getRole()
+			tableModel.addRow(new Object[]{client.getId(), client.getFirstName(), client.getLastName(),client.getEmail(),client.getRole(),client.getPassword()
 		});
 	}
 }
@@ -69,18 +71,28 @@ public class ClientDashbaord extends JPanel{
         String lastName = (String) tableModel.getValueAt(rowIndex, 2);
         String email = (String) tableModel.getValueAt(rowIndex, 3);
         String role = (String) tableModel.getValueAt(rowIndex, 4);
+        String password = (String) tableModel.getValueAt(rowIndex, 5);
         
-        return new Client(id, firstName, lastName, email, role);
+        return new Client(id, firstName, lastName, email, role,password);
     }
 	 private void openEditClientView(Client client) {
-		 EditClientView EditClientView = new EditClientView(client); // Pass client instance to constructor
-		 
-	        JDialog dialog = new JDialog();
-	        dialog.setTitle("Client Details");
-	        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-	        dialog.add(EditClientView);
-	        dialog.pack();
-	        dialog.setLocationRelativeTo(null);
-	        dialog.setVisible(true);
+		
+		 ClientDialogView dialog = new ClientDialogView(client, adminController);
+		 	dialog.setSize(400, 300);
+		 	dialog.setLocationRelativeTo(null); 
+		 	dialog.setModal(true); 
+		 	dialog.setVisible(true); 
+	      
 	    }
+	 private void deteletclient() {
+		 int selectedRow = clientTable.getSelectedRow();
+		 if (selectedRow >= 0) {
+			 Long id = (Long) tableModel.getValueAt(selectedRow,0);
+			 adminController.deleteClient(id);
+	            loadClientData();
+		 }else {
+	            JOptionPane.showMessageDialog(this, "Please select a client to delete.");
+	        }
+		
+	 }
 }
