@@ -1,5 +1,6 @@
 package controller;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -32,6 +33,18 @@ public class MainController {
 		this.products= new ArrayList<Bijoux>();
 		this.clientCart = new Cart();
 		this.invoiceController = new InvoiceController();
+	}
+	public void initializeDatabase() {
+		try {
+			dbManager.connect();
+			dbManager.executeSQLScript("ressources/init.sql");
+		} catch (SQLException e) {
+			//JOptionPane.showMessageDialog(, "Database initialization failed: " + e.getMessage(),
+			//		"Error", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+
+			}
+
 	}
 
 	public void authenticateUser(String username, String password) {

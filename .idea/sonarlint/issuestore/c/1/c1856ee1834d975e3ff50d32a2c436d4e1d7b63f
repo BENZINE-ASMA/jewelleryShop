@@ -1,0 +1,15 @@
+
+K
+java:S1948")Make "product" transient or serializable.(ÉË®ßûÿÿÿÿ8êÏâæ¼2
+S
+java:S1948 "1Make "adminController" transient or serializable.(‘–ƒ›ıÿÿÿÿ8ëÏâæ¼2
+_
+java:S6201m"BReplace this instanceof check and cast with 'instanceof Ring ring'(Ã³±8ŠĞâæ¼2
+g
+java:S6201w"JReplace this instanceof check and cast with 'instanceof Necklace necklace'(“èÔ8Ğâæ¼2
+u
+java:S3776°"RRefactor this method to reduce its Cognitive Complexity from 20 to the 15 allowed.(’ƒ«¨øÿÿÿÿ8£Ğâæ¼2
+e
+java:S6201Ö"BReplace this instanceof check and cast with 'instanceof Ring ring'(ÊÛÂùúÿÿÿÿ8ùËææ¼2
+m
+java:S6201ï"JReplace this instanceof check and cast with 'instanceof Necklace necklace'(ÍÍáúÿÿÿÿ8ÿËææ¼2

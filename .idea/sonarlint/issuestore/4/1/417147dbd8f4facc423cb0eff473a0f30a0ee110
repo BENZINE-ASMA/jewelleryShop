@@ -1,0 +1,28 @@
+
+k	java:S117y"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(£àÖêûÿÿÿÿ
+W
+java:S4973L"<Strings and Boxed types should be compared using "equals()".(¢òï½úÿÿÿÿ
+W
+java:S4973L"<Strings and Boxed types should be compared using "equals()".(¢òï½úÿÿÿÿ
+W
+java:S4973L"<Strings and Boxed types should be compared using "equals()".(¢òï½úÿÿÿÿ
+W
+java:S4973L"<Strings and Boxed types should be compared using "equals()".(¢òï½úÿÿÿÿ
+R
+java:S4973M"<Strings and Boxed types should be compared using "equals()".(Ğ˜ó
+R
+java:S4973M"<Strings and Boxed types should be compared using "equals()".(Ğ˜ó
+K
+java:S1948"0Make "mainController" transient or serializable.(µ¾õêıÿÿÿÿ
+G
+java:S1948"1Make "admiNController" transient or serializable.(œäîî
+d
+java:S3252"IUse static access with "javax.swing.WindowConstants" for "EXIT_ON_CLOSE".(Õû»öşÿÿÿÿ
+K
+java:S2696b"6Make the enclosing method "static" or remove this set.(¡ë’
+
+J
+java:S2209b"5Change this instance-reference to a static reference.(¡ë’
+
+I
+java:S1068"3Remove this unused "admiNController" private field.(œäîî

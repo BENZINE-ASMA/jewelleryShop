@@ -1,0 +1,24 @@
+
+g
+java:S1192‡"KDefine a constant instead of duplicating this literal "Quantity: " 3 times.(Ÿ¿¢Ûùÿÿÿÿ
+>
+java:S1604F"(Make this anonymous inner class a lambda(åŽ³²
+C
+java:S1604N"(Make this anonymous inner class a lambda(¤Ù€Üüÿÿÿÿ
+>
+java:S1604Œ"(Make this anonymous inner class a lambda(¸îÁe
+\
+java:S2259>"FA "NullPointerException" could be thrown; "rowPanel" is nullable here.(Û•¢†
+A
+java:S1948"&Make "cart" transient or serializable.(Óá­šùÿÿÿÿ
+Q	java:S125,"<This block of commented-out lines of code should be removed.(Ì«ý
+Y
+java:S3252m"CUse static access with "java.awt.Component" for "CENTER_ALIGNMENT".(çµô
+Y
+java:S3252r"CUse static access with "java.awt.Component" for "CENTER_ALIGNMENT".(½™×†
+X
+java:S3252x"CUse static access with "java.awt.Component" for "CENTER_ALIGNMENT".(Îß?
+Z
+java:S3252‚"CUse static access with "java.awt.Component" for "CENTER_ALIGNMENT".(›»Œ¬
+J
+java:S1128"/Remove this unused import 'javax.swing.JFrame'.(ßŒŸûùÿÿÿÿ

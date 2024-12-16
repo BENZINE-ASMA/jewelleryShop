@@ -1,0 +1,39 @@
+
+{
+java:S2293!"YReplace the type specification in this constructor call with the diamond operator ("<>").(ìæ’øÿÿÿÿ8²—²ç¼2
+{
+java:S2293E"YReplace the type specification in this constructor call with the diamond operator ("<>").(ìæ’øÿÿÿÿ8²—²ç¼2
+
+java:S1319µ"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ø¼å8³—²ç¼2
+†
+java:S1319¹"hThe type of "products" should be an interface such as "List" rather than the implementation "ArrayList".(•¦üµ8´—²ç¼2
+“
+java:S1319Ì"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(±ô”†ùÿÿÿÿ8´—²ç¼2
+X	java:S125+"<This block of commented-out lines of code should be removed.(Äƒ˜Æ8ä—²ç¼2
+F	java:S106I"+Replace this use of System.out by a logger.(»›¥l8è—²ç¼2
+I
+java:S1125N"'Remove the unnecessary boolean literal.(Èôˆ°şÿÿÿÿ8ê—²ç¼2
+>
+java:S1116t"Remove this empty statement.(…ášîÿÿÿÿÿ8ï—²ç¼2
+X	java:S125|"<This block of commented-out lines of code should be removed.(˜È–¼8ñ—²ç¼2
+k	java:S100˜"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(˜»éÆ8÷—²ç¼2
+M	java:S106 "+Replace this use of System.out by a logger.(úêû×úÿÿÿÿ8ú—²ç¼2
+Y	java:S125"<This block of commented-out lines of code should be removed.(†çšÒ8ú—²ç¼2
+X
+java:S1854Í":Remove this useless assignment to local variable "result".(ÙÍ„8€˜²ç¼2
+[
+java:S1854Ñ"8Remove this useless assignment to local variable "temp".(“çï¨øÿÿÿÿ8€˜²ç¼2
+I
+java:S1452Ì"&Remove usage of generic wildcard type.(±ô”†ùÿÿÿÿ8€˜²ç¼2
+I
+java:S1481Í"+Remove this unused "result" local variable.(ÙÍ„8‚˜²ç¼2
+L
+java:S1481Ñ")Remove this unused "temp" local variable.(“çï¨øÿÿÿÿ8„˜²ç¼2
+I
+java:S1481Ó"+Remove this unused "andKey" local variable.(”£Å§8…˜²ç¼2
+I
+java:S1168×"+Return an empty collection instead of null.(¥¹ï8…˜²ç¼2
+P
+java:S1128".Remove this unused import 'java.util.HashMap'.(™˜”€ùÿÿÿÿ8…˜²ç¼2
+Q
+java:S1128"4Remove this unused import 'javax.swing.JOptionPane'.(÷‰Îé8…˜²ç¼2

@@ -1,0 +1,15 @@
+
+>
+java:S16046"(Make this anonymous inner class a lambda(ÖãºÂ
+=
+java:S1604B"(Make this anonymous inner class a lambda(»à·k
+K
+java:S1948"0Make "mainController" transient or serializable.(µ¾õêıÿÿÿÿ
+J
+java:S1128"4Remove this unused import 'javax.swing.JOptionPane'.(÷‰Îé
+G
+java:S1128"1Remove this unused import 'controller.DBManager'.(ú¤õë
+?
+java:S1128")Remove this unused import 'model.Client'.(±ÍÌ
+M
+java:S1068"2Remove this unused "mainController" private field.(µ¾õêıÿÿÿÿ

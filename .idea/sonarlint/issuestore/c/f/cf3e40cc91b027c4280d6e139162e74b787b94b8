@@ -1,0 +1,16 @@
+
+o
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ù°Âá
+t
+java:S2293>"YReplace the type specification in this constructor call with the diamond operator ("<>").(ìæ’øÿÿÿÿ
+†
+java:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ÉŸ²è
+…
+java:S1319 "pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ÏÇÌ;
+‚
+java:S1319$"gThe type of "clients" should be an interface such as "List" rather than the implementation "ArrayList".(ùÕ¡¥ûÿÿÿÿ
+†
+java:S1319="pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(Œß‹»
+m
+java:S1450
+"WRemove the "products" field and declare it as a local variable in the relevant methods.(›³×³

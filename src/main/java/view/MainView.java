@@ -23,7 +23,7 @@ public class MainView extends JFrame {
 
     public MainView() {
    
-    	
+
         setTitle("Vente de bijoux");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -36,10 +36,10 @@ public class MainView extends JFrame {
       
         LoginView loginView = new LoginView(mainController);
         mainPanel.add(loginView, "Login");
-        
-       
-        
-       
+
+
+
+        this.mainController.initializeDatabase();
         
     
         add(mainPanel);

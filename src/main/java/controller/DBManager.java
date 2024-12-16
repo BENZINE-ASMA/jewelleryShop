@@ -1,5 +1,9 @@
 package controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +21,8 @@ import model.Invoice;
 import model.Necklace;
 import model.Order;
 import model.Ring;
+import shared.UtilDisplayingDashboards;
+import view.MainDashboardView;
 
 @Getter
 @Setter
@@ -29,15 +35,85 @@ public class DBManager {
 
 	public DBManager() {
 		try {
-			connection = DriverManager.getConnection(url, user, password);
-			System.out.println("Database connection successful!");
+			connect();
 		} catch (SQLException e) {
 			System.out.println("Failed to connect to the database.");
 			e.printStackTrace();
 		}
-		
 	}
-	
+
+	public void connect() throws SQLException {
+		if (connection == null || connection.isClosed()) {
+			connection = DriverManager.getConnection(url, user, password);
+			System.out.println("Database connected!");
+		}
+	}
+
+	public void executeSQLScript(String scriptFile) {
+		InputStream inputStream = null;
+		BufferedReader reader = null;
+		Statement statement = null;
+
+		try {
+			// Get the InputStream for the SQL script file from the resources directory
+			///inputStream = MainDashboardView.class.getClassLoader().getResourceAsStream(scriptFile);
+			//dinputStream = MainDashboardView.class.getClassLoader().getResourceAsStream("init.sql");
+			System.out.println("hello");
+			if (inputStream == null) {
+				System.err.println("SQL script file not found: " + scriptFile);
+				return;
+			}
+
+			// Read the SQL script from the input stream
+			reader = new BufferedReader(new InputStreamReader(inputStream));
+			StringBuilder sqlScript = new StringBuilder();
+			String line;
+
+			while ((line = reader.readLine()) != null) {
+				// Ignore comments and empty lines
+				if (line.trim().startsWith("--") || line.trim().isEmpty()) {
+					continue;
+				}
+				sqlScript.append(line).append("\n");
+			}
+
+			// Execute the SQL script
+			statement = connection.createStatement();
+			String[] sqlStatements = sqlScript.toString().split(";");
+
+			for (String sql : sqlStatements) {
+				if (!sql.trim().isEmpty()) {
+					statement.executeUpdate(sql.trim());
+				}
+			}
+
+			System.out.println("SQL script executed successfully.");
+		} catch (IOException | SQLException e) {
+			System.err.println("Error executing SQL script: " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			try {
+				if (reader != null) {
+					reader.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+				if (inputStream != null) {
+					inputStream.close();
+				}
+			} catch (IOException | SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void close() throws SQLException {
+		if (connection != null && !connection.isClosed()) {
+			connection.close();
+			System.out.println("Database connection closed.");
+		}
+	}
 	public ArrayList<Bijoux> getAllProducts(ArrayList<Bijoux> results){
 		String query="Select * from products";
 		Statement stmt;
@@ -376,7 +452,7 @@ public class DBManager {
 	}
 
 	public boolean addProduct(Bijoux b) {
-		String query = "INSERT INTO products (name, type, description, price, material, size, length, stock, image_path) VALUES (?, ?, ?,?,?, ?, ?, ?,?)";
+		String query = "INSERT INTO products (name, type, description, price, material, size, length, stock, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -384,22 +460,33 @@ public class DBManager {
 			preparedStatement.setString(2, b.getType());
 			preparedStatement.setString(3, b.getDescription());
 			preparedStatement.setDouble(4, b.getPrice());
-			preparedStatement.setString(5,b.getMateriel());
-			preparedStatement.setDouble(6,b.getType().equals("Ring")? ((Ring)b).getSize():null);
-			preparedStatement.setDouble(7,b.getType().equals("NeckLace")? ((Necklace)b).getLength():null);
-			preparedStatement.setInt(8,b.getStock());
-			preparedStatement.setString(9,b.getImagePath());
-			
+			preparedStatement.setString(5, b.getMateriel());
+
+			// Handle size and length based on product type
+			if (b.getType().equals("Ring")) {
+				preparedStatement.setDouble(6, ((Ring) b).getSize());
+				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+			} else if (b.getType().equals("Necklace")) {
+				preparedStatement.setNull(6, java.sql.Types.DOUBLE);
+				preparedStatement.setDouble(7, ((Necklace) b).getLength());
+			} else {
+				preparedStatement.setNull(6, java.sql.Types.DOUBLE);
+				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+			}
+
+			preparedStatement.setInt(8, b.getStock());
+			preparedStatement.setString(9, b.getImagePath());
 
 			int result = preparedStatement.executeUpdate();
 
 			return result > 0;
 		} catch (SQLException e) {
-			System.out.println("Error inserting new client");
+			System.out.println("Error inserting new product");
 			e.printStackTrace();
 			return false;
 		}
 	}
+
 	public boolean deleteProduct(Long id) {
 		
 		String query = "DELETE FROM pruducts WHERE id = ?";
