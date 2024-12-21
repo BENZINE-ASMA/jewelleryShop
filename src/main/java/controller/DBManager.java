@@ -35,11 +35,18 @@ public class DBManager {
 
 	public DBManager() {
 		try {
-			connect();
+			Class.forName("com.mysql.cj.jdbc.Driver"); // Load MySQL driver
+			connect(); // Call the connect method
+		} catch (ClassNotFoundException e) {
+			System.out.println("MySQL JDBC Driver not found!");
+			e.printStackTrace();
 		} catch (SQLException e) {
 			System.out.println("Failed to connect to the database.");
 			e.printStackTrace();
 		}
+	}
+	public Connection getConnection() {
+		return connection; // Use this method to get the connection when needed
 	}
 
 	public void connect() throws SQLException {

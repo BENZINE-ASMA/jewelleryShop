@@ -1,44 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>com.dauphine</groupId>
   <artifactId>gestion-vente</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+
+  <!-- Build configuration for resources and plugins -->
   <build>
     <resources>
       <resource>
         <targetPath>resources</targetPath>
-        <directory>src/main/java/resources</directory>
+        <directory>src/main/resources</directory>
       </resource>
     </resources>
+
     <plugins>
+      <!-- Spring Boot Maven Plugin (Optional for Spring Boot apps) -->
       <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>2.6.0</version> <!-- use the version of Spring Boot you are using -->
+      </plugin>
+
+      <!-- Maven Shade Plugin for creating the fat JAR -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>3.2.1</version>
         <executions>
           <execution>
+            <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <!-- Maven Jar Plugin for packaging with a custom manifest -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
         <configuration>
-          <transformers>
-            <transformer>
-              <mainClass>view.MainView</mainClass>
-            </transformer>
-          </transformers>
+          <archive>
+            <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
         </configuration>
       </plugin>
     </plugins>
   </build>
+
+  <!-- Repository to fetch dependencies -->
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+  </repositories>
+
+  <!-- Dependencies for your project -->
   <dependencies>
+    <!-- Lombok (used for reducing boilerplate code) -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.28</version>
       <scope>provided</scope>
     </dependency>
+
+    <!-- MySQL Connector (JDBC Driver for MySQL Database) -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -46,9 +80,12 @@
       <scope>compile</scope>
     </dependency>
   </dependencies>
+
+  <!-- Compiler settings -->
   <properties>
     <maven.compiler.target>18</maven.compiler.target>
     <maven.compiler.source>18</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
 </project>
