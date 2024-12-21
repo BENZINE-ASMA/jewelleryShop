@@ -46,7 +46,36 @@ INSERT INTO products (name, brand, type, description, price, material, size, len
 VALUES
     ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
     ('Sapphire Ring', 'Prestige', 'Ring', 'A stunning sapphire ring set in white gold.', 199.99, 'White Gold', 6, NULL, 10, 'resources/Hotline.png'),
-    ('Pearl Necklace', 'Elegance', 'Necklace', 'Elegant pearl necklace with silver chain.', 499.99, 'Silver', NULL, 18.5, 5, 'resources/Hotline.png');
+    ('Pearl Necklace', 'Elegance', 'Necklace', 'Elegant pearl necklace with silver chain.', 499.99, 'Silver', NULL, 18.5, 5, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
+    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png');
+
+
+
 
 -- Create the `Orders` table
 CREATE TABLE Orders (

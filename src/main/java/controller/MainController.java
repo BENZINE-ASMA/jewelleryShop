@@ -37,7 +37,7 @@ public class MainController {
 	public void initializeDatabase() {
 		try {
 			dbManager.connect();
-			dbManager.executeSQLScript("resources/init.sql");
+			//dbManager.executeSQLScript("resources/init.sql");
 		} catch (SQLException e) {
 			//JOptionPane.showMessageDialog(, "Database initialization failed: " + e.getMessage(),
 			//		"Error", JOptionPane.ERROR_MESSAGE);
@@ -64,7 +64,10 @@ public class MainController {
 			mainView.showAuthenticationError();
 		}
 	}
-
+	public void fetchAllFilteredProducts(ArrayList<Bijoux> filteredDashboard,String name2, String description2,
+										 String brand2, String type2, String price2, String material2){
+		this.dbManager.getAllFilteredProducts(filteredDashboard,name2,description2,brand2,type2,price2,material2);
+	}
 	public void fetchAllProducts() {
 		this.products =new ArrayList<Bijoux>();
 		this.dbManager.getAllProducts(this.products);

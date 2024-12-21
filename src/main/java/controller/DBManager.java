@@ -114,6 +114,66 @@ public class DBManager {
 			System.out.println("Database connection closed.");
 		}
 	}
+	/*
+	try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			preparedStatement.setString(1, email);
+			preparedStatement.setString(2, password);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				System.out.println("User authenticated successfully");
+
+				Long id = resultSet.getLong("id");
+	 */
+	public ArrayList<Bijoux> getAllFilteredProducts(ArrayList<Bijoux> results, String name2, String description2,
+													String brand2, String type2, String price2, String material2){
+		String query = "select * from products where name ='Diamond Ring' and brand = 'Luxury' and type ='Ring' and description='A beautiful diamond ring with a sleek design.'\n" +
+				"and price ='299.99' and material='Gold';";
+
+
+		try (PreparedStatement stmt = connection.prepareStatement(query)) {
+			/*stmt.setString(1, name2);
+			stmt.setString(2, brand2);
+			stmt.setString(3, type2);
+			stmt.setString(4, description2);
+			stmt.setString(5, price2);
+			stmt.setString(6, material2);
+*/
+
+			ResultSet rs = stmt.executeQuery(query);
+
+			while(rs.next()) {
+				System.out.println("orkinng , " + rs.getString("name"));
+				Long id = rs.getLong("id");
+				String type = rs.getString("type");
+				String name = rs.getString("name");
+				String brand = rs.getString("brand");
+				String description = rs.getString("description");
+				double price = rs.getDouble("price");
+				String material = rs.getString("material");
+				String imagePath = rs.getString("image_path");
+				int stock = rs.getInt("stock");
+				switch(type) {
+					case "Ring":
+						int size = rs.getInt("size");
+
+						Ring ring = new Ring(id,name,brand,type,description,price,material,size,imagePath,stock);
+						results.add(ring);
+
+						break;
+					case "Necklace":
+						double length = rs.getDouble("length");
+						Necklace necklace = new Necklace(id,name, brand,type,description,price, material,length, imagePath,stock);
+						results.add(necklace);
+						break;
+				}
+			}
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return  null;
+
+	}
 	public ArrayList<Bijoux> getAllProducts(ArrayList<Bijoux> results){
 		String query="Select * from products";
 		Statement stmt;
@@ -153,6 +213,7 @@ public class DBManager {
 	return  null;
         
 	}
+
 
 	public Client authenticateUser(String email, String password) {
 		String query = "SELECT * FROM client where email =? and password=?";
