@@ -1,13 +1,0 @@
-
-]
-java:S2095!"GUse try-with-resources or close this "PdfWriter" in a "finally" clause.(Üîõ 
-\
-java:S2095#"FUse try-with-resources or close this "Document" in a "finally" clause.(œû¨¤
-d
-java:S2095""IUse try-with-resources or close this "PdfDocument" in a "finally" clause.(„ß¶şÿÿÿÿ
-E	java:S106M"+Replace this use of System.out by a logger.(˜†ù¹øÿÿÿÿ
-V	java:S125S"<This block of commented-out lines of code should be removed.(õ–ôÄùÿÿÿÿ
-X
-java:S1128"=Remove this unused import 'com.itextpdf.layout.element.Text'.(û«âÜûÿÿÿÿ
-E
-java:S1068"/Remove this unused "clientOrder" private field.(ŸšÄ¥

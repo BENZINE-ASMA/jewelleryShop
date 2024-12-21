@@ -1,9 +1,0 @@
-
-t
-java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¾»’æýÿÿÿÿ
-K
-java:S1948"0Make "mainController" transient or serializable.(µ¾õêýÿÿÿÿ
-B
-java:S1948"'Make "rings" transient or serializable.(é•´ëùÿÿÿÿ
-]
-java:S6201"BReplace this instanceof check and cast with 'instanceof Ring ring'(åŸÆàûÿÿÿÿ
