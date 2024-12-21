@@ -23,6 +23,8 @@ CREATE TABLE client (
 -- Insert initial admin client
 INSERT INTO client (firstName, lastName, email, password, role)
 VALUES ('admin', 'admin', 'admin.admin@dauphine.eu', 'admin', 'ADMIN');
+INSERT INTO client (firstName, lastName, email, password, role)
+VALUES ('asma', 'as', 'asma', '123', 'CLIENT');
 
 -- Create the `products` table
 CREATE TABLE products (
@@ -70,9 +72,3 @@ CREATE TABLE Invoices (
     FOREIGN KEY (client_id) REFERENCES client(id),
     FOREIGN KEY (order_id) REFERENCES Orders(order_id)
 );
-
--- Confirm data in tables
-SELECT * FROM client;
-SELECT * FROM products;
-SELECT * FROM Orders;
-SELECT * FROM Invoices;
