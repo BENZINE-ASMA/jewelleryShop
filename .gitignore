@@ -1,0 +1,17 @@
+# Ignore IntelliJ IDEA project files
+.idea/
+
+# Ignore Maven or Gradle build directories
+/target/
+/build/
+
+# Ignore .class files
+*.class
+
+# Ignore Eclipse project files
+.project
+.classpath
+
+# Ignore OS-specific files (MacOS, Windows, Linux)
+.DS_Store
+Thumbs.db
