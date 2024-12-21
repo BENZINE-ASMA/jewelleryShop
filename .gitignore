@@ -9,12 +9,6 @@
 *.class
 
 # Ignore Eclipse project files
-.project
-.classpath
-.metadata/
-.settings/
-.classpath
-.project
 
 # Ignore OS-specific files (MacOS, Windows, Linux)
 .DS_Store
