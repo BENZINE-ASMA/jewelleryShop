@@ -55,32 +55,25 @@ public class DBManager {
 		Statement statement = null;
 
 		try {
-			// Get the InputStream for the SQL script file from the resources directory
-			///inputStream = MainDashboardView.class.getClassLoader().getResourceAsStream(scriptFile);
-			//dinputStream = MainDashboardView.class.getClassLoader().getResourceAsStream("init.sql");
-			System.out.println("hello");
+
+			inputStream = DBManager.class.getClassLoader().getResourceAsStream(scriptFile);
 			if (inputStream == null) {
 				System.err.println("SQL script file not found: " + scriptFile);
 				return;
 			}
-
-			// Read the SQL script from the input stream
 			reader = new BufferedReader(new InputStreamReader(inputStream));
 			StringBuilder sqlScript = new StringBuilder();
 			String line;
 
 			while ((line = reader.readLine()) != null) {
-				// Ignore comments and empty lines
 				if (line.trim().startsWith("--") || line.trim().isEmpty()) {
 					continue;
 				}
 				sqlScript.append(line).append("\n");
 			}
 
-			// Execute the SQL script
 			statement = connection.createStatement();
 			String[] sqlStatements = sqlScript.toString().split(";");
-
 			for (String sql : sqlStatements) {
 				if (!sql.trim().isEmpty()) {
 					statement.executeUpdate(sql.trim());

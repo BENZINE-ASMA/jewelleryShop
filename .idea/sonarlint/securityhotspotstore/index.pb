@@ -31,3 +31,13 @@ Q
 !src/main/java/view/LoginView.java,1\5\1506184f720c5b73c298bfc30596cad06331f20d
 P
  src/main/java/view/CartView.java,5\c\5c23a9f064a2146bd99cf3b029c7a1ef062f9276
+Z
+*src/main/java/view/RingsDashboardView.java,7\c\7c4c073aa21c9c82afb06b02a611e65100c6baf2
+Z
+*src/main/java/shared/InvoiceGenerator.java,a\8\a86a677f9d50300d0bd176424b8247447f4e4293
+Y
+)src/main/java/view/MainDashboardView.java,6\9\69befc5ca75209c17ef10cda21b8ccc09cd8d6ce
+^
+.src/main/java/view/admin/ProductDashboard.java,b\3\b3204cfd6014e3f0fda686ac0626efda6128eae9
+]
+-src/main/java/view/admin/ClientDashbaord.java,8\2\82bd1e22ecb5bcf59f3b7e9cd271cfe8e3d85f64

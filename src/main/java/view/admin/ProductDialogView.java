@@ -160,10 +160,10 @@ public class ProductDialogView extends JDialog {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             String fileName = selectedFile.getName();
-            String targetPath = "src/main/java/ressources/images/" + fileName; // Destination path in the resources folder
+            String targetPath = "src/main/java/resources/images/" + fileName; // Destination path in the resources folder
 
             try {
-                Files.createDirectories(Paths.get("src/main/java/ressources/images")); // Ensure directory exists
+                Files.createDirectories(Paths.get("src/main/java/resources/images")); // Ensure directory exists
                 Files.copy(selectedFile.toPath(), Paths.get(targetPath));
                 uploadedImagePath = targetPath;
                 imagePathField.setText(uploadedImagePath);

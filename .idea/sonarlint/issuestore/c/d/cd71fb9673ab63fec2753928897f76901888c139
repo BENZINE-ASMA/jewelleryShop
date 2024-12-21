@@ -1,25 +1,25 @@
 
-b	java:S112#"FDefine and throw a dedicated exception instead of using a generic one.(¸³‰ğ8‹ µç¼2
-b	java:S112&"FDefine and throw a dedicated exception instead of using a generic one.(È¨¸ß8Œ µç¼2
-b	java:S112p"FDefine and throw a dedicated exception instead of using a generic one.(¸³‰ğ8Œ µç¼2
-b	java:S112t"FDefine and throw a dedicated exception instead of using a generic one.(¡•…Ş8Œ µç¼2
+b	java:S112#"FDefine and throw a dedicated exception instead of using a generic one.(¸³‰ğ8²ôºµ¾2
+b	java:S112&"FDefine and throw a dedicated exception instead of using a generic one.(È¨¸ß8³ôºµ¾2
+b	java:S112p"FDefine and throw a dedicated exception instead of using a generic one.(¸³‰ğ8³ôºµ¾2
+b	java:S112t"FDefine and throw a dedicated exception instead of using a generic one.(¡•…Ş8³ôºµ¾2
 z
-java:S1192#"]Define a constant instead of duplicating this literal " not found in the classpath!" 3 times.(¸³‰ğ8 µç¼2
+java:S1192#"]Define a constant instead of duplicating this literal " not found in the classpath!" 3 times.(¸³‰ğ8´ôºµ¾2
 Š
-java:S1319y"hThe type of "products" should be an interface such as "List" rather than the implementation "ArrayList".(¼ÃËÂùÿÿÿÿ8 µç¼2
+java:S1319y"hThe type of "products" should be an interface such as "List" rather than the implementation "ArrayList".(¼ÃËÂùÿÿÿÿ8µôºµ¾2
 y
-java:S1488 "]Immediately return this expression instead of assigning it to the temporary variable "image".(–ÉõE8‘ µç¼2
+java:S1488 "]Immediately return this expression instead of assigning it to the temporary variable "image".(–ÉõE8¶ôºµ¾2
 d
-java:S2259‹"FA "NullPointerException" could be thrown; "rowPanel" is nullable here.(Û•¢†8ô µç¼2
+java:S2259‹"FA "NullPointerException" could be thrown; "rowPanel" is nullable here.(Û•¢†8ñôºµ¾2
 \
-java:S1118":Add a private constructor to hide the implicit public one.(ìıŠ™øÿÿÿÿ8ü µç¼2
+java:S1118":Add a private constructor to hide the implicit public one.(ìıŠ™øÿÿÿÿ8öôºµ¾2
 `
-java:S3252:"CUse static access with "java.awt.Component" for "CENTER_ALIGNMENT".(çµô8˜¡µç¼2
+java:S3252:"CUse static access with "java.awt.Component" for "CENTER_ALIGNMENT".(çµô8‚õºµ¾2
 _
-java:S3252B"CUse static access with "java.awt.Component" for "CENTER_ALIGNMENT".(Îß?8›¡µç¼2
+java:S3252B"CUse static access with "java.awt.Component" for "CENTER_ALIGNMENT".(Îß?8ƒõºµ¾2
 `
-java:S3252H"CUse static access with "java.awt.Component" for "CENTER_ALIGNMENT".(èÒ¹8¡µç¼2
+java:S3252H"CUse static access with "java.awt.Component" for "CENTER_ALIGNMENT".(èÒ¹8„õºµ¾2
 H
-java:S1602P",Remove useless curly braces around statement(ÙøY8¡¡µç¼2
+java:S1602P",Remove useless curly braces around statement(ÙøY8†õºµ¾2
 I
-java:S1128"'Remove this unused import 'model.Ring'.(ÈŸÄëøÿÿÿÿ8Ø¡µç¼2
+java:S1128"'Remove this unused import 'model.Ring'.(ÈŸÄëøÿÿÿÿ8“õºµ¾2

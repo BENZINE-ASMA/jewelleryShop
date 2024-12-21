@@ -63,13 +63,13 @@ public class DashboardHeader extends JPanel {
         rightPanel.setBackground(Color.WHITE);
 
         profileIcon = new JLabel();
-        UtilDisplayingDashboards.loadIcon(profileIcon, "ressources/profileIcon.png", 20, 15);
+        UtilDisplayingDashboards.loadIcon(profileIcon, "resources/profileIcon.png", 20, 15);
 
         cartIcon = new JLabel();
-        UtilDisplayingDashboards.loadIcon(cartIcon, "ressources/cartIcon.png", 20, 15);
+        UtilDisplayingDashboards.loadIcon(cartIcon, "resources/cartIcon.png", 20, 15);
         
         hotlineIcon = new JLabel();
-        UtilDisplayingDashboards.loadIcon(hotlineIcon, "ressources/hotlineIcon.png", 20, 15);
+        UtilDisplayingDashboards.loadIcon(hotlineIcon, "resources/hotlineIcon.png", 20, 15);
 
 
         profileIcon.addMouseListener(new MouseAdapter() {
