@@ -101,7 +101,6 @@ public class CartView extends JPanel {
 	   
 	    bijouPanel.add(imagePanel, BorderLayout.CENTER);
 
-	    
 	    Image bijouImg = UtilDisplayingDashboards.loadImageBijou(bijou.getImagePath());
 	    if (bijouImg != null) {
 	        Image scaledImage = bijouImg.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
