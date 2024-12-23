@@ -65,8 +65,8 @@ public class MainController {
 		}
 	}
 	public void fetchAllFilteredProducts(ArrayList<Bijoux> filteredDashboard,String name2, String description2,
-										 String brand2, String type2, String price2, String material2){
-		this.dbManager.getAllFilteredProducts(filteredDashboard,name2,description2,brand2,type2,price2,material2);
+										 String brand2, String type2, String pricemin2,String pricemax2, String material2){
+		this.dbManager.getAllFilteredProducts(filteredDashboard,name2,description2,brand2,type2,pricemin2,pricemax2,material2);
 	}
 	public void fetchAllProducts() {
 		this.products =new ArrayList<Bijoux>();

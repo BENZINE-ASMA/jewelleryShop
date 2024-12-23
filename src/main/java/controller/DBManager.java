@@ -125,21 +125,62 @@ public class DBManager {
 				Long id = resultSet.getLong("id");
 	 */
 	public ArrayList<Bijoux> getAllFilteredProducts(ArrayList<Bijoux> results, String name2, String description2,
-													String brand2, String type2, String price2, String material2){
-		String query = "select * from products where name ='Diamond Ring' and brand = 'Luxury' and type ='Ring' and description='A beautiful diamond ring with a sleek design.'\n" +
+													String brand2, String type2, String pricemin2,String pricemax2,String material2){
+		/*String query = "select * from products where name ='Diamond Ring' and brand = 'Luxury' and type ='Ring' and description='A beautiful diamond ring with a sleek design.'\n" +
 				"and price ='299.99' and material='Gold';";
+				*/
 
-
+		StringBuilder queryBuilder = new StringBuilder();
+		queryBuilder.append("select * from products where 1=1 ");
+		if(!name2.isEmpty()){
+			queryBuilder.append("AND name LIKE ? ");
+		}
+		if (!description2.isEmpty()) {
+			queryBuilder.append("AND description LIKE ? ");
+		}
+		if (!brand2.isEmpty()) {
+			queryBuilder.append("AND brand = ? ");
+		}
+		if (!type2.isEmpty() && !type2.equals("All")) {
+			queryBuilder.append("AND type = ? ");
+		}
+		if (!pricemin2.isEmpty()) {
+			queryBuilder.append("AND price >= ? ");
+		}
+		if (!pricemax2.isEmpty()) {
+			queryBuilder.append("AND price <= ? ");
+		}
+		if (!material2.isEmpty() && !material2.equals("All")) {
+			queryBuilder.append("AND material = ? ");
+		}
+		queryBuilder.append(";");
+		String query = queryBuilder.toString();
+		System.out.println("totest : , "+query);
 		try (PreparedStatement stmt = connection.prepareStatement(query)) {
-			/*stmt.setString(1, name2);
-			stmt.setString(2, brand2);
-			stmt.setString(3, type2);
-			stmt.setString(4, description2);
-			stmt.setString(5, price2);
-			stmt.setString(6, material2);
-*/
-
-			ResultSet rs = stmt.executeQuery(query);
+			int paramIndex = 1;
+			if(!name2.isEmpty()){
+				stmt.setString(paramIndex++,"%"+name2+"%");
+			}
+			if (!description2.isEmpty()) {
+				stmt.setString(paramIndex++, "%" + description2 + "%");
+			}
+			if (!brand2.isEmpty()) {
+				stmt.setString(paramIndex++, brand2);
+			}
+			if (!type2.isEmpty() && !type2.equals("All")) {
+				stmt.setString(paramIndex++, type2);
+			}
+			if (!pricemin2.isEmpty()) {
+				stmt.setDouble(paramIndex++, Double.parseDouble(pricemin2));
+			}
+			if (!pricemax2.isEmpty()) {
+				stmt.setDouble(paramIndex++, Double.parseDouble(pricemax2));
+			}
+			if (!material2.isEmpty() && !material2.equals("All")) {
+				stmt.setString(paramIndex++, material2);
+			}
+			System.out.println("tes stm 2 " +stmt.toString());
+			ResultSet rs = stmt.executeQuery();
 
 			while(rs.next()) {
 				System.out.println("orkinng , " + rs.getString("name"));

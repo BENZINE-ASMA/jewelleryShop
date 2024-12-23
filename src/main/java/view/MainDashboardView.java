@@ -27,8 +27,11 @@ public class MainDashboardView extends JPanel {
         DashboardHeader header = new DashboardHeader(mainController);
         add(header, BorderLayout.NORTH);
 
-        JPanel filterPanel = createFilterPanel();
+        //JPanel filterPanel = createFilterPanel();
+        JPanel filterPanel = new FilterDashbaordPanel(this.FilteredDashboard,this.getHeight(),mainController, this);
         add(filterPanel, BorderLayout.WEST);
+       // revalidate();
+        //repaint();
 
 
         JPanel dashboardPanel = new JPanel();
@@ -38,7 +41,8 @@ public class MainDashboardView extends JPanel {
 
         UtilDisplayingDashboards.loadDashbaordImages(mainController,FilteredDashboard, dashboardPanel);
     }
-
+}
+/*
     private JPanel createFilterPanel() {
         JPanel filterPanel = new JPanel();
         filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.Y_AXIS));
@@ -46,22 +50,47 @@ public class MainDashboardView extends JPanel {
         filterPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         filterPanel.setBackground(Color.white);
 
+        filterPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        JLabel nameLabel = new JLabel("Name of product");
+        filterPanel.add(nameLabel);
+        JTextField nameField = new JTextField(5);
+        nameField.setPreferredSize(new Dimension(5,10));
+        filterPanel.add(nameField);
+
+        filterPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JLabel descLabel = new JLabel("Description");
+        filterPanel.add(descLabel);
+        JTextField descField = new JTextField(5);
+        filterPanel.add(descField);
+
+        filterPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         JLabel productTypeLabel = new JLabel("Type de produit");
         filterPanel.add(productTypeLabel);
-
         String[] productTypes = {"All", "Bagues", "Colliers"};
         JComboBox<String> productTypeComboBox = new JComboBox<>(productTypes);
         filterPanel.add(productTypeComboBox);
 
+
+        filterPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JLabel brandLabel = new JLabel("Brand");
+        filterPanel.add(brandLabel);
+        JTextField brandField = new JTextField(5);
+        filterPanel.add(brandField);
+        filterPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         JLabel productMatièreLabel = new JLabel("Matière");
         filterPanel.add(productMatièreLabel);
 
         String[] matière = {"All", "acier", "silver"};
         JComboBox<String> productMatièreComboBox = new JComboBox<>(matière);
         filterPanel.add(productMatièreComboBox);
+        filterPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         JLabel priceLabel = new JLabel("Prix");
         filterPanel.add(priceLabel);
+
 
         JPanel pricePanel = new JPanel();
         pricePanel.setLayout(new FlowLayout());
@@ -80,15 +109,22 @@ public class MainDashboardView extends JPanel {
             'Diamond Ring' and brand = 'Luxury' and type ='Ring' and description='A beautiful diamond ring with a sleek design.'
 and price ='299.99' and material='Gold';
              */
+    /*
             @Override
             public void actionPerformed(ActionEvent e) {
-            mainController.fetchAllFilteredProducts(FilteredDashboard,"Diamond Ring","A beautiful diamond ring with a sleek design.",
-                   "Luxury","Ring" ,"299.99","Gold");
+                FilteredDashboard.clear();
+            mainController.fetchAllFilteredProducts(FilteredDashboard,nameField.getText(),descField.getText(),
+                   brandField.getText(),(String) productTypeComboBox.getSelectedItem() ,minPriceField.getText(),
+                    maxPriceField.getText(),(String) productMatièreComboBox.getSelectedItem());
                 refreshDashboard();
             }
         });
+        filterPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         filterPanel.add(filterButton);
-
+        JPanel emptyPanel = new JPanel();
+        emptyPanel.setPreferredSize(new Dimension(200, 200));
+        emptyPanel.setBackground(Color.WHITE);
+        filterPanel.add(emptyPanel);
         return filterPanel;
     }
 
@@ -101,4 +137,4 @@ and price ='299.99' and material='Gold';
     }
 
 
-}
+*/

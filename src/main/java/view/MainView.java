@@ -75,7 +75,7 @@ public class MainView extends JFrame {
 	public void showPanel(String panelName) {
 		if(panelName=="MainDashboard"||panelName=="cart" || panelName== "ringsDashbaord" || panelName=="necklacesDashbaord" ||
 				panelName=="mainDashboardAdminView" ||panelName=="client") {
-			setSize(1000,700);
+			setSize(950,700);
 			cardLayout.show(mainPanel, panelName);
 		}else {
 			setSize(400, 300);
