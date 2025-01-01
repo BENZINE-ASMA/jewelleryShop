@@ -4,10 +4,13 @@ import java.util.ArrayList;
 
 import model.Bijoux;
 import model.Client;
+import model.Invoice;
+import model.Order;
 
 public class AdminController {
 	private ArrayList<Client> clients;
 	private ArrayList<Bijoux> products;
+	private ArrayList<Invoice> invoices;
 	private DBManager dbManager;
 	
 	public DBManager getDbManager() {
@@ -44,6 +47,7 @@ public class AdminController {
 	public void addClient(Client c ) {
 		this.dbManager.addClient(c);
 	}
+
 	public void deleteClient(Long id ) {
 		this.dbManager.deleteCLient(id);
 	}
@@ -62,6 +66,14 @@ public class AdminController {
 		this.products =new ArrayList<Bijoux>();
 		this.dbManager.getAllProducts(this.products);
 		return this.products;
+	}
+	public ArrayList<Invoice> fetchAllInvoices() {
+		this.invoices =new ArrayList<Invoice>();
+		this.dbManager.getAllInvoices(this.invoices);
+		return this.invoices;
+	}
+	public Order fetchOrderById(Long orderId){
+		return this.dbManager.fetchOrderById(orderId);
 	}
 
 }

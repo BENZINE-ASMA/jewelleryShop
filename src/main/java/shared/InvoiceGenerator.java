@@ -28,7 +28,7 @@ public class InvoiceGenerator {
     }
 
     public  void generateInvoice(String path) {
-        String filePath = "src/main/java/resources/output/" +path;
+        String filePath = "src/main/resources/output/" +path;
         try {
             PdfWriter writer = new PdfWriter(filePath);
             PdfDocument pdfDoc = new PdfDocument(writer);

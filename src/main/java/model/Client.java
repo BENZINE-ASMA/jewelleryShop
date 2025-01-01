@@ -43,6 +43,13 @@ public class Client {
 		this.email="";
 		this.password="";
 	}
+	public Client(Long id ) {
+		this.id=id;
+		this.firstName="";
+		this.lastName="";
+		this.email="";
+		this.password="";
+	}
 	 @Override
 	    public String toString() {
 	        return "Client {" +

@@ -4,23 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
-import model.Bijoux;
-import model.Client;
-import model.Invoice;
-import model.Necklace;
-import model.Order;
-import model.Ring;
+import model.*;
 import shared.UtilDisplayingDashboards;
 import view.MainDashboardView;
 
@@ -45,6 +36,7 @@ public class DBManager {
 			e.printStackTrace();
 		}
 	}
+
 	public Connection getConnection() {
 		return connection; // Use this method to get the connection when needed
 	}
@@ -114,6 +106,7 @@ public class DBManager {
 			System.out.println("Database connection closed.");
 		}
 	}
+
 	/*
 	try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			preparedStatement.setString(1, email);
@@ -125,14 +118,14 @@ public class DBManager {
 				Long id = resultSet.getLong("id");
 	 */
 	public ArrayList<Bijoux> getAllFilteredProducts(ArrayList<Bijoux> results, String name2, String description2,
-													String brand2, String type2, String pricemin2,String pricemax2,String material2){
+													String brand2, String type2, String pricemin2, String pricemax2, String material2) {
 		/*String query = "select * from products where name ='Diamond Ring' and brand = 'Luxury' and type ='Ring' and description='A beautiful diamond ring with a sleek design.'\n" +
 				"and price ='299.99' and material='Gold';";
 				*/
 
 		StringBuilder queryBuilder = new StringBuilder();
 		queryBuilder.append("select * from products where 1=1 ");
-		if(!name2.isEmpty()){
+		if (!name2.isEmpty()) {
 			queryBuilder.append("AND name LIKE ? ");
 		}
 		if (!description2.isEmpty()) {
@@ -155,11 +148,11 @@ public class DBManager {
 		}
 		queryBuilder.append(";");
 		String query = queryBuilder.toString();
-		System.out.println("totest : , "+query);
+		System.out.println("totest : , " + query);
 		try (PreparedStatement stmt = connection.prepareStatement(query)) {
 			int paramIndex = 1;
-			if(!name2.isEmpty()){
-				stmt.setString(paramIndex++,"%"+name2+"%");
+			if (!name2.isEmpty()) {
+				stmt.setString(paramIndex++, "%" + name2 + "%");
 			}
 			if (!description2.isEmpty()) {
 				stmt.setString(paramIndex++, "%" + description2 + "%");
@@ -179,10 +172,10 @@ public class DBManager {
 			if (!material2.isEmpty() && !material2.equals("All")) {
 				stmt.setString(paramIndex++, material2);
 			}
-			System.out.println("tes stm 2 " +stmt.toString());
+			System.out.println("tes stm 2 " + stmt.toString());
 			ResultSet rs = stmt.executeQuery();
 
-			while(rs.next()) {
+			while (rs.next()) {
 				System.out.println("orkinng , " + rs.getString("name"));
 				Long id = rs.getLong("id");
 				String type = rs.getString("type");
@@ -193,17 +186,17 @@ public class DBManager {
 				String material = rs.getString("material");
 				String imagePath = rs.getString("image_path");
 				int stock = rs.getInt("stock");
-				switch(type) {
+				switch (type) {
 					case "Ring":
 						int size = rs.getInt("size");
 
-						Ring ring = new Ring(id,name,brand,type,description,price,material,size,imagePath,stock);
+						Ring ring = new Ring(id, name, brand, type, description, price, material, size, imagePath, stock);
 						results.add(ring);
 
 						break;
 					case "Necklace":
 						double length = rs.getDouble("length");
-						Necklace necklace = new Necklace(id,name, brand,type,description,price, material,length, imagePath,stock);
+						Necklace necklace = new Necklace(id, name, brand, type, description, price, material, length, imagePath, stock);
 						results.add(necklace);
 						break;
 				}
@@ -212,17 +205,18 @@ public class DBManager {
 
 			e.printStackTrace();
 		}
-		return  null;
+		return null;
 
 	}
-	public ArrayList<Bijoux> getAllProducts(ArrayList<Bijoux> results){
-		String query="Select * from products";
+
+	public ArrayList<Bijoux> getAllProducts(ArrayList<Bijoux> results) {
+		String query = "Select * from products";
 		Statement stmt;
 		try {
 			stmt = connection.createStatement();
 			ResultSet rs = stmt.executeQuery(query);
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				Long id = rs.getLong("id");
 				String type = rs.getString("type");
 				String name = rs.getString("name");
@@ -232,27 +226,27 @@ public class DBManager {
 				String material = rs.getString("material");
 				String imagePath = rs.getString("image_path");
 				int stock = rs.getInt("stock");
-				switch(type) {
-				case "Ring":
-					int size = rs.getInt("size");
-					
-					Ring ring = new Ring(id,name,brand,type,description,price,material,size,imagePath,stock);
-					results.add(ring);
-					
-					break;
-				case "Necklace":
-					double length = rs.getDouble("length");
-					Necklace necklace = new Necklace(id,name, brand,type,description,price, material,length, imagePath,stock);
-					results.add(necklace);
-					break;
+				switch (type) {
+					case "Ring":
+						int size = rs.getInt("size");
+
+						Ring ring = new Ring(id, name, brand, type, description, price, material, size, imagePath, stock);
+						results.add(ring);
+
+						break;
+					case "Necklace":
+						double length = rs.getDouble("length");
+						Necklace necklace = new Necklace(id, name, brand, type, description, price, material, length, imagePath, stock);
+						results.add(necklace);
+						break;
 				}
 			}
 		} catch (SQLException e) {
-		
+
 			e.printStackTrace();
 		}
-	return  null;
-        
+		return null;
+
 	}
 
 
@@ -272,21 +266,21 @@ public class DBManager {
 				String passwordResult = resultSet.getString("password");
 				String role = resultSet.getString("role");
 
-				
-				Client client = new Client(id, firstName, lastName, emailResult, passwordResult,role);
-				
+
+				Client client = new Client(id, firstName, lastName, emailResult, passwordResult, role);
+
 				return client;
 			} else {
 				System.out.println("Invalid email or password.");
-				
+
 			}
 		} catch (SQLException e) {
 			System.out.println("Error during user authentication.");
 			e.printStackTrace();
-			
+
 		}
 		return null;
-		
+
 	}
 
 	public boolean addUser(Client c) {
@@ -310,14 +304,14 @@ public class DBManager {
 	}
 
 	public boolean deleteUser(Client c) {
-		
+
 		String query = "DELETE FROM client WHERE email = ?";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
 			preparedStatement.setString(1, c.getEmail());
 
-			 int rowsAffected = preparedStatement.executeUpdate();
+			int rowsAffected = preparedStatement.executeUpdate();
 
 			return rowsAffected != 0;
 		} catch (SQLException e) {
@@ -339,7 +333,7 @@ public class DBManager {
 
 			int result = preparedStatement.executeUpdate();
 			System.out.println(" updating user successfull " + (result > 0));
-			
+
 
 			return result > 0;
 		} catch (SQLException e) {
@@ -360,122 +354,152 @@ public class DBManager {
 			}
 		}
 	}
-	
+
 	public boolean addOrder(Order order) {
-	    String query = "INSERT INTO Orders (client_id, status, total_amount) VALUES (?, ?, ?)";
+		String query = "INSERT INTO Orders (client_id, status, total_amount) VALUES (?, ?, ?)";
 
-	    try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-	        preparedStatement.setLong(1, order.getClient().getId()); 
-	        preparedStatement.setString(2, order.getStatus().name());
-	        preparedStatement.setDouble(3, order.getCartItems().getTotalPrice()); 
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+			preparedStatement.setLong(1, order.getClient().getId());
+			preparedStatement.setString(2, order.getStatus().name());
+			preparedStatement.setDouble(3, order.getCartItems().getTotalPrice());
 
-	        int result = preparedStatement.executeUpdate();
+			int result = preparedStatement.executeUpdate();
 
-	    
-	        if (result > 0) {
-	            ResultSet rs = preparedStatement.getGeneratedKeys();
-	            if (rs.next()) {
-	                long orderId = rs.getLong(1);
-	                order.setOrderId(orderId); 
-	            }
-	        }
 
-	        return result > 0;
-	    } catch (SQLException e) {
-	        System.out.println("Error inserting new order");
-	        e.printStackTrace();
-	        return false;
-	    }
+			if (result > 0) {
+				ResultSet rs = preparedStatement.getGeneratedKeys();
+				if (rs.next()) {
+					long orderId = rs.getLong(1);
+					order.setOrderId(orderId);
+				}
+			}
+
+			return result > 0;
+		} catch (SQLException e) {
+			System.out.println("Error inserting new order");
+			e.printStackTrace();
+			return false;
+		}
 	}
-	
+
 	public boolean addInvoice(Invoice invoice, Long orderId) {
-	    String query = "INSERT INTO Invoices (client_id, order_id, invoice_number, file_path, total_amount, status) VALUES (?, ?, ?, ?, ?, ?)";
-	    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-	        preparedStatement.setLong(1, invoice.getClientId());
-	        preparedStatement.setLong(2, orderId);
-	        preparedStatement.setString(3, invoice.getInvoiceNumber());
-	        preparedStatement.setString(4, invoice.getFilePath());
-	        preparedStatement.setDouble(5, invoice.getTotalAmount());
-	        preparedStatement.setString(6, invoice.getStatus());
+		String query = "INSERT INTO Invoices (client_id, order_id, invoice_number, file_path, total_amount, status) VALUES (?, ?, ?, ?, ?, ?)";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			preparedStatement.setLong(1, invoice.getClientId());
+			preparedStatement.setLong(2, orderId);
+			preparedStatement.setString(3, invoice.getInvoiceNumber());
+			preparedStatement.setString(4, invoice.getFilePath());
+			preparedStatement.setDouble(5, invoice.getTotalAmount());
+			preparedStatement.setString(6, invoice.getStatus());
 
-	        int result = preparedStatement.executeUpdate();
+			int result = preparedStatement.executeUpdate();
 
-	        return result > 0;
-	    } catch (SQLException e) {
-	        System.out.println("Error inserting new invoice");
-	        e.printStackTrace();
-	        return false;
-	    }
+			return result > 0;
+		} catch (SQLException e) {
+			System.out.println("Error inserting new invoice");
+			e.printStackTrace();
+			return false;
+		}
 	}
 
-	
-	public String getLastInvoiceNumberOfDB() {
-		String query = "SELECT invoice_number from Invoices";
-		try(PreparedStatement preparedStatement = connection.prepareStatement(query);
-				ResultSet resultSet = preparedStatement.executeQuery()
-				){
-			
-			 if (resultSet.next()) {
-		            return resultSet.getString("invoice_number");
-		        } else {
-		            return null; 
-		        }
-		    } catch (SQLException e) {
-		        System.out.println("Error retrieving last invoice number from the database");
-		        e.printStackTrace();
-		        return null;
-		    }
+
+	public String getLastInvoiceNumberOfDB(Long clientId) {
+		String query = "SELECT invoice_number FROM Invoices WHERE client_id = ? ORDER BY invoice_id DESC LIMIT 1";
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			preparedStatement.setLong(1, clientId);
+
+
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				if (resultSet.next()) {
+					return resultSet.getString("invoice_number");
+				} else {
+					return null;
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Error retrieving last invoice number from the database");
+			e.printStackTrace();
+			return null;
+		}
 	}
+
 
 	public void getClients(ArrayList<Client> clients) {
 		String query = "SELECT * from client";
-		try(PreparedStatement preparedStatement = connection.prepareStatement(query);
-				ResultSet result = preparedStatement.executeQuery()){
-			while(result.next()) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+			 ResultSet result = preparedStatement.executeQuery()) {
+			while (result.next()) {
 				long id = result.getLong("id");
 				String firstName = result.getString("firstName");
 				String lastName = result.getString("lastName");
 				String email = result.getString("email");
 				String password = result.getString("password");
 				String role = result.getString("role");
-				
-				Client client = new Client(id,firstName,lastName,email,password,role);
+
+				Client client = new Client(id, firstName, lastName, email, password, role);
 				clients.add(client);
 				//Long id,String firstName, String lastName, String email , String password ,String role 
-				
+
 			}
-			
-		}catch(SQLException e){
-			 System.out.println("Error retrieving clients from the database");
-			 e.printStackTrace();
+
+		} catch (SQLException e) {
+			System.out.println("Error retrieving clients from the database");
+			e.printStackTrace();
 		}
-				
+
 	}
+	public boolean saveCart(Cart cart, Long orderId) {
+		String query = "INSERT INTO Cart_Items (order_id, product_id, quantity) VALUES (?, ?, ?)";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			// Iterate over the cart items and insert them into the Cart_Items table
+			for (Map.Entry<Bijoux, Integer> entry : cart.getCart().entrySet()) {
+				Bijoux bijoux = entry.getKey();
+				Integer quantity = entry.getValue();
+
+				preparedStatement.setLong(1, orderId);
+				preparedStatement.setLong(2, bijoux.getId());
+				preparedStatement.setInt(3, quantity);
+
+				int result = preparedStatement.executeUpdate();
+				if (result <= 0) {
+					return false;
+				}
+			}
+			return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	//--------------------------------------------------------ADMIN---------------------------------------------------------------------------------
 	public boolean updateClient(Client c) {
-	    String query = "UPDATE client SET firstName = ?,lastName = ? , email = ?, role = ? WHERE id = ?";
+		String query = "UPDATE client SET firstName = ?,lastName = ? , email = ?, role = ? WHERE id = ?";
 
-	    try ( PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-	    	preparedStatement.setString(1, c.getFirstName());
-	        preparedStatement.setString(2, c.getLastName());
-	        preparedStatement.setString(3, c.getEmail());
-	        preparedStatement.setString(4, c.getRole());
-	        preparedStatement.setLong(5, c.getId());
+			preparedStatement.setString(1, c.getFirstName());
+			preparedStatement.setString(2, c.getLastName());
+			preparedStatement.setString(3, c.getEmail());
+			preparedStatement.setString(4, c.getRole());
+			preparedStatement.setLong(5, c.getId());
 
-	
-	        int rowsAffected = preparedStatement.executeUpdate();
-	        if (rowsAffected > 0) {
-	            System.out.println("Client updated successfully.");
-	            return true;
-	        } else {
-	            System.out.println("No client found with the specified ID.");
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return false;
+
+			int rowsAffected = preparedStatement.executeUpdate();
+			if (rowsAffected > 0) {
+				System.out.println("Client updated successfully.");
+				return true;
+			} else {
+				System.out.println("No client found with the specified ID.");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
+
 	public boolean addClient(Client c) {
 		String query = "INSERT INTO client (firstName, lastName, email, role,password) VALUES (?, ?, ?, ?,?)";
 
@@ -496,15 +520,16 @@ public class DBManager {
 			return false;
 		}
 	}
+
 	public boolean deleteCLient(Long id) {
-		
+
 		String query = "DELETE FROM client WHERE id = ?";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-			preparedStatement.setLong(1,id);
+			preparedStatement.setLong(1, id);
 
-			 int rowsAffected = preparedStatement.executeUpdate();
+			int rowsAffected = preparedStatement.executeUpdate();
 
 			return rowsAffected != 0;
 		} catch (SQLException e) {
@@ -513,44 +538,42 @@ public class DBManager {
 			return false;
 		}
 	}
-	
+
 	public boolean updateProduct(Bijoux b) {
-	    String query = "UPDATE products SET name = ?, type = ?, description = ?, price = ?, material = ?, size = ?, length = ?, stock = ?, image_path = ? WHERE id = ?";
+		String query = "UPDATE products SET name = ?, type = ?, description = ?, price = ?, material = ?, size = ?, length = ?, stock = ?, image_path = ? WHERE id = ?";
 
-	    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-	        preparedStatement.setString(1, b.getName());
-	        preparedStatement.setString(2, b.getType());
-	        preparedStatement.setString(3, b.getDescription());
-	        preparedStatement.setDouble(4, b.getPrice());
-	        preparedStatement.setString(5, b.getMateriel());
-	        
-	       
-	        if ("Ring".equalsIgnoreCase(b.getType())) {
-	            preparedStatement.setDouble(6, ((Ring) b).getSize());
-	            preparedStatement.setNull(7, java.sql.Types.DOUBLE);
-	        } 
-	        
-	        else if ("Necklace".equalsIgnoreCase(b.getType())) {
-	            preparedStatement.setNull(6, java.sql.Types.DOUBLE); 
-	            preparedStatement.setDouble(7, ((Necklace) b).getLength());
-	        }
-	        preparedStatement.setInt(8, b.getStock());
-	        preparedStatement.setString(9, b.getImagePath());
-	        preparedStatement.setLong(10, b.getId()); 
+			preparedStatement.setString(1, b.getName());
+			preparedStatement.setString(2, b.getType());
+			preparedStatement.setString(3, b.getDescription());
+			preparedStatement.setDouble(4, b.getPrice());
+			preparedStatement.setString(5, b.getMateriel());
 
-	        int rowsAffected = preparedStatement.executeUpdate();
-	        if (rowsAffected > 0) {
-	            System.out.println("Product updated successfully.");
-	            return true;
-	        } else {
-	            System.out.println("No product found with the specified ID.");
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("Error updating product");
-	        e.printStackTrace();
-	    }
-	    return false;
+
+			if ("Ring".equalsIgnoreCase(b.getType())) {
+				preparedStatement.setDouble(6, ((Ring) b).getSize());
+				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+			} else if ("Necklace".equalsIgnoreCase(b.getType())) {
+				preparedStatement.setNull(6, java.sql.Types.DOUBLE);
+				preparedStatement.setDouble(7, ((Necklace) b).getLength());
+			}
+			preparedStatement.setInt(8, b.getStock());
+			preparedStatement.setString(9, b.getImagePath());
+			preparedStatement.setLong(10, b.getId());
+
+			int rowsAffected = preparedStatement.executeUpdate();
+			if (rowsAffected > 0) {
+				System.out.println("Product updated successfully.");
+				return true;
+			} else {
+				System.out.println("No product found with the specified ID.");
+			}
+		} catch (SQLException e) {
+			System.out.println("Error updating product");
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	public boolean addProduct(Bijoux b) {
@@ -590,14 +613,14 @@ public class DBManager {
 	}
 
 	public boolean deleteProduct(Long id) {
-		
+
 		String query = "DELETE FROM pruducts WHERE id = ?";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
-			preparedStatement.setLong(1,id);
+			preparedStatement.setLong(1, id);
 
-			 int rowsAffected = preparedStatement.executeUpdate();
+			int rowsAffected = preparedStatement.executeUpdate();
 
 			return rowsAffected != 0;
 		} catch (SQLException e) {
@@ -606,6 +629,113 @@ public class DBManager {
 			return false;
 		}
 	}
-	
+
+	public void getAllInvoices(ArrayList<Invoice> invoices) {
+		String query = "select * from Invoices";
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(query);
+
+			while (rs.next()) {
+				Long id = rs.getLong("invoice_id");
+				Long client_id = rs.getLong("client_id");
+				Long order_id = rs.getLong("order_id");
+				String invoice_number = rs.getString("invoice_number");
+				String file_path = rs.getString("file_path");
+				Timestamp invoice_date = rs.getTimestamp("invoice_date");
+				Timestamp invoice_update_date = rs.getTimestamp("invoice_update_date");
+				Double total_amount = rs.getDouble("total_amount");
+				String status = rs.getString("status");
+				//public Invoice(Long clientId, String invoiceNumber, String filePath, double totalAmount, String status,Timestamp invoiceDate,Timestamp updateDate) {
+				Invoice invoice = new Invoice(id, client_id, order_id, invoice_number, file_path, total_amount, status, invoice_date, invoice_update_date);
+				invoices.add(invoice);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Order fetchOrderById(Long id) {
+		String query = "SELECT * FROM Orders WHERE order_id = ?";
+		Order order = null;
+
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setLong(1, id);
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				Long orderId = resultSet.getLong("order_id");
+				Long clientId = resultSet.getLong("client_id");
+				Timestamp orderDate = resultSet.getTimestamp("order_date");
+				OrderStatus status = OrderStatus.valueOf(resultSet.getString("status"));
+
+				Cart cartOfOrder = this.fetchCart(orderId);
+				order = new Order(orderId, clientId, cartOfOrder,orderDate, status);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return order;
+	}
+
+
+	public Cart fetchCart(Long orderId) {
+		String query = "SELECT product_id, quantity FROM Cart_Items WHERE order_id = ?";
+		Cart cart = new Cart();  // Create a new Cart object to hold the fetched items
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			preparedStatement.setLong(1, orderId);  // Set the order_id in the query
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
+				Long productId = resultSet.getLong("product_id");
+				Integer quantity = resultSet.getInt("quantity");
+
+
+				Bijoux bijoux = fetchBijouxById(productId);
+				cart.getCart().put(bijoux, quantity);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return cart;
+	}
+
+	public Bijoux fetchBijouxById(Long productId){
+		String query = "select * from products where id = ?";
+		try(PreparedStatement statement = connection.prepareStatement(query)){
+			statement.setLong(1,productId);
+
+			ResultSet rs = statement.executeQuery();
+			while(rs.next()) {
+				Long id = rs.getLong("id");
+				String type = rs.getString("type");
+				String name = rs.getString("name");
+				String brand = rs.getString("brand");
+				String description = rs.getString("description");
+				double price = rs.getDouble("price");
+				String material = rs.getString("material");
+				String imagePath = rs.getString("image_path");
+				int stock = rs.getInt("stock");
+				switch (type) {
+					case "Ring":
+						int size = rs.getInt("size");
+						Ring ring = new Ring(id, name, brand, type, description, price, material, size, imagePath, stock);
+						return ring;
+					case "Necklace":
+						double length = rs.getDouble("length");
+						Necklace necklace = new Necklace(id, name, brand, type, description, price, material, length, imagePath, stock);
+						return necklace;
+				}
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+return null;
+	}
 
 }

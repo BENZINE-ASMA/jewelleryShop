@@ -18,7 +18,7 @@ public class InvoiceController {
 		String invoiceNumber = generateInvoiceNumber(loggedInClient.getId(),dbManager);
 		InvoiceGenerator invoiceGenerator = new InvoiceGenerator(order, loggedInClient,mainController.getClientCart()) ;
 		invoiceGenerator.generateInvoice(invoiceNumber+".pdf");
-		Invoice invoice = new Invoice(loggedInClient.getId(), invoiceNumber,invoiceNumber+".pdf",mainController.getClientCart().getTotalPrice(),"Pending");
+		Invoice invoice = new Invoice(loggedInClient.getId(),order.getOrderId(), invoiceNumber,invoiceNumber+".pdf",mainController.getClientCart().getTotalPrice(),"Pending");
 		dbManager.addInvoice(invoice ,mainController.getCurrentOrder().getOrderId());
 		
 		
@@ -27,13 +27,15 @@ public class InvoiceController {
 	public String generateInvoiceNumber(Long clientId ,DBManager dbManager) {
 		
 		// the syntax taht m choosing is INV-CLclientID-001
-		String lastInvoiceNumber = dbManager.getLastInvoiceNumberOfDB();
+		String lastInvoiceNumber = dbManager.getLastInvoiceNumberOfDB(clientId);
+		System.out.println("test debug "+lastInvoiceNumber);
 		int nextSequenceNumber = 1;
 		 if (lastInvoiceNumber != null && !lastInvoiceNumber.isEmpty()) {
 			 String next = lastInvoiceNumber.split("-")[2];
 			 nextSequenceNumber=Integer.parseInt(next)+1;
 		 }
 		 String formattedSequence = String.format("%03d", nextSequenceNumber);
+		 System.out.println("test debug " +"INV-CL" + clientId + "-" + formattedSequence);
 		 return "INV-CL" + clientId + "-" + formattedSequence;
 		
 	}

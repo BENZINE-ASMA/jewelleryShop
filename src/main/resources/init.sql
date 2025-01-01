@@ -5,10 +5,13 @@ USE sys;
 SET SQL_SAFE_UPDATES = 0;
 
 -- Drop tables if they exist
+DROP TABLE IF EXISTS Cart_Items;
 DROP TABLE IF EXISTS Invoices;
 DROP TABLE IF EXISTS Orders;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS client;
+
+
 
 -- Create the `client` table
 CREATE TABLE client (
@@ -82,11 +85,10 @@ CREATE TABLE Orders (
     order_id INT PRIMARY KEY AUTO_INCREMENT,
     client_id INT NOT NULL,
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('en cours', 'validée', 'livrée') DEFAULT 'en cours',
+    status ENUM('EN_COURS', 'VALIDEE', 'LIVREE') DEFAULT 'EN_COURS',
     total_amount DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (client_id) REFERENCES client(id)
 );
-
 -- Create the `Invoices` table
 CREATE TABLE Invoices (
     invoice_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -95,9 +97,19 @@ CREATE TABLE Invoices (
     invoice_number VARCHAR(50) UNIQUE NOT NULL,
     file_path VARCHAR(255) NOT NULL,
     invoice_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    invoice_update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total_amount DECIMAL(10, 2) NOT NULL,
     status ENUM('Pending', 'Paid', 'Overdue') DEFAULT 'Pending',
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (client_id) REFERENCES client(id),
     FOREIGN KEY (order_id) REFERENCES Orders(order_id)
+);
+
+CREATE TABLE Cart_Items (
+    cart_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    product_id INT,
+    quantity INT,
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
 );

@@ -1,6 +1,7 @@
 package model;
 
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,14 +9,28 @@ public class Order {
 	private Long orderId;
 	private Cart clientCart;
 	private OrderStatus status;
+
+	public Timestamp getOrderDate() {
+		return this.orderDate;
+	}
+
+	private Timestamp orderDate;
 	private Client client;
 	
 	 public Order(Client client) { 
 	        this.clientCart = new Cart();
 	        this.setClient(client);
 	        this.setStatus(OrderStatus.EN_COURS);
-	       
-	    }
+		 	this.orderDate = new Timestamp(System.currentTimeMillis());
+	    } //how i call it in the dbmanager new Order(orderId,clientId,orderDate,status,total);
+	public Order(Long orderId,Long clientId,Cart clientCart, Timestamp orderDate, OrderStatus status) {
+		this.clientCart = clientCart;
+		this.client= new Client();
+		this.client.setId(clientId);
+		this.orderId=orderId;
+		this.status= status;
+		this.orderDate=orderDate;
+	}//order = new Order(orderId, clientId, orderDate, status);
 	 public void validateOrder() {
 	        this.setStatus(OrderStatus.VALIDEE);
 	 }

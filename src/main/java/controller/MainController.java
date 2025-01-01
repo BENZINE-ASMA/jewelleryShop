@@ -37,7 +37,7 @@ public class MainController {
 	public void initializeDatabase() {
 		try {
 			dbManager.connect();
-			//dbManager.executeSQLScript("resources/init.sql");
+			dbManager.executeSQLScript("resources/init.sql");
 		} catch (SQLException e) {
 			//JOptionPane.showMessageDialog(, "Database initialization failed: " + e.getMessage(),
 			//		"Error", JOptionPane.ERROR_MESSAGE);
@@ -119,10 +119,11 @@ public class MainController {
 		mainView.loadCartView();;
 		mainView.showPanel("cart");
 	}
+
 	
 	public void showRingDashboardsView() {
-		mainView.loadProductDashbaordView();
-		mainView.showPanel("product");
+		mainView.loadInvoiceDashbaordView();
+		mainView.showPanel("invoice");
 		/*
 		mainView.loadRingsDashboardView();
 		mainView.showPanel("ringsDashbaord");
@@ -150,15 +151,19 @@ public class MainController {
 	    }
 	 
 	 public void addOrderToDB() {
-		 this.dbManager.addOrder(currentOrder);
+
+		this.dbManager.addOrder(currentOrder);
 	 }
+	public void saveCartInDB(Long orderId) {
+
+		this.dbManager.saveCart(clientCart,orderId);
+	}
 	 public void ChangeOrderStatus(OrderStatus status) {
 		 this.currentOrder.setStatus(status);
 		 if (status == OrderStatus.VALIDEE) {
 			 this.currentOrder.setCartItems(clientCart);
-			 this.addOrderToDB();
-			// System.out.println("thisssssss " + this.currentOrder.getStatus() + "    "+ this.currentOrder.getCartItems().toString()); 
-		 
+			 this.addOrderToDB(); // should return the id of the ordr so it can be mapped to the foreign key
+			 this.saveCartInDB(currentOrder.getOrderId());
 			 // we ll generate the invoice 
 			 System.out.println("generating invoice for client "+  this.loggedInClient.toString());
 			 this.invoiceController.generateInvoice(this.loggedInClient,this.currentOrder,this.dbManager,this);
@@ -172,7 +177,6 @@ public class MainController {
 	public void setDbManager(DBManager dbManager) {
 		this.dbManager = dbManager;
 	}
-
 
 	public Client getLoggedInClient() {
 		return loggedInClient;

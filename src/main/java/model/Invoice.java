@@ -4,23 +4,41 @@ import java.sql.Timestamp;
 
 public class Invoice {
     private Long invoiceId;         
-    private Long clientId;          
+    private Long clientId;
+    private Long orderId;
     private String invoiceNumber;  
-    private String filePath;       
-    private Timestamp invoiceDate; 
+    private String filePath;
+    private Timestamp invoiceDate;
+    private Timestamp updateDate;
     private double totalAmount;    
     private String status;         
-    private Timestamp updatedAt;   
+
 
     
-    public Invoice(Long clientId, String invoiceNumber, String filePath, double totalAmount, String status) {
+    public Invoice(Long clientId,Long orderId ,String invoiceNumber, String filePath, double totalAmount, String status) {
         this.clientId = clientId;
+        this.orderId = orderId;
         this.invoiceNumber = invoiceNumber;
         this.filePath = filePath;
         this.totalAmount = totalAmount;
         this.status = status;
-        this.invoiceDate = new Timestamp(System.currentTimeMillis()); // Sets to current time
+        this.invoiceDate = new Timestamp(System.currentTimeMillis());
+        this.updateDate = new Timestamp(System.currentTimeMillis());
+
     }
+    public Invoice(Long invoiceId, Long clientId, Long orderId,String invoiceNumber, String filePath, double totalAmount, String status,Timestamp invoiceDate,Timestamp updateDate) {
+        this.invoiceId = invoiceId;
+        this.clientId = clientId;
+        this.orderId = orderId;
+        this.invoiceNumber = invoiceNumber;
+        this.filePath = filePath;
+        this.totalAmount = totalAmount;
+        this.status = status;
+        this.invoiceDate =invoiceDate;
+        this.updateDate = updateDate;
+
+    }
+
 
     
     public Long getInvoiceId() {
@@ -80,25 +98,32 @@ public class Invoice {
     }
 
     public Timestamp getUpdatedAt() {
-        return updatedAt;
+        return updateDate;
     }
 
     public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
+        this.updateDate = updatedAt;
     }
 
-   
+    public Long getOrderId() {
+        return this.orderId;
+    }
+
+    public Timestamp getUpdateDate() {
+        return this.updateDate;
+    }
     @Override
     public String toString() {
         return "Invoice{" +
                 "invoiceId=" + invoiceId +
                 ", clientId=" + clientId +
+                ", orderId=" + orderId +
                 ", invoiceNumber='" + invoiceNumber + '\'' +
                 ", filePath='" + filePath + '\'' +
                 ", invoiceDate=" + invoiceDate +
                 ", totalAmount=" + totalAmount +
                 ", status='" + status + '\'' +
-                ", updatedAt=" + updatedAt +
+                ", updateDate=" + updateDate +
                 '}';
     }
 }

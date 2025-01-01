@@ -8,9 +8,8 @@ import controller.AdminController;
 import controller.DBManager;
 import controller.MainController;
 import model.Client;
-import view.admin.ClientDashbaord;
-import view.admin.MainDashboardAdminView;
-import view.admin.ProductDashboard;
+import model.Order;
+import view.admin.*;
 
 import java.awt.CardLayout;
 
@@ -151,6 +150,15 @@ public class MainView extends JFrame {
     	ProductDashboard mainDashboardAdminView = new ProductDashboard(new AdminController(this.mainController.getDbManager()));
     	mainPanel.add(mainDashboardAdminView,"product");
     }
+    public void loadInvoiceDashbaordView() {
+        InvoiceDashbaord mainDashboardAdminView = new InvoiceDashbaord(new AdminController(this.mainController.getDbManager()));
+        mainPanel.add(mainDashboardAdminView,"invoice");
+    }
+    public void loadOrderPanelView(Order order) {
+        OrderPanel orderPanel = new OrderPanel(order);
+        mainPanel.add(orderPanel,"OrderPanel");
+    }
+
 
     public void loadLoginView(boolean displayOptionPanes ,String toDisplay) {
     	if(displayOptionPanes) {
