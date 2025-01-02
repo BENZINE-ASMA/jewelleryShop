@@ -8,7 +8,6 @@ import javax.swing.table.DefaultTableModel;
 import model.*;
 
 public class OrderPanel extends JPanel {
-
     private Order order;
     private JLabel orderIdLabel, orderDateLabel, clientLabel, statusLabel, totalPriceLabel;
     private JButton validateOrderButton, deliverOrderButton, updateCartButton;
@@ -19,7 +18,6 @@ public class OrderPanel extends JPanel {
         this.order = order;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // Initialize labels
         orderIdLabel = new JLabel("Order ID: " + order.getOrderId());
         orderDateLabel = new JLabel("Order Date: " + order.getOrderDate());
         clientLabel = new JLabel("Client: " + order.getClient().getId());
@@ -27,7 +25,18 @@ public class OrderPanel extends JPanel {
         totalPriceLabel = new JLabel("Total Price: " + order.getCartItems().getTotalPrice());
 
         cartItemsTable = new JTable();
-        cartItemsTable.setModel(createTableModel(order.getCartItems()));
+        DefaultTableModel model = this.createTableModel(order.getCartItems());
+        model.addTableModelListener(e->{
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+            if(column==1){
+                String productName = (String)model.getValueAt(row,0);
+                String newQ = (String) model.getValueAt(row,column);
+
+                System.out.println("hello " +newQ);
+            }
+        });
+        cartItemsTable.setModel(model);
         cartItemsScrollPane = new JScrollPane(cartItemsTable);
 
         validateOrderButton = new JButton("Validate Order");
@@ -37,9 +46,7 @@ public class OrderPanel extends JPanel {
         validateOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Call a method to validate the order
                 order.validateOrder();
-                // Update UI elements
                 totalPriceLabel.setText("Total Price: " + order.getCartItems().getTotalPrice());
             }
         });
@@ -60,6 +67,7 @@ public class OrderPanel extends JPanel {
                // editDialog.setVisible(true);
                 // After editing, refresh the cart table
                 cartItemsTable.setModel(createTableModel(order.getCartItems()));
+
                 totalPriceLabel.setText("Total Price: " + order.getCartItems().getTotalPrice());
             }
         });
@@ -76,7 +84,6 @@ public class OrderPanel extends JPanel {
         add(updateCartButton);
     }
 
-    
     private DefaultTableModel createTableModel(Cart cart) {
         String[] columnNames = {"Product", "Quantity", "Price per Unit", "Total Price"};
         Object[][] data = new Object[cart.getCart().size()][4];
@@ -92,6 +99,11 @@ public class OrderPanel extends JPanel {
             i++;
         }
 
-        return new DefaultTableModel(data, columnNames);
+        return new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 1;
+            }
+        };
     }
 }

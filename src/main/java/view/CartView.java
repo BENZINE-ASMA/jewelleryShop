@@ -79,6 +79,8 @@ public class CartView extends JPanel {
     		@Override
     		public void actionPerformed(ActionEvent e) {
     			mainController.ChangeOrderStatus(OrderStatus.VALIDEE);
+				cart.getCart().clear();
+				mainController.showMainDashboardView();
     		}
     	});
 		panelImages.add(confirmButton, BorderLayout.SOUTH);

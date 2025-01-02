@@ -737,5 +737,25 @@ public class DBManager {
 		}
 return null;
 	}
+	public boolean updateCart(int orderId, int productId , int newQuantity){
+
+		String query = "update Cart_Items\n" +
+				"set quantity = ? \n" +
+				"where order_id= ? and product_id=? ";
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(0,newQuantity);
+			statement.setInt(1,orderId);
+			statement.setInt(2,productId);
+
+			int result = statement.executeUpdate();
+
+			return result > 0;
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+
 
 }
