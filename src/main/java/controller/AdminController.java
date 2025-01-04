@@ -76,4 +76,23 @@ public class AdminController {
 		return this.dbManager.fetchOrderById(orderId);
 	}
 
+	public boolean updateCart(Long orderId, Long productId , int newQuantity){
+		return this.dbManager.updateCart(orderId,productId,newQuantity);
+	}
+	public boolean updateOrder(Long orderId, Double totalPrice){
+		return this.dbManager.updateOrder(orderId,totalPrice);
+	}
+	public boolean updateInvoice(Long invoiceId, Double newTtalAmount){
+		return this.dbManager.updateInvoice(invoiceId,newTtalAmount);
+	}
+	/*
+	public void showRingDashboardsView() {
+		mainView.loadInvoiceDashbaordView();
+		mainView.showPanel("invoice");
+		/*
+		mainView.loadRingsDashboardView();
+		mainView.showPanel("ringsDashbaord");
+		*/
+	
+
 }

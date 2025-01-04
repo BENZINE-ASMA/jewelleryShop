@@ -134,7 +134,7 @@ public class InvoiceDashbaord extends JPanel{
 			orderFrame.setLayout(new BorderLayout());
 
 			// Create the OrderPanel and add it to the frame
-			OrderPanel orderPanel = new OrderPanel(orderToDisplay);
+			OrderPanel orderPanel = new OrderPanel(orderToDisplay,this.adminController,invoiceId);
 			orderFrame.add(orderPanel, BorderLayout.CENTER);
 
 			// Make the JFrame fit the size of the content and set it visible

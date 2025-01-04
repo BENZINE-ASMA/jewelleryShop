@@ -154,11 +154,6 @@ public class MainView extends JFrame {
         InvoiceDashbaord mainDashboardAdminView = new InvoiceDashbaord(new AdminController(this.mainController.getDbManager()));
         mainPanel.add(mainDashboardAdminView,"invoice");
     }
-    public void loadOrderPanelView(Order order) {
-        OrderPanel orderPanel = new OrderPanel(order);
-        mainPanel.add(orderPanel,"OrderPanel");
-    }
-
 
     public void loadLoginView(boolean displayOptionPanes ,String toDisplay) {
     	if(displayOptionPanes) {

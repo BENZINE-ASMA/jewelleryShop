@@ -30,6 +30,16 @@ public class Cart {
 		}
 		return currentQuantity;
 	}
+
+	public void modifyQuantityOfProduct(Long bijouxId, int newQ){
+		for(Bijoux b : this.cart.keySet()){
+			if (b.getId() == bijouxId){
+				this.cart.put(b,newQ);
+				break;
+			}
+		}
+
+	}
 	
 	public void removeFromCart(Bijoux b) {
 		if(cart.containsKey(b)) {
@@ -63,6 +73,8 @@ public class Cart {
 		}
 		return res.toString();
 	}
+
+
 	
 
 }

@@ -629,6 +629,7 @@ public class DBManager {
 			return false;
 		}
 	}
+	//public boolean updateInvoice()
 
 	public void getAllInvoices(ArrayList<Invoice> invoices) {
 		String query = "select * from Invoices";
@@ -737,15 +738,15 @@ public class DBManager {
 		}
 return null;
 	}
-	public boolean updateCart(int orderId, int productId , int newQuantity){
+	public boolean updateCart(Long orderId, Long productId , int newQuantity){
 
 		String query = "update Cart_Items\n" +
 				"set quantity = ? \n" +
 				"where order_id= ? and product_id=? ";
 		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setInt(0,newQuantity);
-			statement.setInt(1,orderId);
-			statement.setInt(2,productId);
+			statement.setInt(1,newQuantity);
+			statement.setLong(2,orderId);
+			statement.setLong(3,productId);
 
 			int result = statement.executeUpdate();
 
@@ -755,6 +756,35 @@ return null;
 		}
 		return false;
 	}
+
+	public boolean updateOrder(Long orderId, double totalPrice){
+		String query = "update orders\n" +
+				"set total_amount = ? where order_id= ?";
+
+		try(PreparedStatement statement = connection.prepareStatement(query)){
+			statement.setLong(1,orderId);
+			statement.setDouble(2,totalPrice);
+
+			return statement.executeUpdate()>0;
+
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+public boolean updateInvoice(Long invoiceId, Double newTotal){
+		String query= "UPDATE Invoices SET total_amount =?, invoice_update_date = CURRENT_TIMESTAMP WHERE invoice_id = ?";
+		try(PreparedStatement statement = connection.prepareStatement(query)){
+			statement.setLong(1,invoiceId);
+			statement.setDouble(2,newTotal);
+
+			return statement.executeUpdate() > 0;
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+		return false;
+}
 
 
 

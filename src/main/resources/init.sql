@@ -100,7 +100,6 @@ CREATE TABLE Invoices (
     invoice_update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total_amount DECIMAL(10, 2) NOT NULL,
     status ENUM('Pending', 'Paid', 'Overdue') DEFAULT 'Pending',
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (client_id) REFERENCES client(id),
     FOREIGN KEY (order_id) REFERENCES Orders(order_id)
 );
