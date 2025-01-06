@@ -13,12 +13,14 @@ public class OrderPanel extends JPanel {
     private long invoiceID;
     private Order order;
     private JLabel orderIdLabel, orderDateLabel, clientLabel, statusLabel, totalPriceLabel;
-    private JButton validateOrderButton;
+    private JButton validateOrderButton , deleteItem;
     private JTable cartItemsTable;
     private JScrollPane cartItemsScrollPane;
     private AdminController adminController;
+    private InvoiceDashbaord invoiceDashboard;
 
-    public OrderPanel(Order order, AdminController adminController,long invoiceID) {
+    public OrderPanel(Order order, AdminController adminController,long invoiceID,InvoiceDashbaord invoiceDashboard) {
+        this.invoiceDashboard=invoiceDashboard;
         this.invoiceID= invoiceID;
         this.adminController=adminController;
         this.order = order;
@@ -50,15 +52,47 @@ public class OrderPanel extends JPanel {
         cartItemsScrollPane = new JScrollPane(cartItemsTable);
 
         validateOrderButton = new JButton("Validate Order");
-
         validateOrderButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 order.validateOrder();
                 adminController.updateInvoice(invoiceID,order.getCartItems().getTotalPrice());
-                // we have to update the invoice here and generate a new invoice
+                SwingUtilities.invokeLater(() -> {
+                    invoiceDashboard.loadInvoiceData();
+                });
             }
         });
+        deleteItem = new JButton("Delete Item");
+        deleteItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = cartItemsTable.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(null, "Please select a row to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                Long productId = (Long) cartItemsTable.getValueAt(selectedRow, 0);
+                int confirm = JOptionPane.showConfirmDialog(null,
+                        "Are you sure you want to delete this item?",
+                        "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    System.out.println("bijouuuuux" + productId);
+                    System.out.println(order.getCartItems());
+                    order.getCartItems().deleteFromCart(productId);
+                    System.out.println(order.getCartItems());
+                    double newTotalPrice = order.getCartItems().getTotalPrice();
+                    totalPriceLabel.setText("Total Price: " + newTotalPrice);
+
+                    adminController.deleteFromCart(order.getOrderId(), productId);
+                    adminController.updateOrder(order.getOrderId(),newTotalPrice);
+
+                    DefaultTableModel model = createTableModel(order.getCartItems());
+                    cartItemsTable.setModel(model);
+                }
+            }
+        });
+
 
         add(orderIdLabel);
         add(orderDateLabel);
@@ -66,7 +100,12 @@ public class OrderPanel extends JPanel {
         add(statusLabel);
         add(totalPriceLabel);
         add(cartItemsScrollPane);
-        add(validateOrderButton);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(validateOrderButton);
+        buttonPanel.add(deleteItem);
+        add(buttonPanel);
+
     }
 
     private DefaultTableModel createTableModel(Cart cart) {

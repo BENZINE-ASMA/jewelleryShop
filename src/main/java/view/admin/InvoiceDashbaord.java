@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 
 public class InvoiceDashbaord extends JPanel{
@@ -54,10 +55,11 @@ public class InvoiceDashbaord extends JPanel{
 		loadInvoiceData();
 	}
 
-	private void loadInvoiceData() {
+	public void loadInvoiceData() {
+		ArrayList<Invoice> invoices = adminController.fetchAllInvoices();
 		tableModel.setRowCount(0);
-		for (Invoice invoice : adminController.fetchAllInvoices()) {
-			tableModel.addRow(new Object[]{
+		for (Invoice invoice : invoices) {
+			tableModel.addRow(new Object[] {
 					invoice.getInvoiceId(), invoice.getClientId(), invoice.getOrderId(),
 					invoice.getInvoiceNumber(), invoice.getTotalAmount(),
 					invoice.getStatus(), invoice.getInvoiceDate(),
@@ -65,6 +67,7 @@ public class InvoiceDashbaord extends JPanel{
 			});
 		}
 	}
+
 
 	private Invoice getInvoiceFromTable(int rowIndex) {
 		return new Invoice(
@@ -134,7 +137,7 @@ public class InvoiceDashbaord extends JPanel{
 			orderFrame.setLayout(new BorderLayout());
 
 			// Create the OrderPanel and add it to the frame
-			OrderPanel orderPanel = new OrderPanel(orderToDisplay,this.adminController,invoiceId);
+			OrderPanel orderPanel = new OrderPanel(orderToDisplay,this.adminController,invoiceId,this);
 			orderFrame.add(orderPanel, BorderLayout.CENTER);
 
 			// Make the JFrame fit the size of the content and set it visible
@@ -144,6 +147,9 @@ public class InvoiceDashbaord extends JPanel{
 		} else {
 			System.out.println("No row selected in the invoice table");
 		}
+	}
+	public JTable getInvoiceTable() {
+		return this.invoiceTable;
 	}
 
 

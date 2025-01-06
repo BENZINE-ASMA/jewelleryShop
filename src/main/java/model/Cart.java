@@ -40,7 +40,15 @@ public class Cart {
 		}
 
 	}
-	
+	public void deleteFromCart(Long id) {
+		// since it s a new object this returns null cz it checks the equality with the whole object not only item itself
+		for(Bijoux b: this.cart.keySet()){
+			if (b.getId()==id){
+				cart.remove(b);
+			}
+		}
+	}
+
 	public void removeFromCart(Bijoux b) {
 		if(cart.containsKey(b)) {
 			int currentQuantity = cart.getOrDefault(b,0);

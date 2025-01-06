@@ -756,15 +756,29 @@ return null;
 		}
 		return false;
 	}
+	public boolean deleteFromCart(Long orderId, Long productId){
+
+		String query = "delete from Cart_Items where order_id =? and product_id=? ";
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setLong(1,orderId);
+			statement.setLong(2,productId);
+
+			int result = statement.executeUpdate();
+
+			return result > 0;
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	public boolean updateOrder(Long orderId, double totalPrice){
 		String query = "update orders\n" +
 				"set total_amount = ? where order_id= ?";
 
 		try(PreparedStatement statement = connection.prepareStatement(query)){
-			statement.setLong(1,orderId);
-			statement.setDouble(2,totalPrice);
-
+			statement.setLong(2,orderId);
+			statement.setDouble(1,totalPrice);
 			return statement.executeUpdate()>0;
 
 		}catch(SQLException e){
@@ -776,8 +790,8 @@ return null;
 public boolean updateInvoice(Long invoiceId, Double newTotal){
 		String query= "UPDATE Invoices SET total_amount =?, invoice_update_date = CURRENT_TIMESTAMP WHERE invoice_id = ?";
 		try(PreparedStatement statement = connection.prepareStatement(query)){
-			statement.setLong(1,invoiceId);
-			statement.setDouble(2,newTotal);
+			statement.setLong(2,invoiceId);
+			statement.setDouble(1,newTotal);
 
 			return statement.executeUpdate() > 0;
 		}catch (SQLException e){

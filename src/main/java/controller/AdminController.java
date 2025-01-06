@@ -6,13 +6,14 @@ import model.Bijoux;
 import model.Client;
 import model.Invoice;
 import model.Order;
+import view.MainView;
 
 public class AdminController {
 	private ArrayList<Client> clients;
 	private ArrayList<Bijoux> products;
 	private ArrayList<Invoice> invoices;
 	private DBManager dbManager;
-	
+	private MainView mainView;
 	public DBManager getDbManager() {
 		return dbManager;
 	}
@@ -21,7 +22,8 @@ public class AdminController {
 		this.dbManager = dbManager;
 	}
 
-	public AdminController(DBManager dbManager) {
+	public AdminController(DBManager dbManager, MainView mainView) {
+		this.mainView=mainView;
 		this.clients = new ArrayList<>();
 		this.dbManager = dbManager;
 	}
@@ -85,14 +87,20 @@ public class AdminController {
 	public boolean updateInvoice(Long invoiceId, Double newTtalAmount){
 		return this.dbManager.updateInvoice(invoiceId,newTtalAmount);
 	}
-	/*
+
 	public void showRingDashboardsView() {
 		mainView.loadInvoiceDashbaordView();
 		mainView.showPanel("invoice");
-		/*
+
 		mainView.loadRingsDashboardView();
 		mainView.showPanel("ringsDashbaord");
-		*/
-	
+	}
 
+	public Bijoux fetchBijouxById(Long productId){
+		return this.dbManager.fetchBijouxById(productId);
+	}
+
+	public boolean deleteFromCart (Long orderId, Long productId){
+		return this.dbManager.deleteFromCart(orderId,productId);
+	}
 }

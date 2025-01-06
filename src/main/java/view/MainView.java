@@ -142,16 +142,16 @@ public class MainView extends JFrame {
     }
     
     public void loadClientDashbaordView() {
-    	ClientDashbaord mainDashboardAdminView = new ClientDashbaord(new AdminController(this.mainController.getDbManager()));
+    	ClientDashbaord mainDashboardAdminView = new ClientDashbaord(new AdminController(this.mainController.getDbManager(),this));
     	mainPanel.add(mainDashboardAdminView,"client");
     }
     
     public void loadProductDashbaordView() {
-    	ProductDashboard mainDashboardAdminView = new ProductDashboard(new AdminController(this.mainController.getDbManager()));
+    	ProductDashboard mainDashboardAdminView = new ProductDashboard(new AdminController(this.mainController.getDbManager(),this));
     	mainPanel.add(mainDashboardAdminView,"product");
     }
     public void loadInvoiceDashbaordView() {
-        InvoiceDashbaord mainDashboardAdminView = new InvoiceDashbaord(new AdminController(this.mainController.getDbManager()));
+        InvoiceDashbaord mainDashboardAdminView = new InvoiceDashbaord(new AdminController(this.mainController.getDbManager(),this));
         mainPanel.add(mainDashboardAdminView,"invoice");
     }
 
