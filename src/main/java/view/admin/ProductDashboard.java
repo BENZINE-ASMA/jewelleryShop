@@ -8,6 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.AdminController;
@@ -24,7 +25,9 @@ public class ProductDashboard extends JPanel {
     public ProductDashboard(AdminController adminController) {
         this.adminController = adminController;
         setLayout(new BorderLayout());
-
+        DashboardHeaderAdmin header = new DashboardHeaderAdmin(adminController);
+        header.setBorder(new EmptyBorder(0, 0, 5, 0));
+        add(header, BorderLayout.NORTH);
         tableModel = new DefaultTableModel(new String[]{
             "ID", "Name", "Brand", "Type", "Description", "Price",
             "Material", "Size", "Length", "Stock", "Image_Path"
@@ -60,6 +63,17 @@ public class ProductDashboard extends JPanel {
         buttonPanel.add(deleteProduct);
 
         this.add(buttonPanel, BorderLayout.SOUTH);
+        JButton closeButton = new JButton("close");
+        closeButton.addActionListener(e -> {
+            adminController.ShowMaindashboardAdminView();
+            this.setVisible(false);
+        });
+        /*
+        JPanel closePanel = new JPanel(new BorderLayout());
+        closePanel.add(closeButton, BorderLayout.WEST);
+        closePanel.setBorder(new EmptyBorder(1, 0, 5, 1));
+        this.add(closePanel, BorderLayout.NORTH);
+    */
     }
 
     private void loadProductData() {

@@ -1,0 +1,23 @@
+package EXO3;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class Wild {
+
+    // Restrict T to CharSequence or its subclasses
+    public static <T extends CharSequence> List<Integer> listLength(List<T> list) {
+        List<Integer> length = new ArrayList<>(); // Use a typed List
+        for (T seq : list) {
+            length.add(seq.length());
+        }
+        return length;
+    }
+
+    public static void main(String[] args) {
+        // Correctly declare the list with String (a subclass of CharSequence)
+        List<String> l = Arrays.asList("colonel", "reyel");
+        System.out.println(listLength(l)); // Outputs: [7, 5]
+    }
+}

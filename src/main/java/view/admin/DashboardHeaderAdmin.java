@@ -10,105 +10,70 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import controller.AdminController;
 import controller.MainController;
 import shared.UtilDisplayingDashboards;
 
 public class DashboardHeaderAdmin extends JPanel {
-    private JLabel profileIcon;
-    private JLabel cartIcon;
     private JLabel hotlineIcon;
-    private JTextField searchField;
-    private MainController mainController;
+    private JButton catalogue,products,clients,invoices;
+    private AdminController adminController;
 
-    public DashboardHeaderAdmin(MainController mainController) {
-        this.mainController = mainController;
+    public DashboardHeaderAdmin(AdminController adminController) {
+        this.adminController=adminController;
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         leftPanel.setBackground(Color.WHITE);
 
-        JButton allButton = new JButton("All");
-        allButton.addActionListener(e->{
-        	mainController.showMainDashboardView();
-        });
-        JButton ringButton = new JButton("Ring");
-        ringButton.addActionListener(e -> {
-            mainController.showRingDashboardsView();
+        this.catalogue = new JButton("Catalogue");
+        catalogue.addActionListener(e->{
+            adminController.ShowMaindashboardAdminView();
         });
 
-        JButton necklaceButton = new JButton("Necklace");
-        necklaceButton.addActionListener(e -> {
-            mainController.showNecklaceDashboardsView();
+        this.products = new JButton("PRODUCTS");
+        products.addActionListener(e->{
+            adminController.showProductsDashbaordView();
         });
-        
-        JButton invoices = new JButton("Invoices");
-        invoices.addActionListener(e -> {
-            mainController.showNecklaceDashboardsView();
-        });
-        JButton clients = new JButton("Clients");
+        this.clients = new JButton("CLIENTS");
         clients.addActionListener(e -> {
-            mainController.showNecklaceDashboardsView();
-        });
-        
-        JButton orders = new JButton("Orders");
-        orders.addActionListener(e -> {
-            mainController.showNecklaceDashboardsView();
+           adminController.showClientsDashbaordView();
         });
 
-        searchField = new JTextField(20);
-        JButton searchButton = new JButton("Search");
-        searchButton.addActionListener(e -> {
-            String query = searchField.getText().trim();
-            if (!query.isEmpty()) {
-                // Implement search logic if needed
-            }
+        this.invoices  = new JButton("INVOICES");
+        invoices.addActionListener(e -> {
+            adminController.showInvoiceView();
         });
-        
-        leftPanel.add(allButton);
-        leftPanel.add(ringButton);
-        leftPanel.add(necklaceButton);
-        leftPanel.add(searchField);
-        leftPanel.add(searchButton);
+
+
+        leftPanel.add(catalogue);
+        leftPanel.add(products);
+        leftPanel.add(clients);
+        leftPanel.add(invoices);
 
         add(leftPanel, BorderLayout.WEST);
 
         JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         rightPanel.setBackground(Color.WHITE);
 
-        profileIcon = new JLabel();
-        UtilDisplayingDashboards.loadIcon(profileIcon, "resources/profileIcon.png", 20, 15);
 
-        cartIcon = new JLabel();
-        UtilDisplayingDashboards.loadIcon(cartIcon, "resources/cartIcon.png", 20, 15);
-        
+
         hotlineIcon = new JLabel();
         UtilDisplayingDashboards.loadIcon(hotlineIcon, "resources/hotlineIcon.png", 20, 15);
 
 
-        profileIcon.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mainController.showProfileInfoView();
-            }
-        });
 
-        cartIcon.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                mainController.showCartView();
-            }
-        });
-        
+
+
+
         hotlineIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainController.showCartView();
+                //mainController.showCartView();
             }
         });
-        
-        rightPanel.add(profileIcon);
-        rightPanel.add(cartIcon);
         rightPanel.add(hotlineIcon);
 
         add(rightPanel, BorderLayout.EAST);
