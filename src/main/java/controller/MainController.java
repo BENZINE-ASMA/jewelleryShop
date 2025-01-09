@@ -53,7 +53,7 @@ public class MainController {
 			this.setLoggedInClient(authenticatedUser);
 			mainView.setLoggedInClient(authenticatedUser);
 			
-			if (authenticatedUser.getRole().equals("admin")) {
+			if (authenticatedUser.getRole().equals("ADMIN")) {
 				this.createAndShowMaindashboardAdminView();
 			}else {
 				
@@ -122,12 +122,8 @@ public class MainController {
 
 	
 	public void showRingDashboardsView() {
-		mainView.loadInvoiceDashbaordView();
-		mainView.showPanel("invoice");
-		/*
 		mainView.loadRingsDashboardView();
 		mainView.showPanel("ringsDashbaord");
-		*/
 	}
 	public void showNecklaceDashboardsView() {
 		mainView.loadNecklacesDashboardView();

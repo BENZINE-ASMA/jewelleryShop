@@ -5,10 +5,13 @@
 /target/
 /build/
 
-# Ignore .class files
+# Ignore compiled Java class files
 *.class
 
-# Ignore Eclipse project files
+*.log
+*.settings/
+*.project
+*.classpath
 
 # Ignore OS-specific files (MacOS, Windows, Linux)
 .DS_Store

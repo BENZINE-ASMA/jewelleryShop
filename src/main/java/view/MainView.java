@@ -18,39 +18,39 @@ public class MainView extends JFrame {
     private JPanel mainPanel;
     private static Client loggedInClient;
     private MainController mainController;
-    private MainController admiNController;
-
+    private AdminController adminController;
     public MainView() {
-   
+
 
         setTitle("Vente de bijoux");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        
+
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
-        DBManager dbManager = new DBManager(); 
-        mainController = new MainController(this, dbManager); 
-      
+        DBManager dbManager = new DBManager();
+        mainController = new MainController(this, dbManager);
+        adminController= new AdminController(dbManager,this);
+
         LoginView loginView = new LoginView(mainController);
         mainPanel.add(loginView, "Login");
 
 
 
         this.mainController.initializeDatabase();
-        
-    
+
+
         add(mainPanel);
 
-      
+
         cardLayout.show(mainPanel, "Login");
 
         setVisible(true);
     }
 
 
-  
+
     public CardLayout getCardLayout() {
 		return cardLayout;
 	}
@@ -72,14 +72,14 @@ public class MainView extends JFrame {
 
 
 	public void showPanel(String panelName) {
-		if(panelName=="MainDashboard"||panelName=="cart" || panelName== "ringsDashbaord" || panelName=="necklacesDashbaord" ||
-				panelName=="mainDashboardAdminView" ||panelName=="client") {
-			setSize(950,700);
-			cardLayout.show(mainPanel, panelName);
+		if(panelName=="loginView") {
+            setSize(400, 300);
+            cardLayout.show(mainPanel, panelName);
 		}else {
-			setSize(400, 300);
-			cardLayout.show(mainPanel, panelName);
-			
+            setSize(950,700);
+            cardLayout.show(mainPanel, panelName);
+
+
 		}
     }
 
@@ -96,14 +96,14 @@ public class MainView extends JFrame {
 	public void setLoggedInClient(Client loggedInClient) {
 		this.loggedInClient = loggedInClient;
 	}
-	
-    
+
+
     public void loadMaindashboardView() {
     	MainDashboardView mainDashboardView = new MainDashboardView(mainController);
         mainPanel.add(mainDashboardView, "MainDashboard");
     }
     public void loadProfileInfoView() {
-    	
+
         ProfileInfoView profileInfoView = new ProfileInfoView(mainController);
         mainPanel.add(profileInfoView, "ProfileInfo");
     }
@@ -119,41 +119,41 @@ public class MainView extends JFrame {
     public void loadSignUpView() {
     	SignUpView SignUpView = new SignUpView(mainController);
         mainPanel.add(SignUpView, "Signup");
-		
+
 	}
     public void loadCartView() {
     	CartView cartView = new CartView(mainController);
         mainPanel.add(cartView, "cart");
-		
+
 	}
-    
+
     public void loadRingsDashboardView() {
     	RingsDashboardView ringsDashboardView = new RingsDashboardView(mainController);
     	mainPanel.add(ringsDashboardView,"ringsDashbaord");
     }
-    
+
     public void loadNecklacesDashboardView() {
     	NecklacesDashboardView necklacesDashboardView = new NecklacesDashboardView(mainController);
     	mainPanel.add(necklacesDashboardView,"necklacesDashbaord");
     }
     public void loadMainDashboardAdminView() {
-    	MainDashboardAdminView mainDashboardAdminView = new MainDashboardAdminView(mainController);
+    	MainDashboardAdminView mainDashboardAdminView = new MainDashboardAdminView(mainController, adminController);
     	mainPanel.add(mainDashboardAdminView,"mainDashboardAdminView");
+        System.out.println("this is the admin interface showing");
     }
-    
-    public void loadClientDashbaordView() {
-    	ClientDashbaord mainDashboardAdminView = new ClientDashbaord(new AdminController(this.mainController.getDbManager(),this));
-    	mainPanel.add(mainDashboardAdminView,"client");
+    public void loadInvoiceDashbaordView(){
+        InvoiceDashbaord invoiceDashbaord = new InvoiceDashbaord(adminController);
+        mainPanel.add(invoiceDashbaord,"InvoiceDashbaord");
     }
-    
-    public void loadProductDashbaordView() {
-    	ProductDashboard mainDashboardAdminView = new ProductDashboard(new AdminController(this.mainController.getDbManager(),this));
-    	mainPanel.add(mainDashboardAdminView,"product");
+    public void loadClientsDashbaordView(){
+        ClientDashbaord clientDashbaord = new ClientDashbaord(adminController);
+        mainPanel.add(clientDashbaord,"ClientDashbaord");
     }
-    public void loadInvoiceDashbaordView() {
-        InvoiceDashbaord mainDashboardAdminView = new InvoiceDashbaord(new AdminController(this.mainController.getDbManager(),this));
-        mainPanel.add(mainDashboardAdminView,"invoice");
+    public void loadProductsDashbaordView(){
+        ProductDashboard productDashboard = new ProductDashboard(adminController);
+        mainPanel.add(productDashboard,"ProductDashbaord");
     }
+
 
     public void loadLoginView(boolean displayOptionPanes ,String toDisplay) {
     	if(displayOptionPanes) {

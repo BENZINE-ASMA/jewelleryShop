@@ -87,20 +87,29 @@ public class AdminController {
 	public boolean updateInvoice(Long invoiceId, Double newTtalAmount){
 		return this.dbManager.updateInvoice(invoiceId,newTtalAmount);
 	}
-
-	public void showRingDashboardsView() {
-		mainView.loadInvoiceDashbaordView();
-		mainView.showPanel("invoice");
-
-		mainView.loadRingsDashboardView();
-		mainView.showPanel("ringsDashbaord");
-	}
-
-	public Bijoux fetchBijouxById(Long productId){
-		return this.dbManager.fetchBijouxById(productId);
-	}
-
 	public boolean deleteFromCart (Long orderId, Long productId){
 		return this.dbManager.deleteFromCart(orderId,productId);
 	}
-}
+
+	public void showRingDashboardsView() {
+		mainView.loadRingsDashboardView();
+		mainView.showPanel("ringsDashbaord");
+	}
+	public void showInvoiceView() {
+		mainView.loadInvoiceDashbaordView();
+		mainView.showPanel("InvoiceDashbaord");
+	}
+	public void showClientsDashbaordView() {
+		mainView.loadClientsDashbaordView();
+		mainView.showPanel("ClientDashbaord");
+	}
+	public void showProductsDashbaordView() {
+		mainView.loadProductsDashbaordView();
+		mainView.showPanel("ProductDashbaord");
+	}
+	public void ShowMaindashboardAdminView() {
+		mainView.loadMainDashboardAdminView();
+		mainView.showPanel("mainDashboardAdminView");
+	}
+
+	}
