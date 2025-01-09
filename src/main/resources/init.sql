@@ -25,7 +25,7 @@ CREATE TABLE client (
 
 -- Insert initial admin client
 INSERT INTO client (firstName, lastName, email, password, role)
-VALUES ('admin', 'admin', 'admin', 'admin', 'ADMIN');
+VALUES ('admin', 'admin', 'admin.admin@dauphine.eu', 'admin', 'ADMIN');
 INSERT INTO client (firstName, lastName, email, password, role)
 VALUES ('asma', 'as', 'asma', '123', 'CLIENT');
 

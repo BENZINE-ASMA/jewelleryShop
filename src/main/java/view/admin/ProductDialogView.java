@@ -36,9 +36,8 @@ public class ProductDialogView extends JDialog {
         this.product = product;
         this.adminController = adminController;
         this.setLayout(null);
-        this.setSize(400, 1000);
+        this.setSize(400, 600); // Set dialog size
         this.setLocationRelativeTo(null);
-        this.setTitle(product == null ? "Add New Product" : "Edit Product Details");
 
 
         JLabel nameLabel = new JLabel("Name:");

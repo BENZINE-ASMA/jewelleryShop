@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.AdminController;
@@ -28,10 +27,7 @@ public class ClientDashbaord extends JPanel{
 		clientTable = new JTable(tableModel);
 		this.loadClientData();
 		add(new JScrollPane(clientTable), BorderLayout.CENTER);
-
-		DashboardHeaderAdmin header = new DashboardHeaderAdmin(adminController);
-		header.setBorder(new EmptyBorder(0, 0, 5, 0));
-		add(header, BorderLayout.NORTH);
+		
 		JPanel buttonPanel = new JPanel();
 		JButton addClient = new JButton("Add");
 		addClient.addActionListener(e->{
@@ -58,18 +54,6 @@ public class ClientDashbaord extends JPanel{
 		buttonPanel.add(deleteClient);
 		
 		this.add(buttonPanel,BorderLayout.SOUTH);
-/*
-		JButton closeButton = new JButton("close");
-		closeButton.addActionListener(e -> {
-			adminController.ShowMaindashboardAdminView();
-			this.setVisible(false);
-		});
-		JPanel closePanel = new JPanel(new BorderLayout());
-		closePanel.add(closeButton, BorderLayout.WEST);
-		closePanel.setBorder(new EmptyBorder(1, 0, 5, 1));
-		this.add(closePanel, BorderLayout.NORTH);
-		*/
-
 	}
 	
 	private void loadClientData() {

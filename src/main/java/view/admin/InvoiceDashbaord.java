@@ -7,7 +7,6 @@ import model.Invoice;
 import model.Order;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.Timestamp;
@@ -22,9 +21,7 @@ public class InvoiceDashbaord extends JPanel{
 	public InvoiceDashbaord(AdminController adminController) {
 		this.adminController =adminController;
 		setLayout(new BorderLayout());
-		DashboardHeaderAdmin header = new DashboardHeaderAdmin(adminController);
-		header.setBorder(new EmptyBorder(0, 0, 5, 0));
-		add(header, BorderLayout.NORTH);
+
 		tableModel = new DefaultTableModel(new String[]{
 				"ID", "ClientId", "OrderId", "InvoiceNumber", "Total",
 				"Status", "InvoiceDate", "UpdatedDate", "InvoicePath"}, 0);
@@ -48,21 +45,13 @@ public class InvoiceDashbaord extends JPanel{
 		buttonPanel.add(editInvoice);
 		buttonPanel.add(deleteInvoice);
 		add(buttonPanel, BorderLayout.SOUTH);
-/*
+
 		JButton displayOrderButton = new JButton("Display Corresponding Order");
 		displayOrderButton.addActionListener(e -> displayOrderPanel());
 		buttonPanel.add(displayOrderButton);
-		JButton closeButton = new JButton("close");
-		closeButton.addActionListener(e -> {
-			adminController.ShowMaindashboardAdminView();
-			this.setVisible(false);
-		});
-		JPanel closePanel = new JPanel(new BorderLayout());
-		closePanel.add(closeButton, BorderLayout.WEST);
-		closePanel.setBorder(new EmptyBorder(1, 0, 5, 1));
-		this.add(closePanel, BorderLayout.NORTH);
 
- */
+
+
 		loadInvoiceData();
 	}
 
@@ -93,6 +82,7 @@ public class InvoiceDashbaord extends JPanel{
 				(Timestamp) tableModel.getValueAt(rowIndex, 7)
 		);
 	}
+
 	private void openEditInvoiceView(Invoice invoice) {
 		InvoiceDialogView dialog = new InvoiceDialogView(invoice, new InvoiceController());
 		dialog.setSize(400, 300);

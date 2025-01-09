@@ -37,7 +37,7 @@ public class MainController {
 	public void initializeDatabase() {
 		try {
 			dbManager.connect();
-			//dbManager.executeSQLScript("resources/init.sql");
+			dbManager.executeSQLScript("resources/init.sql");
 		} catch (SQLException e) {
 			//JOptionPane.showMessageDialog(, "Database initialization failed: " + e.getMessage(),
 			//		"Error", JOptionPane.ERROR_MESSAGE);
@@ -53,7 +53,7 @@ public class MainController {
 			this.setLoggedInClient(authenticatedUser);
 			mainView.setLoggedInClient(authenticatedUser);
 			
-			if (authenticatedUser.getRole().equals("ADMIN")) {
+			if (authenticatedUser.getRole().equals("admin")) {
 				this.createAndShowMaindashboardAdminView();
 			}else {
 				
@@ -122,8 +122,12 @@ public class MainController {
 
 	
 	public void showRingDashboardsView() {
+		mainView.loadInvoiceDashbaordView();
+		mainView.showPanel("invoice");
+		/*
 		mainView.loadRingsDashboardView();
 		mainView.showPanel("ringsDashbaord");
+		*/
 	}
 	public void showNecklaceDashboardsView() {
 		mainView.loadNecklacesDashboardView();

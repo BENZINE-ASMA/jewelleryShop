@@ -35,7 +35,7 @@ public class LoginView extends JPanel {
 
 		usernameField = new JTextField(20);
 		usernameField.setBounds(150, 50, 150, 25);
-		usernameField.setText("admin");
+		usernameField.setText("asma");
 		this.add(usernameField);
 
 		JLabel passwordLabel = new JLabel("Password:");
@@ -44,7 +44,7 @@ public class LoginView extends JPanel {
 
 		passwordField = new JPasswordField(20);
 		passwordField.setBounds(150, 100, 150, 25);
-		passwordField.setText("admin");
+		passwordField.setText("123");
 		this.add(passwordField);
 
 		loginButton = new JButton("Login");
