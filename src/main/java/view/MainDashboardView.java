@@ -26,7 +26,7 @@ public class MainDashboardView extends JPanel {
 
         DashboardHeader header = new DashboardHeader(mainController);
         add(header, BorderLayout.NORTH);
-        JPanel filterPanel = new FilterDashbaordPanel(this.FilteredDashboard,this.getHeight(),mainController, this);
+        JPanel filterPanel = new FilterDashbaordPanel(this.FilteredDashboard,this.getHeight(),mainController, this,"ALL");
         add(filterPanel, BorderLayout.WEST);
 
         JPanel dashboardPanel = new JPanel();

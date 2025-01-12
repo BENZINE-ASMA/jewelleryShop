@@ -10,31 +10,36 @@ import lombok.Getter;
 import lombok.Setter;
 import model.Bijoux;
 import model.Necklace;
-
 import shared.UtilDisplayingDashboards;
 
 @Getter
 @Setter
 public class NecklacesDashboardView extends JPanel {
 	private MainController mainController;
-	private ArrayList<Necklace> necklaces;
-		
+	private ArrayList<Bijoux> bijouxList;
+
 	public NecklacesDashboardView(MainController mainController) {
 		this.mainController = mainController;
-		this.necklaces = new ArrayList<Necklace>();
-			for(Bijoux b : mainController.getProducts()) {
-		        	if (b instanceof Necklace) {
-		        		necklaces.add((Necklace) b);
-		        	}
-		        }
-		        setLayout(new BorderLayout());
+		this.bijouxList = new ArrayList<Bijoux>();
 
-		        DashboardHeader header = new DashboardHeader(mainController);
-		        add(header, BorderLayout.NORTH);
+		for (Bijoux b : mainController.getProducts()) {
+			if (b instanceof Necklace) {
+				bijouxList.add(b);
+			}
+		}
 
-		       
-		        UtilDisplayingDashboards.loadDashbaordImages(mainController,this.necklaces, this);
-		    }
-		
+		setLayout(new BorderLayout());
 
+		DashboardHeader header = new DashboardHeader(mainController);
+		add(header, BorderLayout.NORTH);
+
+		JPanel filterPanel = new FilterDashbaordPanel(bijouxList, this.getHeight(), mainController, this, "NECKLACE");
+		add(filterPanel, BorderLayout.WEST);
+
+		JPanel dashboardPanel = new JPanel();
+		dashboardPanel.setLayout(new BorderLayout());
+		add(dashboardPanel, BorderLayout.CENTER);
+
+		UtilDisplayingDashboards.loadDashbaordImages(mainController, bijouxList, dashboardPanel);
+	}
 }

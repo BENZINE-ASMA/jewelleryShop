@@ -11,9 +11,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class FilterDashbaordPanel extends JPanel{
+    private String parent;
 
-    public FilterDashbaordPanel(ArrayList<Bijoux>FilteredDashboard, int panelHeight, MainController mainController, JPanel dashboard){
+    public FilterDashbaordPanel(ArrayList<Bijoux>FilteredDashboard, int panelHeight, MainController mainController, JPanel dashboard, String p){
         super();
+        this.parent=p;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(200, panelHeight));
         this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -37,11 +39,18 @@ public class FilterDashbaordPanel extends JPanel{
         this.add(Box.createRigidArea(new Dimension(0, 10)));
 
         JLabel productTypeLabel = new JLabel("Type de produit");
-        this.add(productTypeLabel);
-        String[] productTypes = {"All", "Bagues", "Colliers"};
-        JComboBox<String> productTypeComboBox = new JComboBox<>(productTypes);
-        this.add(productTypeComboBox);
 
+        String[] productTypes = {"All", "Ring", "Necklace"};
+        JComboBox<String> productTypeComboBox = new JComboBox<>(productTypes);
+
+        if(parent.equals("RING")){
+            productTypeComboBox.setSelectedItem("Ring");
+        } else if (parent.equals("NECKLACE")) {
+            productTypeComboBox.setSelectedItem("Necklace");
+        }else{
+            this.add(productTypeComboBox);
+            this.add(productTypeLabel);
+        }
 
         this.add(Box.createRigidArea(new Dimension(0, 10)));
 

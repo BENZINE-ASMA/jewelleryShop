@@ -12,27 +12,34 @@ import model.Bijoux;
 import model.Ring;
 import shared.UtilDisplayingDashboards;
 
- @Getter
- @Setter
+@Getter
+@Setter
 public class RingsDashboardView extends JPanel {
 	private MainController mainController;
-	private ArrayList<Ring> rings;
-	
+	private ArrayList<Bijoux> bijouxList;
+
 	public RingsDashboardView(MainController mainController) {
 		this.mainController = mainController;
-		this.rings = new ArrayList<Ring>();
-	        for(Bijoux b : mainController.getProducts()) {
-	        	if (b instanceof Ring) {
-	        		rings.add((Ring) b);
-	        	}
-	        }
-	        setLayout(new BorderLayout());
+		this.bijouxList = new ArrayList<>();
 
-	        DashboardHeader header = new DashboardHeader(mainController);
-	        add(header, BorderLayout.NORTH);
+		for (Bijoux b : mainController.getProducts()) {
+			if (b instanceof Ring) {
+				bijouxList.add(b);
+			}
+		}
 
-	       
-	        UtilDisplayingDashboards.loadDashbaordImages(mainController,this.rings, this);
-	    }
-	
+		setLayout(new BorderLayout());
+
+		DashboardHeader header = new DashboardHeader(mainController);
+		add(header, BorderLayout.NORTH);
+
+		JPanel filterPanel = new FilterDashbaordPanel(bijouxList, this.getHeight(), mainController, this, "RING");
+		add(filterPanel, BorderLayout.WEST);
+
+		JPanel dashboardPanel = new JPanel();
+		dashboardPanel.setLayout(new BorderLayout());
+		add(dashboardPanel, BorderLayout.CENTER);
+
+		UtilDisplayingDashboards.loadDashbaordImages(mainController, bijouxList, dashboardPanel);
+	}
 }
