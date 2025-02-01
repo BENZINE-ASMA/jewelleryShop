@@ -38,7 +38,7 @@ public class DBManager {
 	}
 
 	public Connection getConnection() {
-		return connection; // Use this method to get the connection when needed
+		return connection;
 	}
 
 	public void connect() throws SQLException {
@@ -107,21 +107,10 @@ public class DBManager {
 		}
 	}
 
-	/*
-	try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-			preparedStatement.setString(1, email);
-			preparedStatement.setString(2, password);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
-				System.out.println("User authenticated successfully");
 
-				Long id = resultSet.getLong("id");
-	 */
 	public ArrayList<Bijoux> getAllFilteredProducts(ArrayList<Bijoux> results, String name2, String description2,
 													String brand2, String type2, String pricemin2, String pricemax2, String material2) {
-		/*String query = "select * from products where name ='Diamond Ring' and brand = 'Luxury' and type ='Ring' and description='A beautiful diamond ring with a sleek design.'\n" +
-				"and price ='299.99' and material='Gold';";
-				*/
+
 
 		StringBuilder queryBuilder = new StringBuilder();
 		queryBuilder.append("select * from products where 1=1 ");
@@ -685,10 +674,10 @@ public class DBManager {
 
 	public Cart fetchCart(Long orderId) {
 		String query = "SELECT product_id, quantity FROM Cart_Items WHERE order_id = ?";
-		Cart cart = new Cart();  // Create a new Cart object to hold the fetched items
+		Cart cart = new Cart();
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-			preparedStatement.setLong(1, orderId);  // Set the order_id in the query
+			preparedStatement.setLong(1, orderId); 
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
