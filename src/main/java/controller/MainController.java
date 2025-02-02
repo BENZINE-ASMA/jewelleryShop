@@ -39,8 +39,7 @@ public class MainController {
 			dbManager.connect();
 			dbManager.executeSQLScript("resources/init.sql");
 		} catch (SQLException e) {
-			//JOptionPane.showMessageDialog(, "Database initialization failed: " + e.getMessage(),
-			//		"Error", JOptionPane.ERROR_MESSAGE);
+
 			e.printStackTrace();
 
 			}
@@ -113,7 +112,7 @@ public class MainController {
 	}
 	public void showProfileInfoView() {
 		mainView.loadProfileInfoView();
-		mainView.showPanel("ProfileInfo");
+
 	}
 	public void showCartView() {
 		mainView.loadCartView();;

@@ -11,7 +11,7 @@ import model.Client;
 import model.Order;
 import view.admin.*;
 
-import java.awt.CardLayout;
+import java.awt.*;
 
 public class MainView extends JFrame {
     private CardLayout cardLayout;
@@ -23,7 +23,7 @@ public class MainView extends JFrame {
 
 
         setTitle("Vente de bijoux");
-        setSize(400, 300);
+        setSize(950, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -33,18 +33,13 @@ public class MainView extends JFrame {
         mainController = new MainController(this, dbManager);
         adminController= new AdminController(dbManager,this);
 
-        LoginView loginView = new LoginView(mainController);
-        mainPanel.add(loginView, "Login");
-
-
-
+        this.loadMaindashboardView();
         this.mainController.initializeDatabase();
 
 
         add(mainPanel);
 
-
-        cardLayout.show(mainPanel, "Login");
+        showPanel("MainDashboard");
 
         setVisible(true);
     }
@@ -71,17 +66,16 @@ public class MainView extends JFrame {
 	}
 
 
-	public void showPanel(String panelName) {
-		if(panelName=="loginView") {
-            setSize(400, 300);
-            cardLayout.show(mainPanel, panelName);
-		}else {
-            setSize(950,700);
-            cardLayout.show(mainPanel, panelName);
-
-
-		}
+    public void showPanel(String panelName) {
+        if (panelName.equals("loginView") ||panelName.equals("ProfileInfo"))   {
+            setPreferredSize(new Dimension(400,300));
+        } else {
+            this.setPreferredSize(new Dimension(950, 700));
     }
+    pack();
+    cardLayout.show(mainPanel, panelName);
+    }
+
 
     public static void main(String[] args) {
         new MainView();
@@ -103,10 +97,20 @@ public class MainView extends JFrame {
         mainPanel.add(mainDashboardView, "MainDashboard");
     }
     public void loadProfileInfoView() {
+        if(loggedInClient !=null){
+            ProfileInfoView profileInfoView = new ProfileInfoView(mainController);
+            mainPanel.add(profileInfoView, "ProfileInfo");
+            this.showPanel("ProfileInfo");
+        }else {
+            LoginView loginView = new LoginView(mainController);
+            mainPanel.add(loginView, "loginView");
+            this.showPanel("loginView");
 
-        ProfileInfoView profileInfoView = new ProfileInfoView(mainController);
-        mainPanel.add(profileInfoView, "ProfileInfo");
+        }
+
+
     }
+
     public void showAuthenticationError() {
         JOptionPane.showMessageDialog(this, "Failed to authenticate", "Authentication Error", JOptionPane.ERROR_MESSAGE);
     }
@@ -161,10 +165,10 @@ public class MainView extends JFrame {
         	mainPanel.add(loginView,"loginView");
             JOptionPane.showMessageDialog(this, toDisplay, "Success", JOptionPane.INFORMATION_MESSAGE);
 
-        	
+
     	}
     	LoginView loginView = new LoginView(mainController);
     	mainPanel.add(loginView,"loginView");
     }
-	
+
 }

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -24,7 +25,7 @@ public class LoginView extends JPanel {
 
 	public LoginView(MainController mainController) {
 		this.mainController = mainController;
-
+		setPreferredSize(new Dimension(400, 300));
 		this.setLayout(null);
 		// setting the layout to null means that i will position manually all the
 		// components

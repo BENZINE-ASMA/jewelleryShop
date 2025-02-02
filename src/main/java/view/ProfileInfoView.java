@@ -41,7 +41,7 @@ public class ProfileInfoView extends JPanel {
 		firstNameField = new JTextField(20);
 		firstNameField.setBounds(150, 30, 150, 25);
 		firstNameField.setText(loggedInClient.getFirstName());
-		// firstNameField.setEnabled(false);
+
 		this.add(firstNameField);
 
 		JLabel lastNameLabel = new JLabel("Last Name:");
@@ -51,7 +51,6 @@ public class ProfileInfoView extends JPanel {
 		lastNameField = new JTextField(20);
 		lastNameField.setBounds(150, 70, 150, 25);
 		lastNameField.setText(loggedInClient.getLastName());
-		// lastNameField.setEnabled(false);
 		this.add(lastNameField);
 
 		JLabel emailLabel = new JLabel("Email:");
@@ -80,19 +79,29 @@ public class ProfileInfoView extends JPanel {
 		this.add(editProfileButton);
 
 		editProfileButton.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Long id = mainController.getLoggedInClient().getId();
-				Client updatedClient = new Client(id, ProfileInfoView.this.getFirstNameField().getText(),
-						ProfileInfoView.this.getLastNameField().getText(),
-						ProfileInfoView.this.getEmailField().getText(),
-						ProfileInfoView.this.getPasswordField().getText() ,mainController.getLoggedInClient().getRole() );
-				
+				Client updatedClient = new Client(id,
+						firstNameField.getText(),
+						lastNameField.getText(),
+						emailField.getText(),
+						passwordField.getText(),
+						mainController.getLoggedInClient().getRole());
 				mainController.getDbManager().UpdateUser(updatedClient);
+
+				mainController.setLoggedInClient(updatedClient);
+
+				firstNameField.setText(updatedClient.getFirstName());
+				lastNameField.setText(updatedClient.getLastName());
+				emailField.setText(updatedClient.getEmail());
+				passwordField.setText(updatedClient.getPassword());
+
+				JOptionPane.showMessageDialog(ProfileInfoView.this, "Profile updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		
+
+
 		deleteAcc = new JButton("delete account");
 		deleteAcc.setBounds(190, 195, 120, 25);
 		this.add(deleteAcc);
