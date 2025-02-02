@@ -40,18 +40,17 @@ public class UtilDisplayingDashboards {
         JPanel bijouPanel = new JPanel();
         bijouPanel.setBackground(Color.white);
         bijouPanel.setLayout(new BorderLayout());
-        bijouPanel.setPreferredSize(new Dimension(150, 180));
+        bijouPanel.setPreferredSize(new Dimension(180, 185)); // Increased panel size
         bijouPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
-
 
         JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
         imagePanel.setBackground(Color.white);
+        imagePanel.setPreferredSize(new Dimension(120, 140)); // Increased image panel size
 
-        // Load and display image
         Image bijouImg = UtilDisplayingDashboards.loadImageBijou(bijou.getImagePath());
         if (bijouImg != null) {
-            Image scaledImage = bijouImg.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+            Image scaledImage = bijouImg.getScaledInstance(100, 100, Image.SCALE_SMOOTH); // Increased image size
             JLabel bijouLabel = new JLabel(new ImageIcon(scaledImage));
             bijouLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
             imagePanel.add(bijouLabel);
@@ -59,14 +58,19 @@ public class UtilDisplayingDashboards {
             imagePanel.add(new JLabel("Image not available"));
         }
 
-        JLabel descriptionLabel = new JLabel("<html><center>" + bijou.getDescription() + "</center></html>");
-        descriptionLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        imagePanel.add(descriptionLabel);
+        JLabel nameLabel = new JLabel("<html><center>" + bijou.getName() + "</center></html>");
+        nameLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        imagePanel.add(nameLabel);
 
         int stock = bijou.getStock();
         JLabel quantityLabel = new JLabel("Stock: " + stock);
         quantityLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         imagePanel.add(quantityLabel);
+
+        // Adding price label
+        JLabel priceLabel = new JLabel("Price: " + bijou.getPrice() + "€");
+        priceLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        imagePanel.add(priceLabel);
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
         JButton addButton = new JButton("Add to Cart");
@@ -92,6 +96,7 @@ public class UtilDisplayingDashboards {
 
         return bijouPanel;
     }
+
 
 
 

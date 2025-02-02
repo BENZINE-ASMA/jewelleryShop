@@ -97,7 +97,7 @@ public class ClientDashbaord extends JPanel{
 		dialog.setLocationRelativeTo(null);
 		dialog.setModal(true);
 		dialog.setVisible(true);
-		
+
 		loadClientData();
 	}
 

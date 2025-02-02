@@ -43,41 +43,110 @@ CREATE TABLE products (
     stock INT NOT NULL,
     image_path VARCHAR(255)
 );
-
--- Insert initial products
 INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
-VALUES
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Sapphire Ring', 'Prestige', 'Ring', 'A stunning sapphire ring set in white gold.', 199.99, 'White Gold', 6, NULL, 10, 'resources/Hotline.png'),
-    ('Pearl Necklace', 'Elegance', 'Necklace', 'Elegant pearl necklace with silver chain.', 499.99, 'Silver', NULL, 18.5, 5, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png'),
-    ('Diamond Ring', 'Luxury', 'Ring', 'A beautiful diamond ring with a sleek design.', 299.99, 'Gold', 7, NULL, 15, 'resources/Hotline.png');
+VALUES (
+    'Bague Double Sens Dinh Van',
+    'Dinh Van',
+    'Ring',  -- Ensure this matches an ENUM type if applicable
+    'Bague Double Sens Dinh Van de seconde main en or blanc 18 carats (750/1000). Monté sur un anneau large, le motif central rappelle le yin et le yang : il est arrondi et ajouré pour laisser entrevoir la peau.
+
+     La collection Double Sens rend hommage à la dualité et la complémentarité du Yin et du Yang. Les deux courbes s’allient harmonieusement dans un élan de sensualité pour laisser la place à la sérénité.
+
+     Parez-vous de cette bague sculpturale et graphique qui affirme un style singulier.
+
+     Etat : Seconde Main de Catégorie AB : Bon Etat avec quelques traces d’usage ou patine visibles.
+
+     Prix du neuf : 880 €',
+    880.00,
+    'Or Blanc',
+    55,
+    NULL,
+    1,
+    'resources/jewelry/rings/double_sens_dinh_van.png'
+);
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    'Bague Move Romane Messika',
+    'Messika',
+    'Ring', -- Ensure this matches the ENUM type if applicable
+    'Bague Move Romane Messika de seconde main en or jaune 18 carats (750/1000). 3 diamants mobiles se baladent entre ces lignes graphiques.
+
+     Un design hypnotique créé par Valérie Messika, qui invente la nouvelle joaillerie : moderne, inspirante, légère et assumée.
+
+     Adoptez ce nouveau classique de la joaillerie par Messika.
+
+     Etat : Seconde Main Rénové : Excellent Etat avec peu ou pas de traces d’usage visibles.
+
+     Prix du neuf : 3850 €',
+    2850.00,
+    'Or Rose, Diamant',
+    55, -- Assuming size T55 corresponds to 55
+    NULL, -- Assuming length is not applicable for rings
+    1, -- Default stock value, adjust if needed
+    'resources/jewelry/rings/move_romane_messika.png' -- Adjust with actual image path
+);
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    'Bague Atlas Tiffany & Co',
+    'Tiffany & Co',
+    'Ring', -- Ensure this matches the ENUM type if applicable
+    'Bague Atlas Tiffany & Co de seconde main en or rose 18 carats (750/1000). L’anneau travaillé de chiffres romains est, sur une face, réhaussé de 3 diamants alignés. Une collection riche de sens qui met à l’honneur l’héritage historique de la maison. Signature discrète pour un grand nom. A s’offrir d’urgence.
+
+     Etat : Seconde Main de Catégorie A : Excellent Etat avec peu de traces d’usage visibles.',
+    850.00,
+    'Or Rose, Diamant',
+    48, -- Assuming size T48 corresponds to 48
+    NULL, -- Assuming length is not applicable for rings
+    1, -- Default stock value, adjust if needed
+    'resources/jewelry/rings/atlas_tiffany_co.png' -- Adjust with actual image path
+);
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    'Alliance Sertis Château',
+    'Graff',
+    'Ring', -- Ensure this matches the ENUM type if applicable
+    'Alliance Graff de seconde main en platine 950/1000 et diamants : un anneau en platine entièrement pavé de diamants de forme rondes au serti château.
+
+     Graff, une maison qui a su faire du diamant sa spécialité et sa renommée, signe ici un classique.
+
+     Une alliance au sertissage identitaire qui symbolisera magnifiquement un amour éternel.
+
+     Etat : Seconde Main de Catégorie A : Excellent Etat avec peu de traces d’usage visibles.
+
+     Prix du neuf : 13 400 €',
+    8000.00,
+    'Platine, Diamant',
+    49,
+    NULL,
+    1,
+    'resources/jewelry/rings/diamants_ronds_graff.png'
+);
+
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    ' Attrape moi si tu m’aimes',
+    'Chaumet',
+    'Necklace', 
+    'Pendentif Attrape moi si tu m’aimes Chaumet de seconde main en or jaune 18 carats (750/1000), avec pendentif sphérique figurant une toile d’araignée intégralement pavée de diamants. Au centre, un diamant plus important. Monté sur triple chaîne maille forçat en or jaune. Fermoir mousqueton. Non réglable.
+
+     Attrape moi si tu m’aimes : dans ce nom tout est dit. Un long pendentif qui habille n’importe quelle tenue.
+
+     Laissez vous charmer. Tombez dans ses filets de diamants.
+
+     Etat : Seconde Main de Catégorie A : Excellent Etat avec peu de traces d’usage visibles.
+
+     Prix du neuf : 14 500 €',
+    10125.00,
+    'Or Jaune, Diamant',
+    NULL, -- Size is not applicable for necklaces
+    NULL, -- Length not provided in description
+    1, -- Default stock value, adjust if needed
+    'resources/jewelry/necklaces/attrape_moi_chaumet.png' -- Adjust with actual image path
+);
 
 
+
+-- Insert initial
 
 
 -- Create the `Orders` table

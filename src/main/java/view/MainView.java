@@ -26,7 +26,7 @@ public class MainView extends JFrame {
 
 
         setTitle("Vente de bijoux");
-        setSize(950, 700);
+        setSize(1000, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -75,7 +75,7 @@ public class MainView extends JFrame {
         }else if(panelName.equals("Signup")){
             setPreferredSize(new Dimension(430, 350));
         }else {
-            this.setPreferredSize(new Dimension(950, 700));
+            this.setPreferredSize(new Dimension(1000, 700));
     }
     pack();
     cardLayout.show(mainPanel, panelName);
