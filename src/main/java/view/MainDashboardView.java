@@ -7,12 +7,7 @@ import shared.UtilDisplayingDashboards;
 
 import javax.swing.JPanel;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.EventListener;
 
 public class MainDashboardView extends JPanel {
     private MainController mainController;

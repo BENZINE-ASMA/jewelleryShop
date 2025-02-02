@@ -465,7 +465,7 @@ public class DBManager {
 
 	//--------------------------------------------------------ADMIN---------------------------------------------------------------------------------
 	public boolean updateClient(Client c) {
-		String query = "UPDATE client SET firstName = ?,lastName = ? , email = ?, role = ? WHERE id = ?";
+		String query = "UPDATE client SET firstName = ?,lastName = ? , email = ?, role = ?,password =? WHERE id = ?";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -473,7 +473,8 @@ public class DBManager {
 			preparedStatement.setString(2, c.getLastName());
 			preparedStatement.setString(3, c.getEmail());
 			preparedStatement.setString(4, c.getRole());
-			preparedStatement.setLong(5, c.getId());
+			preparedStatement.setString(5, c.getPassword());
+			preparedStatement.setLong(6, c.getId());
 
 
 			int rowsAffected = preparedStatement.executeUpdate();

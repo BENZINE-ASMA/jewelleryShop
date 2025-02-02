@@ -91,16 +91,17 @@ public class ClientDashbaord extends JPanel{
         
         return new Client(id, firstName, lastName, email, role,password);
     }
-	 private void openEditClientView(Client client) {
+	private void openEditClientView(Client client) {
+		ClientDialogView dialog = new ClientDialogView(client, adminController);
+		dialog.setSize(400, 300);
+		dialog.setLocationRelativeTo(null);
+		dialog.setModal(true);
+		dialog.setVisible(true);
 		
-		 ClientDialogView dialog = new ClientDialogView(client, adminController);
-		 	dialog.setSize(400, 300);
-		 	dialog.setLocationRelativeTo(null); 
-		 	dialog.setModal(true); 
-		 	dialog.setVisible(true); 
-	      
-	    }
-	 private void deteletclient() {
+		loadClientData();
+	}
+
+	private void deteletclient() {
 		 int selectedRow = clientTable.getSelectedRow();
 		 if (selectedRow >= 0) {
 			 Long id = (Long) tableModel.getValueAt(selectedRow,0);

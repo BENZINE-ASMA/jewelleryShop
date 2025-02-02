@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -21,14 +19,45 @@ public class CartView extends JPanel {
 	private Cart cart;
 
 	public CartView(MainController mainController) {
-		
-		this.cart= mainController.getClientCart();
-		this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-		JButton  closeButton = new JButton("Close");
+		this.cart = mainController.getClientCart();
+		this.setLayout(new BorderLayout());
+
+		JButton closeButton = new JButton("Close");
+		closeButton.addActionListener(e -> mainController.showMainDashboardView());
+
+		JButton confirmButton = new JButton("Confirm Purchase");
+		confirmButton.addActionListener(e -> {
+			if (mainController.getLoggedInClient() == null) {
+				JOptionPane.showMessageDialog(
+						CartView.this,
+						"You need to log in to confirm your purchase.",
+						"Login Required",
+						JOptionPane.WARNING_MESSAGE
+				);
+				mainController.showLoginView(false, "Please log in to complete your purchase.");
+			} else {
+				mainController.ChangeOrderStatus(OrderStatus.VALIDEE);
+				cart.getCart().clear();
+				mainController.showMainDashboardView();
+			}
+		});
+
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		buttonPanel.add(closeButton);
+		buttonPanel.add(confirmButton);
+
+		add(buttonPanel, BorderLayout.NORTH);
+		refreshCartView(mainController);
+	}
+
+	private void refreshCartView(MainController mainController) {
+		this.removeAll(); // Remove all components to refresh the view
+
 		JPanel panelImages = new JPanel();
 		panelImages.setLayout(new BoxLayout(panelImages, BoxLayout.Y_AXIS));
-		panelImages.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Adjust margins for panelImages
 		panelImages.setBackground(Color.white);
+		panelImages.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		JPanel rowPanel = null;
 		int imagesPerRow = 4;
@@ -38,54 +67,25 @@ public class CartView extends JPanel {
 			if (i % imagesPerRow == 1) {
 				rowPanel = new JPanel();
 				rowPanel.setBackground(Color.white);
-				rowPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5)); // Set smaller vertical gap
+				rowPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
+				rowPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
 				panelImages.add(rowPanel);
+				panelImages.add(Box.createRigidArea(new Dimension(0, 5)));
 			}
-			JPanel bijouxPanel = this.createBijouxPanel(bijoux, mainController, rowPanel);
+			JPanel bijouxPanel = createBijouxPanel(bijoux, mainController);
 			rowPanel.add(bijouxPanel);
 		}
 
 		JScrollPane scroll = new JScrollPane(panelImages);
 		scroll.setPreferredSize(new Dimension(450, 600));
-		this.add(scroll);
+		scroll.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		add(scroll, BorderLayout.CENTER);
 
-
-
-		closeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainController.showMainDashboardView();
-				
-			}
-		});
-    	JButton  confirmButton = new JButton("Confirm Purchase");
-		confirmButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (mainController.getLoggedInClient() == null) {
-					// Show login view and notify the user to log in
-					JOptionPane.showMessageDialog(
-							CartView.this,
-							"You need to log in to confirm your purchase.",
-							"Login Required",
-							JOptionPane.WARNING_MESSAGE
-					);
-					mainController.showLoginView(false, "Please log in to complete your purchase.");
-				} else {
-					// Confirm purchase if the user is logged in
-					mainController.ChangeOrderStatus(OrderStatus.VALIDEE);
-					cart.getCart().clear(); // Clear the cart after purchase
-					mainController.showMainDashboardView();
-				}
-			}
-		});
-
-		panelImages.add(confirmButton, BorderLayout.SOUTH);
-    	
-   
+		revalidate();
+		repaint();
 	}
 
-	private JPanel createBijouxPanel(Bijoux bijou, MainController mainController, JPanel rowPanel) {
+	private JPanel createBijouxPanel(Bijoux bijou, MainController mainController) {
 		JPanel bijouPanel = new JPanel();
 		bijouPanel.setBackground(Color.white);
 		bijouPanel.setLayout(new BorderLayout());
@@ -119,30 +119,22 @@ public class CartView extends JPanel {
 		JPanel quantityPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		quantityPanel.setBackground(Color.white);
 
-		int stock = bijou.getStock();
-		JLabel stockLabel = new JLabel("Stock: " + stock);
-		stockLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-		imagePanel.add(stockLabel);
-
-		JLabel quantityLabel = new JLabel("Quantity: " + mainController.getClientCart().getCart().getOrDefault(bijou, 0));
+		JLabel quantityLabel = new JLabel("Quantity: " + cart.getCart().getOrDefault(bijou, 0));
 		JButton addButton = new JButton("+");
 		JButton removeButton = new JButton("-");
-		addButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int newQ = mainController.getClientCart().addToCart(bijou);
-				quantityLabel.setText("Quantity: " + newQ);
-			}
+
+		addButton.addActionListener(e -> {
+			int newQ = mainController.getClientCart().addToCart(bijou);
+			quantityLabel.setText("Quantity: " + newQ);
 		});
+
 		removeButton.addActionListener(e -> {
 			mainController.getClientCart().removeFromCart(bijou);
-			int newQuantity = mainController.getClientCart().getCart().getOrDefault(bijou, 0);
-			quantityLabel.setText("Quantity: " + newQuantity);
-
-			if (newQuantity == 0) {
-				rowPanel.remove(bijouPanel);
-				rowPanel.revalidate();
-				rowPanel.repaint();
+			if (mainController.getClientCart().getCart().getOrDefault(bijou, 0) == 0) {
+				cart.getCart().remove(bijou);
+				refreshCartView(mainController);
+			} else {
+				quantityLabel.setText("Quantity: " + cart.getCart().getOrDefault(bijou, 0));
 			}
 		});
 
@@ -153,13 +145,14 @@ public class CartView extends JPanel {
 
 		return bijouPanel;
 	}
-public Cart getCart() {
+
+	public Cart getCart() {
 		return cart;
 	}
 
 	public void setCart(Cart cart) {
 		this.cart = cart;
 	}
-	
+
 
 }
