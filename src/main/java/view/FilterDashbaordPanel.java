@@ -102,6 +102,7 @@ and price ='299.99' and material='Gold';
         emptyPanel.setPreferredSize(new Dimension(200, 200));
         emptyPanel.setBackground(Color.WHITE);
         this.add(emptyPanel);
+        setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.LIGHT_GRAY)); // Bottom border only
 
 
     }

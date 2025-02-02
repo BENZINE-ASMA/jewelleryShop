@@ -51,18 +51,20 @@ public class MainController {
 		if (authenticatedUser != null) {
 			this.setLoggedInClient(authenticatedUser);
 			mainView.setLoggedInClient(authenticatedUser);
-			
+
 			if (authenticatedUser.getRole().equals("ADMIN")) {
+				// Set the logged-in admin in AdminController
+				mainView.getAdminController().setLoggedInAdmin(authenticatedUser);
 				this.createAndShowMaindashboardAdminView();
-			}else {
-				
+			} else {
 				this.createAndShowMaindashboardView();
 			}
-			
+
 		} else {
 			mainView.showAuthenticationError();
 		}
 	}
+
 	public void fetchAllFilteredProducts(ArrayList<Bijoux> filteredDashboard,String name2, String description2,
 										 String brand2, String type2, String pricemin2,String pricemax2, String material2){
 		this.dbManager.getAllFilteredProducts(filteredDashboard,name2,description2,brand2,type2,pricemin2,pricemax2,material2);
@@ -84,7 +86,15 @@ public class MainController {
 			this.mainView.showEditProfileError();
 		}
 	}
-	
+	public void logout() {
+
+		this.loggedInClient = null;
+		this.clientCart.getCart().clear();
+		this.currentOrder = null;
+		this.showLoginView(false, "You have successfully logged out.");
+	}
+
+
 	public void deleteUser() {
 		boolean rowsAffected = this.dbManager.deleteUser(loggedInClient);
 		if(rowsAffected) {
@@ -112,7 +122,7 @@ public class MainController {
 	}
 	public void showProfileInfoView() {
 		mainView.loadProfileInfoView();
-
+		mainView.showPanel("ProfileInfo");
 	}
 	public void showCartView() {
 		mainView.loadCartView();;

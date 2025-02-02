@@ -18,7 +18,7 @@ public class MainDashboardView extends JPanel {
     private MainController mainController;
     private ArrayList<Bijoux> FilteredDashboard;
 
-    public MainDashboardView(MainController mainController ) {
+    public MainDashboardView(MainController mainController) {
         this.mainController = mainController;
         mainController.fetchAllProducts();
         FilteredDashboard = mainController.getProducts();
@@ -26,14 +26,15 @@ public class MainDashboardView extends JPanel {
 
         DashboardHeader header = new DashboardHeader(mainController);
         add(header, BorderLayout.NORTH);
-        JPanel filterPanel = new FilterDashbaordPanel(this.FilteredDashboard,this.getHeight(),mainController, this,"ALL");
+
+        JPanel filterPanel = new FilterDashbaordPanel(this.FilteredDashboard, this.getHeight(), mainController, this, "ALL");
         add(filterPanel, BorderLayout.WEST);
 
         JPanel dashboardPanel = new JPanel();
         dashboardPanel.setLayout(new BorderLayout());
+        dashboardPanel.setBorder(null); // Ensure no border on this panel
         add(dashboardPanel, BorderLayout.CENTER);
 
-
-        UtilDisplayingDashboards.loadDashbaordImages(mainController,FilteredDashboard, dashboardPanel);
+        UtilDisplayingDashboards.loadDashbaordImages(mainController, FilteredDashboard, dashboardPanel);
     }
 }

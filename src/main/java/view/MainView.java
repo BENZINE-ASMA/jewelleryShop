@@ -18,6 +18,9 @@ public class MainView extends JFrame {
     private JPanel mainPanel;
     private static Client loggedInClient;
     private MainController mainController;
+
+
+
     private AdminController adminController;
     public MainView() {
 
@@ -148,6 +151,9 @@ public class MainView extends JFrame {
     public void loadInvoiceDashbaordView(){
         InvoiceDashbaord invoiceDashbaord = new InvoiceDashbaord(adminController);
         mainPanel.add(invoiceDashbaord,"InvoiceDashbaord");
+    }
+    public AdminController getAdminController() {
+        return this.adminController;
     }
     public void loadClientsDashbaordView(){
         ClientDashbaord clientDashbaord = new ClientDashbaord(adminController);
