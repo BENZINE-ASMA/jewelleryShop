@@ -154,27 +154,37 @@ public class MainController {
 		 }
 	    	this.clientCart.addToCart(b);
 	    }
-	 
-	 public void addOrderToDB() {
 
-		this.dbManager.addOrder(currentOrder);
-	 }
+	public void addOrderToDB() {
+		if (currentOrder != null && loggedInClient != null) {
+			currentOrder.setClient(loggedInClient);
+			dbManager.addOrder(currentOrder);
+		} else {
+			System.out.println("Order or Client is null. Cannot add order to DB.");
+		}
+	}
+
 	public void saveCartInDB(Long orderId) {
 
 		this.dbManager.saveCart(clientCart,orderId);
 	}
-	 public void ChangeOrderStatus(OrderStatus status) {
-		 this.currentOrder.setStatus(status);
-		 if (status == OrderStatus.VALIDEE) {
-			 this.currentOrder.setCartItems(clientCart);
-			 this.addOrderToDB(); // should return the id of the ordr so it can be mapped to the foreign key
-			 this.saveCartInDB(currentOrder.getOrderId());
-			 // we ll generate the invoice 
-			 System.out.println("generating invoice for client "+  this.loggedInClient.toString());
-			 this.invoiceController.generateInvoice(this.loggedInClient,this.currentOrder,this.dbManager,this);
-		 }
-	 }
-	
+	public void ChangeOrderStatus(OrderStatus status) {
+		if (currentOrder == null) {
+			currentOrder = new Order(loggedInClient);
+		}
+
+		currentOrder.setStatus(status);
+
+		if (status == OrderStatus.VALIDEE) {
+			currentOrder.setCartItems(clientCart);
+			addOrderToDB();
+			saveCartInDB(currentOrder.getOrderId());
+			System.out.println("Generating invoice for client: " + loggedInClient);
+			invoiceController.generateInvoice(loggedInClient, currentOrder, dbManager, this);
+		}
+	}
+
+
 	public DBManager getDbManager() {
 		return dbManager;
 	}

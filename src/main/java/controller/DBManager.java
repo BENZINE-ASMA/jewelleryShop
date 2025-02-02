@@ -534,16 +534,16 @@ public class DBManager {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
 			preparedStatement.setString(1, b.getName());
-			preparedStatement.setString(2, b.getType());
+			preparedStatement.setString(2, b.getCategory());
 			preparedStatement.setString(3, b.getDescription());
 			preparedStatement.setDouble(4, b.getPrice());
 			preparedStatement.setString(5, b.getMateriel());
 
 
-			if ("Ring".equalsIgnoreCase(b.getType())) {
+			if ("Ring".equalsIgnoreCase(b.getCategory())) {
 				preparedStatement.setDouble(6, ((Ring) b).getSize());
 				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
-			} else if ("Necklace".equalsIgnoreCase(b.getType())) {
+			} else if ("Necklace".equalsIgnoreCase(b.getCategory())) {
 				preparedStatement.setNull(6, java.sql.Types.DOUBLE);
 				preparedStatement.setDouble(7, ((Necklace) b).getLength());
 			}
@@ -571,16 +571,15 @@ public class DBManager {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
 			preparedStatement.setString(1, b.getName());
-			preparedStatement.setString(2, b.getType());
+			preparedStatement.setString(2, b.getCategory());
 			preparedStatement.setString(3, b.getDescription());
 			preparedStatement.setDouble(4, b.getPrice());
 			preparedStatement.setString(5, b.getMateriel());
 
-			// Handle size and length based on product type
-			if (b.getType().equals("Ring")) {
+			if (b.getCategory().equals("Ring")) {
 				preparedStatement.setDouble(6, ((Ring) b).getSize());
 				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
-			} else if (b.getType().equals("Necklace")) {
+			} else if (b.getCategory().equals("Necklace")) {
 				preparedStatement.setNull(6, java.sql.Types.DOUBLE);
 				preparedStatement.setDouble(7, ((Necklace) b).getLength());
 			} else {
@@ -603,7 +602,7 @@ public class DBManager {
 
 	public boolean deleteProduct(Long id) {
 
-		String query = "DELETE FROM pruducts WHERE id = ?";
+		String query = "DELETE FROM products WHERE id = ?";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 

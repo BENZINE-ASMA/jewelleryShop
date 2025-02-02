@@ -2,18 +2,9 @@ package view;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.*;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-
-import controller.DBManager;
 import controller.MainController;
-import model.Client;
 
 public class LoginView extends JPanel {
 
@@ -27,8 +18,6 @@ public class LoginView extends JPanel {
 		this.mainController = mainController;
 		setPreferredSize(new Dimension(400, 300));
 		this.setLayout(null);
-		// setting the layout to null means that i will position manually all the
-		// components
 
 		JLabel userLabel = new JLabel("Username:");
 		userLabel.setBounds(50, 50, 80, 25);
@@ -36,7 +25,6 @@ public class LoginView extends JPanel {
 
 		usernameField = new JTextField(20);
 		usernameField.setBounds(150, 50, 150, 25);
-		usernameField.setText("admin");
 		this.add(usernameField);
 
 		JLabel passwordLabel = new JLabel("Password:");
@@ -45,31 +33,24 @@ public class LoginView extends JPanel {
 
 		passwordField = new JPasswordField(20);
 		passwordField.setBounds(150, 100, 150, 25);
-		passwordField.setText("admin");
 		this.add(passwordField);
 
 		loginButton = new JButton("Login");
 		loginButton.setBounds(110, 150, 100, 25);
 		this.add(loginButton);
 
-		loginButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainController.authenticateUser(usernameField.getText(), new String(passwordField.getPassword()));
+		loginButton.addActionListener(e -> {
+			if (usernameField.getText().isEmpty() || new String(passwordField.getPassword()).isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Please enter both username and password.", "Login Error", JOptionPane.ERROR_MESSAGE);
+				return;
 			}
+			mainController.authenticateUser(usernameField.getText(), new String(passwordField.getPassword()));
 		});
 
-		signUpButton = new JButton("signUp");
+		signUpButton = new JButton("Sign Up");
 		signUpButton.setBounds(230, 150, 100, 25);
 		this.add(signUpButton);
 
-		signUpButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mainController.showSignUpView();
-			}
-		});
+		signUpButton.addActionListener(e -> mainController.showSignUpView());
 	}
-
 }

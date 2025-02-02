@@ -70,9 +70,11 @@ public class MainView extends JFrame {
 
 
     public void showPanel(String panelName) {
-        if (panelName.equals("loginView") ||panelName.equals("ProfileInfo"))   {
-            setPreferredSize(new Dimension(400,300));
-        } else {
+        if (panelName.equals("loginView") || panelName.equals("ProfileInfo") ) {
+            setPreferredSize(new Dimension(400, 300));
+        }else if(panelName.equals("Signup")){
+            setPreferredSize(new Dimension(430, 350));
+        }else {
             this.setPreferredSize(new Dimension(950, 700));
     }
     pack();

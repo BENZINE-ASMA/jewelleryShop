@@ -12,6 +12,7 @@ public class DashboardHeaderAdmin extends JPanel {
     private JLabel hotlineIcon;
     private JLabel logoutIcon;
     private JButton catalogue, products, clients, invoices;
+    private JLabel logoIcon;
     private AdminController adminController;
 
     public DashboardHeaderAdmin(AdminController adminController) {
@@ -21,6 +22,10 @@ public class DashboardHeaderAdmin extends JPanel {
 
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         leftPanel.setBackground(Color.WHITE);
+
+        logoIcon = new JLabel();
+        UtilDisplayingDashboards.loadIcon(logoIcon, "resources/logo.png", 120, 20);
+        logoIcon.setVerticalAlignment(SwingConstants.CENTER);
 
         this.catalogue = new JButton("Catalogue");
         catalogue.addActionListener(e -> adminController.ShowMaindashboardAdminView());
@@ -33,7 +38,8 @@ public class DashboardHeaderAdmin extends JPanel {
 
         this.invoices = new JButton("INVOICES");
         invoices.addActionListener(e -> adminController.showInvoiceView());
-
+        leftPanel.add(logoIcon);
+        leftPanel.add(Box.createHorizontalStrut(15));
         leftPanel.add(catalogue);
         leftPanel.add(Box.createHorizontalStrut(15));
         leftPanel.add(products);

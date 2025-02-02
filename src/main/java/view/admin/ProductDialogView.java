@@ -30,11 +30,13 @@ public class ProductDialogView extends JDialog {
     private JComboBox<String> typeComboBox;
     private Bijoux product;
     private AdminController adminController;
-    private String uploadedImagePath; // Store the path of the uploaded image
+    private String uploadedImagePath;
+    private Runnable refreshCallback;
 
-    public ProductDialogView(Bijoux product, AdminController adminController) {
+    public ProductDialogView(Bijoux product, AdminController adminController, Runnable refreshCallback) {
         this.product = product;
         this.adminController = adminController;
+        this.refreshCallback = refreshCallback;
         this.setLayout(null);
         this.setSize(400, 1000);
         this.setLocationRelativeTo(null);
@@ -67,7 +69,7 @@ public class ProductDialogView extends JDialog {
 
         typeComboBox = new JComboBox<>(new String[]{"Ring", "Necklace"});
         typeComboBox.setBounds(150, 110, 150, 25);
-        typeComboBox.setSelectedItem(product != null ? product.getType() : "Ring");
+        typeComboBox.setSelectedItem(product != null ? product.getCategory() : "Ring");
         this.add(typeComboBox);
 
 
@@ -161,10 +163,10 @@ public class ProductDialogView extends JDialog {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             String fileName = selectedFile.getName();
-            String targetPath = "src/main/java/resources/images/" + fileName; // Destination path in the resources folder
+            String targetPath = "src/main/java/resources/images/" + fileName;
 
             try {
-                Files.createDirectories(Paths.get("src/main/java/resources/images")); // Ensure directory exists
+                Files.createDirectories(Paths.get("src/main/java/resources/images"));
                 Files.copy(selectedFile.toPath(), Paths.get(targetPath));
                 uploadedImagePath = targetPath;
                 imagePathField.setText(uploadedImagePath);
@@ -243,7 +245,9 @@ public class ProductDialogView extends JDialog {
                 adminController.updateProduct(product);
             }
         }
-
+        if (refreshCallback != null) {
+            refreshCallback.run();
+        }
         this.dispose();
     }
 

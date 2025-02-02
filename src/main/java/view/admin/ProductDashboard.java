@@ -49,7 +49,7 @@ public class ProductDashboard extends JPanel {
             int selectedRow = productTable.getSelectedRow();
             if (selectedRow != -1) {
                 Bijoux selectedBijoux = getProductFromTable(selectedRow);
-                openEditProductView(selectedBijoux); // Open dialog for editing selected product
+                openEditProductView(selectedBijoux);
             } else {
                 JOptionPane.showMessageDialog(this, "Please select a product to edit.");
             }
@@ -68,27 +68,22 @@ public class ProductDashboard extends JPanel {
             adminController.ShowMaindashboardAdminView();
             this.setVisible(false);
         });
-        /*
-        JPanel closePanel = new JPanel(new BorderLayout());
-        closePanel.add(closeButton, BorderLayout.WEST);
-        closePanel.setBorder(new EmptyBorder(1, 0, 5, 1));
-        this.add(closePanel, BorderLayout.NORTH);
-    */
+
     }
 
     private void loadProductData() {
-        this.tableModel.setRowCount(0); // Clear existing data to avoid duplicates
+        this.tableModel.setRowCount(0);
 
         for (Bijoux bijou : this.adminController.fetchAllProducts()) {
-            if ("ring".equalsIgnoreCase(bijou.getType())) {
+            if ("ring".equalsIgnoreCase(bijou.getCategory())) {
                 tableModel.addRow(new Object[]{
-                    bijou.getId(), bijou.getName(), bijou.getBrand(), bijou.getType(),
+                    bijou.getId(), bijou.getName(), bijou.getBrand(), bijou.getCategory(),
                     bijou.getDescription(), bijou.getPrice(), bijou.getMateriel(),
                     ((Ring) bijou).getSize(), null, bijou.getStock(), bijou.getImagePath()
                 });
-            } else if ("necklace".equalsIgnoreCase(bijou.getType())) {
+            } else if ("necklace".equalsIgnoreCase(bijou.getCategory())) {
                 tableModel.addRow(new Object[]{
-                    bijou.getId(), bijou.getName(), bijou.getBrand(), bijou.getType(),
+                    bijou.getId(), bijou.getName(), bijou.getBrand(), bijou.getCategory(),
                     bijou.getDescription(), bijou.getPrice(), bijou.getMateriel(),
                     null, ((Necklace) bijou).getLength(), bijou.getStock(), bijou.getImagePath()
                 });
@@ -117,9 +112,14 @@ public class ProductDashboard extends JPanel {
         return null;
     }
 
+    private void refreshTable() {
+        loadProductData();
+        tableModel.fireTableDataChanged(); // Notify the table model that data has changed
+    }
+
     private void openEditProductView(Bijoux bijou) {
-    	ProductDialogView dialog = new ProductDialogView(bijou, adminController);
-        dialog.setSize(400, 300);
+        ProductDialogView dialog = new ProductDialogView(bijou, adminController, this::refreshTable);
+        dialog.setSize(450, 550);
         dialog.setLocationRelativeTo(null);
         dialog.setModal(true);
         dialog.setVisible(true);

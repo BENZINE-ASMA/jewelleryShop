@@ -8,15 +8,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import controller.MainController;
 import model.Bijoux;
@@ -32,43 +24,34 @@ public class CartView extends JPanel {
 		
 		this.cart= mainController.getClientCart();
 		this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
-		
+		JButton  closeButton = new JButton("Close");
 		JPanel panelImages = new JPanel();
-    	panelImages.setLayout(new BoxLayout(panelImages,BoxLayout.Y_AXIS));
-    	panelImages.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-    	
-    	JButton  closeButton = new JButton("Close");
-    	
-    	
-    	panelImages.add(closeButton, BorderLayout.NORTH);
-		//this.add(closeButton, BorderLayout.NORTH);
-    	
-    	
-    	panelImages.setBackground(Color.white);
-    	panelImages.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-    	this.setBackground(Color.white);
-    	JPanel rowPanel = null;
-    	int imagesPerRow = 4;
-    	int i=0;
+		panelImages.setLayout(new BoxLayout(panelImages, BoxLayout.Y_AXIS));
+		panelImages.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Adjust margins for panelImages
+		panelImages.setBackground(Color.white);
+
+		JPanel rowPanel = null;
+		int imagesPerRow = 4;
+		int i = 0;
 		for (Bijoux bijoux : cart.getCart().keySet()) {
 			i++;
 			if (i % imagesPerRow == 1) {
 				rowPanel = new JPanel();
 				rowPanel.setBackground(Color.white);
-				rowPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+				rowPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5)); // Set smaller vertical gap
 				panelImages.add(rowPanel);
 			}
 			JPanel bijouxPanel = this.createBijouxPanel(bijoux, mainController, rowPanel);
 			rowPanel.add(bijouxPanel);
 		}
 
-
 		JScrollPane scroll = new JScrollPane(panelImages);
-    	scroll.setPreferredSize(new Dimension(450,600));
-    	this.add(scroll);
-    	
-    	
-    	closeButton.addActionListener(new ActionListener() {
+		scroll.setPreferredSize(new Dimension(450, 600));
+		this.add(scroll);
+
+
+
+		closeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				mainController.showMainDashboardView();
@@ -76,14 +59,27 @@ public class CartView extends JPanel {
 			}
 		});
     	JButton  confirmButton = new JButton("Confirm Purchase");
-    	confirmButton.addActionListener(new ActionListener() {
-    		@Override
-    		public void actionPerformed(ActionEvent e) {
-    			mainController.ChangeOrderStatus(OrderStatus.VALIDEE);
-				cart.getCart().clear();
-				mainController.showMainDashboardView();
-    		}
-    	});
+		confirmButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (mainController.getLoggedInClient() == null) {
+					// Show login view and notify the user to log in
+					JOptionPane.showMessageDialog(
+							CartView.this,
+							"You need to log in to confirm your purchase.",
+							"Login Required",
+							JOptionPane.WARNING_MESSAGE
+					);
+					mainController.showLoginView(false, "Please log in to complete your purchase.");
+				} else {
+					// Confirm purchase if the user is logged in
+					mainController.ChangeOrderStatus(OrderStatus.VALIDEE);
+					cart.getCart().clear(); // Clear the cart after purchase
+					mainController.showMainDashboardView();
+				}
+			}
+		});
+
 		panelImages.add(confirmButton, BorderLayout.SOUTH);
     	
    
