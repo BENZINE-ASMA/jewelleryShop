@@ -150,10 +150,12 @@ public class UtilDisplayingDashboards {
             rowPanel.add(bijouxPanel);
         }
 
-        JScrollPane scroll = new JScrollPane(panelImages);
+        JScrollPane scroll = new JScrollPane(panelImages, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setPreferredSize(new Dimension(450, 600));
         scroll.setBorder(null);
+
         current.add(scroll);
+
     }
 
 

@@ -40,8 +40,8 @@ public class ProductDashboard extends JPanel {
         JPanel buttonPanel = new JPanel();
         JButton addProduct = new JButton("Add");
         addProduct.addActionListener(e -> {
-            this.openEditProductView(null); // Pass null to indicate adding a new product
-            loadProductData(); // Refresh data after adding
+            this.openEditProductView(null);
+            loadProductData();
         });
 
         JButton editProduct = new JButton("Edit");

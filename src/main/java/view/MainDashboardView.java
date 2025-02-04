@@ -27,7 +27,7 @@ public class MainDashboardView extends JPanel {
 
         JPanel dashboardPanel = new JPanel();
         dashboardPanel.setLayout(new BorderLayout());
-        dashboardPanel.setBorder(null); // Ensure no border on this panel
+        dashboardPanel.setBorder(null);
         add(dashboardPanel, BorderLayout.CENTER);
 
         UtilDisplayingDashboards.loadDashbaordImages(mainController, FilteredDashboard, dashboardPanel);

@@ -1,32 +1,19 @@
 package view.admin;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import controller.AdminController;
 import model.Bijoux;
 import model.Necklace;
 import model.Ring;
 
 public class ProductDialogView extends JDialog {
-    private JTextField nameField;
-    private JTextField brandField;
-    private JTextField descriptionField;
-    private JTextField priceField;
-    private JTextField materialField;
-    private JTextField sizeField;
-    private JTextField lengthField;
-    private JTextField stockField;
-    private JTextField imagePathField;
+    private JTextField nameField, brandField, priceField, materialField, sizeField, lengthField, stockField, imagePathField;
+    private JTextArea descriptionField;
     private JComboBox<String> typeComboBox;
     private Bijoux product;
     private AdminController adminController;
@@ -37,129 +24,128 @@ public class ProductDialogView extends JDialog {
         this.product = product;
         this.adminController = adminController;
         this.refreshCallback = refreshCallback;
-        this.setLayout(null);
-        this.setSize(400, 1000);
-        this.setLocationRelativeTo(null);
-        this.setTitle(product == null ? "Add New Product" : "Edit Product Details");
 
+        setTitle(product == null ? "Add New Product" : "Edit Product Details");
+        setSize(450, 600);
+        setLocationRelativeTo(null);
+        setModal(true);
 
-        JLabel nameLabel = new JLabel("Name:");
-        nameLabel.setBounds(50, 30, 80, 25);
-        this.add(nameLabel);
+        // Main Panel with GridBagLayout for alignment
+        JPanel mainPanel = new JPanel(new GridBagLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 5);
 
+        // Labels & Fields
+        mainPanel.add(new JLabel("Name:"), gbc);
+        gbc.gridx = 1;
         nameField = new JTextField(20);
-        nameField.setBounds(150, 30, 150, 25);
         nameField.setText(product != null ? product.getName() : "");
-        this.add(nameField);
+        mainPanel.add(nameField, gbc);
 
-
-        JLabel brandLabel = new JLabel("Brand:");
-        brandLabel.setBounds(50, 70, 80, 25);
-        this.add(brandLabel);
-
+        gbc.gridx = 0;
+        gbc.gridy++;
+        mainPanel.add(new JLabel("Brand:"), gbc);
+        gbc.gridx = 1;
         brandField = new JTextField(20);
-        brandField.setBounds(150, 70, 150, 25);
         brandField.setText(product != null ? product.getBrand() : "");
-        this.add(brandField);
+        mainPanel.add(brandField, gbc);
 
-
-        JLabel typeLabel = new JLabel("Type:");
-        typeLabel.setBounds(50, 110, 80, 25);
-        this.add(typeLabel);
-
+        gbc.gridx = 0;
+        gbc.gridy++;
+        mainPanel.add(new JLabel("Type:"), gbc);
+        gbc.gridx = 1;
         typeComboBox = new JComboBox<>(new String[]{"Ring", "Necklace"});
-        typeComboBox.setBounds(150, 110, 150, 25);
         typeComboBox.setSelectedItem(product != null ? product.getCategory() : "Ring");
-        this.add(typeComboBox);
+        mainPanel.add(typeComboBox, gbc);
 
-
-        JLabel descriptionLabel = new JLabel("Description:");
-        descriptionLabel.setBounds(50, 150, 80, 25);
-        this.add(descriptionLabel);
-
-        descriptionField = new JTextField(20);
-        descriptionField.setBounds(150, 150, 150, 25);
+        gbc.gridx = 0;
+        gbc.gridy++;
+        mainPanel.add(new JLabel("Description:"), gbc);
+        gbc.gridx = 1;
+        descriptionField = new JTextArea(5, 20);
+        descriptionField.setLineWrap(true);
+        descriptionField.setWrapStyleWord(true);
         descriptionField.setText(product != null ? product.getDescription() : "");
-        this.add(descriptionField);
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
+        descriptionScrollPane.setPreferredSize(new Dimension(250, 100));
+        descriptionScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        descriptionScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        mainPanel.add(descriptionScrollPane, gbc);
 
-
-        JLabel priceLabel = new JLabel("Price:");
-        priceLabel.setBounds(50, 190, 80, 25);
-        this.add(priceLabel);
-
+        gbc.gridx = 0;
+        gbc.gridy++;
+        mainPanel.add(new JLabel("Price (€):"), gbc);
+        gbc.gridx = 1;
         priceField = new JTextField(20);
-        priceField.setBounds(150, 190, 150, 25);
         priceField.setText(product != null ? String.valueOf(product.getPrice()) : "");
-        this.add(priceField);
+        mainPanel.add(priceField, gbc);
 
-
-        JLabel materialLabel = new JLabel("Material:");
-        materialLabel.setBounds(50, 230, 80, 25);
-        this.add(materialLabel);
-
+        gbc.gridx = 0;
+        gbc.gridy++;
+        mainPanel.add(new JLabel("Material:"), gbc);
+        gbc.gridx = 1;
         materialField = new JTextField(20);
-        materialField.setBounds(150, 230, 150, 25);
         materialField.setText(product != null ? product.getMateriel() : "");
-        this.add(materialField);
+        mainPanel.add(materialField, gbc);
 
-
-        JLabel sizeLabel = new JLabel("Size:");
-        sizeLabel.setBounds(50, 270, 80, 25);
-        this.add(sizeLabel);
-
+        gbc.gridx = 0;
+        gbc.gridy++;
+        mainPanel.add(new JLabel("Size:"), gbc);
+        gbc.gridx = 1;
         sizeField = new JTextField(20);
-        sizeField.setBounds(150, 270, 150, 25);
         sizeField.setText(product instanceof Ring ? String.valueOf(((Ring) product).getSize()) : "");
-        this.add(sizeField);
+        mainPanel.add(sizeField, gbc);
 
-
-        JLabel lengthLabel = new JLabel("Length:");
-        lengthLabel.setBounds(50, 310, 80, 25);
-        this.add(lengthLabel);
-
+        gbc.gridx = 0;
+        gbc.gridy++;
+        mainPanel.add(new JLabel("Length (cm):"), gbc);
+        gbc.gridx = 1;
         lengthField = new JTextField(20);
-        lengthField.setBounds(150, 310, 150, 25);
         lengthField.setText(product instanceof Necklace ? String.valueOf(((Necklace) product).getLength()) : "");
-        this.add(lengthField);
+        mainPanel.add(lengthField, gbc);
 
-
-        JLabel stockLabel = new JLabel("Stock:");
-        stockLabel.setBounds(50, 350, 80, 25);
-        this.add(stockLabel);
-
+        gbc.gridx = 0;
+        gbc.gridy++;
+        mainPanel.add(new JLabel("Stock:"), gbc);
+        gbc.gridx = 1;
         stockField = new JTextField(20);
-        stockField.setBounds(150, 350, 150, 25);
         stockField.setText(product != null ? String.valueOf(product.getStock()) : "");
-        this.add(stockField);
+        mainPanel.add(stockField, gbc);
 
-
-        JLabel imageLabel = new JLabel("Image:");
-        imageLabel.setBounds(50, 390, 80, 25);
-        this.add(imageLabel);
-
+        gbc.gridx = 0;
+        gbc.gridy++;
+        mainPanel.add(new JLabel("Image:"), gbc);
+        gbc.gridx = 1;
         JButton uploadButton = new JButton("Upload Image");
-        uploadButton.setBounds(150, 390, 150, 25);
         uploadButton.addActionListener(e -> uploadImage());
-        this.add(uploadButton);
+        mainPanel.add(uploadButton, gbc);
 
+        gbc.gridx = 1;
+        gbc.gridy++;
         imagePathField = new JTextField(20);
-        imagePathField.setBounds(150, 420, 150, 25);
         imagePathField.setEditable(false);
         imagePathField.setText(product != null ? product.getImagePath() : "");
-        this.add(imagePathField);
+        mainPanel.add(imagePathField, gbc);
 
-
+        // Save Button
+        gbc.gridx = 1;
+        gbc.gridy++;
         JButton saveButton = new JButton("Save");
-        saveButton.setBounds(150, 460, 80, 25);
         saveButton.addActionListener(e -> saveProduct());
-        this.add(saveButton);
+        mainPanel.add(saveButton, gbc);
+
+        add(mainPanel);
     }
 
     private void uploadImage() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select an Image");
-
         int result = fileChooser.showOpenDialog(this);
+
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             String fileName = selectedFile.getName();
@@ -177,78 +163,36 @@ public class ProductDialogView extends JDialog {
     }
 
     private void saveProduct() {
-        String name = nameField.getText();
-        String brand = brandField.getText();
-        String description = descriptionField.getText();
-        String material = materialField.getText();
-        String type = (String) typeComboBox.getSelectedItem();
-        String imagePath = uploadedImagePath != null ? uploadedImagePath : imagePathField.getText();
-        int stock;
-        double price;
-
         try {
-            stock = Integer.parseInt(stockField.getText());
-            price = Double.parseDouble(priceField.getText());
+            String name = nameField.getText();
+            String brand = brandField.getText();
+            String description = descriptionField.getText();
+            String material = materialField.getText();
+            String type = (String) typeComboBox.getSelectedItem();
+            String imagePath = uploadedImagePath != null ? uploadedImagePath : imagePathField.getText();
+            int stock = Integer.parseInt(stockField.getText());
+            double price = Double.parseDouble(priceField.getText());
+
+            if (type.equals("Ring")) {
+                int size = Integer.parseInt(sizeField.getText());
+                product = (product == null) ? new Ring(null, name, brand, type, description, price, material, size, imagePath, stock)
+                        : (Ring) product;
+                ((Ring) product).setSize(size);
+            } else if (type.equals("Necklace")) {
+                double length = Double.parseDouble(lengthField.getText());
+                product = (product == null) ? new Necklace(null, name, brand, type, description, price, material, length, imagePath, stock)
+                        : (Necklace) product;
+                ((Necklace) product).setLength(length);
+            }
+
+            if (product != null) adminController.updateProduct(product);
+            else adminController.addProduct(product);
+
+            if (refreshCallback != null) refreshCallback.run();
+            dispose();
+
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter valid numeric values for stock and price.");
-            return;
+            JOptionPane.showMessageDialog(this, "Please enter valid numeric values for stock, price, size, and length.");
         }
-
-        if (type.equals("Ring")) {
-            int size;
-            try {
-                size = Integer.parseInt(sizeField.getText());
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Please enter a valid numeric value for size.");
-                return;
-            }
-
-            if (product == null) {
-                product = new Ring(null, name, brand, type, description, price, material, size, imagePath, stock);
-                adminController.addProduct(product);
-            } else {
-                product.setName(name);
-                product.setBrand(brand);
-                product.setDescription(description);
-                product.setPrice(price);
-                product.setStock(stock);
-                product.setMateriel(material);
-                product.setImagePath(imagePath);
-                if (product instanceof Ring) {
-                    ((Ring) product).setSize(size);
-                }
-                adminController.updateProduct(product);
-            }
-        } else if (type.equals("Necklace")) {
-            double length;
-            try {
-                length = Double.parseDouble(lengthField.getText());
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Please enter a valid numeric value for length.");
-                return;
-            }
-
-            if (product == null) {
-                product = new Necklace(null, name, brand, type, description, price, material, length, imagePath, stock);
-                adminController.addProduct(product);
-            } else {
-                product.setName(name);
-                product.setBrand(brand);
-                product.setDescription(description);
-                product.setPrice(price);
-                product.setStock(stock);
-                product.setMateriel(material);
-                product.setImagePath(imagePath);
-                if (product instanceof Necklace) {
-                    ((Necklace) product).setLength(length);
-                }
-                adminController.updateProduct(product);
-            }
-        }
-        if (refreshCallback != null) {
-            refreshCallback.run();
-        }
-        this.dispose();
     }
-
 }
