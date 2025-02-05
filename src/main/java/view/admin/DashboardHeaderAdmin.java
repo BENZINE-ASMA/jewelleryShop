@@ -38,6 +38,10 @@ public class DashboardHeaderAdmin extends JPanel {
 
         this.invoices = new JButton("INVOICES");
         invoices.addActionListener(e -> adminController.showInvoiceView());
+
+        JButton quickSearchButton = new JButton("Quick Search");
+        quickSearchButton.addActionListener(e -> openQuickSearch());
+
         leftPanel.add(logoIcon);
         leftPanel.add(Box.createHorizontalStrut(15));
         leftPanel.add(catalogue);
@@ -47,6 +51,8 @@ public class DashboardHeaderAdmin extends JPanel {
         leftPanel.add(clients);
         leftPanel.add(Box.createHorizontalStrut(15));
         leftPanel.add(invoices);
+        leftPanel.add(Box.createHorizontalStrut(15));
+        leftPanel.add(quickSearchButton);
 
         add(leftPanel, BorderLayout.WEST);
 
@@ -82,5 +88,8 @@ public class DashboardHeaderAdmin extends JPanel {
         add(rightPanel, BorderLayout.EAST);
 
         setBorder(BorderFactory.createMatteBorder(1, 1, 0, 1, Color.LIGHT_GRAY));
+    }
+    private void openQuickSearch() {
+        new QuickSearchView(adminController);
     }
 }

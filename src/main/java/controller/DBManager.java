@@ -801,6 +801,84 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 		return false;
 	}
 
+	public ArrayList<Order> fetchOrdersByClient(Long clientId) {
+		String query = "SELECT * FROM Orders WHERE client_id = ?";
+		ArrayList<Order> orders = new ArrayList<>();
+
+		try (PreparedStatement stmt = connection.prepareStatement(query)) {
+			stmt.setLong(1, clientId);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Long orderId = rs.getLong("order_id");
+				Timestamp orderDate = rs.getTimestamp("order_date");
+				OrderStatus status = OrderStatus.valueOf(rs.getString("status"));
+				Cart cart = fetchCart(orderId);
+
+				orders.add(new Order(orderId, clientId, cart, orderDate, status));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return orders;
+	}
+	public Client fetchClientById(Long clientId) {
+		String query = "SELECT * FROM client WHERE id = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(query)) {
+			stmt.setLong(1, clientId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				return new Client(
+						rs.getLong("id"),
+						rs.getString("firstName"),
+						rs.getString("lastName"),
+						rs.getString("email"),
+						rs.getString("password"),
+						rs.getString("role")
+				);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public Client fetchClientByEmail(String email) {
+		String query = "SELECT * FROM client WHERE email = ?";
+		try (PreparedStatement stmt = connection.prepareStatement(query)) {
+			stmt.setString(1, email);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				return new Client(
+						rs.getLong("id"),
+						rs.getString("firstName"),
+						rs.getString("lastName"),
+						rs.getString("email"),
+						rs.getString("password"),
+						rs.getString("role")
+				);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public ArrayList<Client> fetchClientsByName(String name) {
+		ArrayList<Client> clients = new ArrayList<>();
+		String query = "SELECT * FROM client WHERE firstName LIKE ? OR lastName LIKE ?";
+		try (PreparedStatement stmt = connection.prepareStatement(query)) {
+			stmt.setString(1, "%" + name + "%");
+			stmt.setString(2, "%" + name + "%");
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				clients.add(new Client(rs.getLong("id"), rs.getString("firstName"), rs.getString("lastName"),
+						rs.getString("email"), rs.getString("password"), rs.getString("role")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return clients;
+	}
 
 
 

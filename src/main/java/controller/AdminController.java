@@ -2,10 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 
-import model.Bijoux;
-import model.Client;
-import model.Invoice;
-import model.Order;
+import model.*;
 import view.MainView;
 
 public class AdminController {
@@ -129,5 +126,26 @@ public class AdminController {
 	public void showLoginView(boolean displayOptionPane, String todisplay) {
 		mainView.loadLoginView(displayOptionPane, todisplay);
 		mainView.showPanel("loginView");
+	}
+
+	public Client fetchClientById(Long clientId) {
+		return dbManager.fetchClientById(clientId);
+	}
+
+	public Client fetchClientByEmail(String email) {
+		return dbManager.fetchClientByEmail(email);
+	}
+
+	public ArrayList<Order> fetchOrdersByClient(Long clientId) {
+		return dbManager.fetchOrdersByClient(clientId);
+	}
+
+
+
+	public Cart fetchCartByOrderId(Long orderId) {
+		return dbManager.fetchCart(orderId);
+	}
+	public ArrayList<Client> fetchClientsByName(String name){
+		return this.dbManager.fetchClientsByName(name);
 	}
 }
