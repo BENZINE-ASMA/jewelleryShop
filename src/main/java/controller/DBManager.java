@@ -788,6 +788,19 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 		}
 		return false;
 }
+	public boolean deleteInvoice(Long invoiceId) {
+		String query = "DELETE FROM Invoices WHERE invoice_id = ?";
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setLong(1, invoiceId);
+
+
+			return statement.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 
 
 

@@ -93,6 +93,9 @@ public class AdminController {
 	public boolean updateInvoice(Long invoiceId, Double newTotalAmount) {
 		return this.dbManager.updateInvoice(invoiceId, newTotalAmount);
 	}
+	public boolean deleteInvoice(Long invoiceId) {
+		return this.dbManager.deleteInvoice(invoiceId);
+	}
 
 	public boolean deleteFromCart(Long orderId, Long productId) {
 		return this.dbManager.deleteFromCart(orderId, productId);

@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import controller.AdminController;
 import controller.DBManager;
+import controller.InvoiceController;
 import controller.MainController;
 import model.Client;
 import model.Order;
@@ -153,7 +154,7 @@ public class MainView extends JFrame {
         System.out.println("this is the admin interface showing");
     }
     public void loadInvoiceDashbaordView(){
-        InvoiceDashbaord invoiceDashbaord = new InvoiceDashbaord(adminController);
+        InvoiceDashboard invoiceDashbaord = new InvoiceDashboard(adminController,new InvoiceController());
         mainPanel.add(invoiceDashbaord,"InvoiceDashbaord");
     }
     public AdminController getAdminController() {

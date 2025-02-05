@@ -2,7 +2,6 @@ package view.admin;
 
 import controller.AdminController;
 import controller.InvoiceController;
-import model.Client;
 import model.Invoice;
 import model.Order;
 
@@ -13,27 +12,33 @@ import java.awt.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-
-public class InvoiceDashbaord extends JPanel{
+public class InvoiceDashboard extends JPanel {
 	private JTable invoiceTable;
 	private DefaultTableModel tableModel;
 	private AdminController adminController;
+	private InvoiceController invoiceController;
 
-	public InvoiceDashbaord(AdminController adminController) {
-		this.adminController =adminController;
+	public InvoiceDashboard(AdminController adminController, InvoiceController invoiceController) {
+		this.adminController = adminController;
+		this.invoiceController = invoiceController;
 		setLayout(new BorderLayout());
+
+		// Header
 		DashboardHeaderAdmin header = new DashboardHeaderAdmin(adminController);
 		header.setBorder(new EmptyBorder(0, 0, 5, 0));
 		add(header, BorderLayout.NORTH);
+
+		// Table
 		tableModel = new DefaultTableModel(new String[]{
 				"ID", "ClientId", "OrderId", "InvoiceNumber", "Total",
 				"Status", "InvoiceDate", "UpdatedDate", "InvoicePath"}, 0);
 		invoiceTable = new JTable(tableModel);
-		invoiceTable.setAutoCreateRowSorter(true); // Enable sorting
+		invoiceTable.setAutoCreateRowSorter(true);
 		add(new JScrollPane(invoiceTable), BorderLayout.CENTER);
 
 		// Button Panel
-		JPanel buttonPanel = new JPanel();
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+
 		JButton editInvoice = new JButton("Edit Invoice");
 		editInvoice.addActionListener(e -> {
 			int selectedRow = invoiceTable.getSelectedRow();
@@ -43,26 +48,18 @@ public class InvoiceDashbaord extends JPanel{
 				JOptionPane.showMessageDialog(this, "Please select an invoice to edit.");
 			}
 		});
+
 		JButton deleteInvoice = new JButton("Delete Invoice");
 		deleteInvoice.addActionListener(e -> deleteInvoice());
+
+		JButton displayOrder = new JButton("Display Order");
+		displayOrder.addActionListener(e -> displayOrderPanel());
+
 		buttonPanel.add(editInvoice);
 		buttonPanel.add(deleteInvoice);
+		buttonPanel.add(displayOrder);
 		add(buttonPanel, BorderLayout.SOUTH);
-/*
-		JButton displayOrderButton = new JButton("Display Corresponding Order");
-		displayOrderButton.addActionListener(e -> displayOrderPanel());
-		buttonPanel.add(displayOrderButton);
-		JButton closeButton = new JButton("close");
-		closeButton.addActionListener(e -> {
-			adminController.ShowMaindashboardAdminView();
-			this.setVisible(false);
-		});
-		JPanel closePanel = new JPanel(new BorderLayout());
-		closePanel.add(closeButton, BorderLayout.WEST);
-		closePanel.setBorder(new EmptyBorder(1, 0, 5, 1));
-		this.add(closePanel, BorderLayout.NORTH);
 
- */
 		loadInvoiceData();
 	}
 
@@ -70,7 +67,7 @@ public class InvoiceDashbaord extends JPanel{
 		ArrayList<Invoice> invoices = adminController.fetchAllInvoices();
 		tableModel.setRowCount(0);
 		for (Invoice invoice : invoices) {
-			tableModel.addRow(new Object[] {
+			tableModel.addRow(new Object[]{
 					invoice.getInvoiceId(), invoice.getClientId(), invoice.getOrderId(),
 					invoice.getInvoiceNumber(), invoice.getTotalAmount(),
 					invoice.getStatus(), invoice.getInvoiceDate(),
@@ -78,7 +75,6 @@ public class InvoiceDashbaord extends JPanel{
 			});
 		}
 	}
-
 
 	private Invoice getInvoiceFromTable(int rowIndex) {
 		return new Invoice(
@@ -93,13 +89,14 @@ public class InvoiceDashbaord extends JPanel{
 				(Timestamp) tableModel.getValueAt(rowIndex, 7)
 		);
 	}
+
 	private void openEditInvoiceView(Invoice invoice) {
-		InvoiceDialogView dialog = new InvoiceDialogView(invoice, new InvoiceController());
+		InvoiceDialogView dialog = new InvoiceDialogView(invoice, invoiceController);
 		dialog.setSize(400, 300);
 		dialog.setLocationRelativeTo(null);
 		dialog.setModal(true);
 		dialog.setVisible(true);
-		loadInvoiceData(); // Refresh after closing
+		loadInvoiceData(); // Refresh after editing
 	}
 
 	private void deleteInvoice() {
@@ -109,59 +106,39 @@ public class InvoiceDashbaord extends JPanel{
 					"Are you sure you want to delete this invoice?",
 					"Confirm Deletion", JOptionPane.YES_NO_OPTION);
 			if (confirmation == JOptionPane.YES_OPTION) {
-				Long id = (Long) tableModel.getValueAt(selectedRow, 0);
-				//adminController.deleteInvoice(id);
+				Long invoiceId = (Long) tableModel.getValueAt(selectedRow, 0);
+				adminController.deleteInvoice(invoiceId);
 				loadInvoiceData();
 			}
 		} else {
 			JOptionPane.showMessageDialog(this, "Please select an invoice to delete.");
 		}
 	}
-	/*public void displayOrderPanel(){
-		int selectedRow = this.invoiceTable.getSelectedRow();
-		if(selectedRow >=0){
-			Long orderId = (Long) this.invoiceTable.getValueAt(selectedRow,2);
-			long InvoiceId = (Long) this.invoiceTable.getValueAt(selectedRow,0);
-			Order orderToDisplay = this.adminController.fetchOrderById(orderId);
 
-			OrderPanel orderPanel = new OrderPanel(orderToDisplay);
-			JFrame frame = new JFrame("Order Details");
-			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			frame.add(orderPanel);
-			frame.pack();
-			frame.setVisible(true);
-		}
-	}*/
 	public void displayOrderPanel() {
-		int selectedRow = this.invoiceTable.getSelectedRow();
+		int selectedRow = invoiceTable.getSelectedRow();
 		if (selectedRow >= 0) {
-			Long orderId = (Long) this.invoiceTable.getValueAt(selectedRow, 2);
-			long invoiceId = (Long) this.invoiceTable.getValueAt(selectedRow, 0);
+			Long orderId = (Long) tableModel.getValueAt(selectedRow, 2);
+			Long invoiceId = (Long) tableModel.getValueAt(selectedRow, 0);
 
-			// Fetch the order by ID
-			Order orderToDisplay = this.adminController.fetchOrderById(orderId);
+			Order order = adminController.fetchOrderById(orderId);
 
-			// Create or update the JFrame to hold the OrderPanel
-			JFrame orderFrame = new JFrame("Order Details");
-			orderFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Close on clicking the "X"
-			orderFrame.setLayout(new BorderLayout());
+			if (order != null) {
+				JFrame orderFrame = new JFrame("Order Details");
+				orderFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				orderFrame.setLayout(new BorderLayout());
 
-			// Create the OrderPanel and add it to the frame
-			OrderPanel orderPanel = new OrderPanel(orderToDisplay,this.adminController,invoiceId,this);
-			orderFrame.add(orderPanel, BorderLayout.CENTER);
+				OrderPanel orderPanel = new OrderPanel(order, adminController, invoiceId, this);
+				orderFrame.add(orderPanel, BorderLayout.CENTER);
 
-			// Make the JFrame fit the size of the content and set it visible
-			orderFrame.pack();
-			orderFrame.setLocationRelativeTo(null); // Center the frame on the screen
-			orderFrame.setVisible(true);  // Make the frame visible
+				orderFrame.pack();
+				orderFrame.setLocationRelativeTo(null);
+				orderFrame.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(this, "No order found for the selected invoice.");
+			}
 		} else {
-			System.out.println("No row selected in the invoice table");
+			JOptionPane.showMessageDialog(this, "Please select an invoice to view its order.");
 		}
 	}
-	public JTable getInvoiceTable() {
-		return this.invoiceTable;
-	}
-
-
-
 }
