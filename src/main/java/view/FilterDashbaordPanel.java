@@ -110,7 +110,7 @@ and price ='299.99' and material='Gold';
     private void refreshDashboard(ArrayList<Bijoux>FilteredDashboard,MainController mainController,JPanel dashboard) {
         JPanel dashboardPanel = (JPanel) dashboard.getComponent(2);
         dashboardPanel.removeAll();
-        UtilDisplayingDashboards.loadDashbaordImages(mainController, FilteredDashboard, dashboardPanel);
+        UtilDisplayingDashboards.loadDashbaordImages(mainController, FilteredDashboard, dashboardPanel,"client");
         dashboardPanel.revalidate();
         dashboardPanel.repaint();
     }

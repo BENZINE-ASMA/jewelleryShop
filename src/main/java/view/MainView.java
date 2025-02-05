@@ -74,8 +74,10 @@ public class MainView extends JFrame {
             setPreferredSize(new Dimension(400, 300));
         }else if(panelName.equals("Signup")){
             setPreferredSize(new Dimension(430, 350));
+        }else if(panelName.equals("cart")) {
+            this.setPreferredSize(new Dimension(850, 700));
         }else {
-            this.setPreferredSize(new Dimension(1000, 700));
+                this.setPreferredSize(new Dimension(1000, 700));
     }
     pack();
     cardLayout.show(mainPanel, panelName);

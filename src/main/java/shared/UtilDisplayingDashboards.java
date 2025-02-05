@@ -36,21 +36,21 @@ public class UtilDisplayingDashboards {
         }
     }
 
-    public static JPanel createBijouxPanel(Bijoux bijou, MainController mainController) {
+    public static JPanel createBijouxPanel(Bijoux bijou, MainController mainController,String role) {
         JPanel bijouPanel = new JPanel();
         bijouPanel.setBackground(Color.white);
         bijouPanel.setLayout(new BorderLayout());
-        bijouPanel.setPreferredSize(new Dimension(180, 185)); // Increased panel size
+        bijouPanel.setPreferredSize(new Dimension(180, 185));
         bijouPanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.LIGHT_GRAY));
 
         JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new BoxLayout(imagePanel, BoxLayout.Y_AXIS));
         imagePanel.setBackground(Color.white);
-        imagePanel.setPreferredSize(new Dimension(120, 140)); // Increased image panel size
+        imagePanel.setPreferredSize(new Dimension(120, 140));
 
         Image bijouImg = UtilDisplayingDashboards.loadImageBijou(bijou.getImagePath());
         if (bijouImg != null) {
-            Image scaledImage = bijouImg.getScaledInstance(100, 100, Image.SCALE_SMOOTH); // Increased image size
+            Image scaledImage = bijouImg.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             JLabel bijouLabel = new JLabel(new ImageIcon(scaledImage));
             bijouLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
             imagePanel.add(bijouLabel);
@@ -71,17 +71,19 @@ public class UtilDisplayingDashboards {
         JLabel priceLabel = new JLabel("Price: " + bijou.getPrice() + "€");
         priceLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         imagePanel.add(priceLabel);
+        if (role =="client"){
+            JPanel buttonPanel = new JPanel(new FlowLayout());
+            JButton addButton = new JButton("Add to Cart");
 
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        JButton addButton = new JButton("Add to Cart");
+            addButton.addActionListener(e -> {
+                mainController.addToCart(bijou);
+                JOptionPane.showMessageDialog(null, "Added to cart!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            });
 
-        addButton.addActionListener(e -> {
-            mainController.addToCart(bijou);
-            JOptionPane.showMessageDialog(null, "Added to cart!", "Success", JOptionPane.INFORMATION_MESSAGE);
-        });
+            buttonPanel.add(addButton);
+            imagePanel.add(buttonPanel);
+        }
 
-        buttonPanel.add(addButton);
-        imagePanel.add(buttonPanel);
 
         bijouPanel.add(imagePanel, BorderLayout.CENTER);
 
@@ -125,7 +127,7 @@ public class UtilDisplayingDashboards {
 
     }
 
-    public static void loadDashbaordImages(MainController mainController, ArrayList<? extends Bijoux> products, JPanel current) {
+    public static void loadDashbaordImages(MainController mainController, ArrayList<? extends Bijoux> products, JPanel current,String role) {
         JPanel panelImages = new JPanel();
         panelImages.setLayout(new BoxLayout(panelImages, BoxLayout.Y_AXIS));
         panelImages.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.LIGHT_GRAY));
@@ -143,7 +145,7 @@ public class UtilDisplayingDashboards {
             }
 
 
-            JPanel bijouxPanel = UtilDisplayingDashboards.createBijouxPanel(products.get(i - 1), mainController);
+            JPanel bijouxPanel = UtilDisplayingDashboards.createBijouxPanel(products.get(i - 1), mainController,role);
 
 
             bijouxPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));

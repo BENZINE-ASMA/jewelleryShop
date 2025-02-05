@@ -40,6 +40,6 @@ public class NecklacesDashboardView extends JPanel {
 		dashboardPanel.setLayout(new BorderLayout());
 		add(dashboardPanel, BorderLayout.CENTER);
 
-		UtilDisplayingDashboards.loadDashbaordImages(mainController, bijouxList, dashboardPanel);
+		UtilDisplayingDashboards.loadDashbaordImages(mainController, bijouxList, dashboardPanel,"client");
 	}
 }

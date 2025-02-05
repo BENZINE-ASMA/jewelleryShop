@@ -33,6 +33,6 @@ public class MainDashboardAdminView extends JPanel {
         dashboardPanel.setLayout(new BorderLayout());
         add(dashboardPanel, BorderLayout.CENTER);
 
-        UtilDisplayingDashboards.loadDashbaordImages(mainController,FilteredDashboard, dashboardPanel);
+        UtilDisplayingDashboards.loadDashbaordImages(mainController,FilteredDashboard, dashboardPanel,"admin");
     }
 }

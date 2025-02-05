@@ -30,6 +30,6 @@ public class MainDashboardView extends JPanel {
         dashboardPanel.setBorder(null);
         add(dashboardPanel, BorderLayout.CENTER);
 
-        UtilDisplayingDashboards.loadDashbaordImages(mainController, FilteredDashboard, dashboardPanel);
+        UtilDisplayingDashboards.loadDashbaordImages(mainController, FilteredDashboard, dashboardPanel,"client");
     }
 }
