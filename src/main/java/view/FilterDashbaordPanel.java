@@ -1,5 +1,6 @@
 package view;
 
+import controller.AdminController;
 import controller.MainController;
 import model.Bijoux;
 import shared.UtilDisplayingDashboards;
@@ -14,7 +15,7 @@ public class FilterDashbaordPanel extends JPanel{
     private String parent;
 
     public FilterDashbaordPanel(ArrayList<Bijoux>FilteredDashboard, int panelHeight, MainController mainController, JPanel dashboard, String p){
-        super();
+
         this.parent=p;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(200, panelHeight));
@@ -62,7 +63,8 @@ public class FilterDashbaordPanel extends JPanel{
         JLabel productMatièreLabel = new JLabel("Matière");
         this.add(productMatièreLabel);
 
-        String[] matière = {"All", "acier", "silver"};
+        String[] matière = mainController.getDistinctMaterials().toArray(new String[0]);
+
         JComboBox<String> productMatièreComboBox = new JComboBox<>(matière);
         this.add(productMatièreComboBox);
         this.add(Box.createRigidArea(new Dimension(0, 10)));

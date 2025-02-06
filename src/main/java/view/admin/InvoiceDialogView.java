@@ -13,12 +13,14 @@ public class InvoiceDialogView extends JDialog {
     private JTextField filePathField;
     private JTextField totalAmountField;
     private JComboBox<String> statusComboBox;
+    private AdminController adminController;
     private Invoice invoice;
     private InvoiceController invoiceController;
 
-    public InvoiceDialogView(Invoice invoice, InvoiceController invoiceController) {
+    public InvoiceDialogView(Invoice invoice, InvoiceController invoiceController, AdminController adc) {
         this.invoice = invoice;
         this.invoiceController = invoiceController;
+        this.adminController =adc;
         this.setLayout(null);
         this.setTitle("Edit Invoice");
         this.setSize(400, 300);
@@ -50,6 +52,7 @@ public class InvoiceDialogView extends JDialog {
         totalAmountField.setBounds(180, 110, 150, 25);
         totalAmountField.setText(invoice != null ? String.valueOf(invoice.getTotalAmount()) : "");
         this.add(totalAmountField);
+        totalAmountField.disable();
 
         JLabel statusLabel = new JLabel("Status:");
         statusLabel.setBounds(50, 150, 120, 25);
@@ -82,18 +85,16 @@ public class InvoiceDialogView extends JDialog {
         double totalAmount = Double.parseDouble(totalAmountField.getText());
         String status = (String) statusComboBox.getSelectedItem();
 
-        if (invoice == null) {
-            // Create a new invoice
-          //  adminController.addInvoice(new Invoice(invoiceNumber, filePath, totalAmount, status));
+        invoice.setInvoiceNumber(invoiceNumber);
+        invoice.setFilePath(filePath);
+        invoice.setTotalAmount(totalAmount);
+        invoice.setStatus(status);
+        if (adminController.saveInvoice(invoice)) {
+            JOptionPane.showMessageDialog(null, "Invoice saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            // Update the existing invoice
-            invoice.setInvoiceNumber(invoiceNumber);
-            invoice.setFilePath(filePath);
-            invoice.setTotalAmount(totalAmount);
-            invoice.setStatus(status);
-           // adminController.updateInvoice(invoice);
+            JOptionPane.showMessageDialog(null, "Failed to save the invoice. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        this.dispose(); // Close the dialog after saving
+        this.dispose();
     }
 }

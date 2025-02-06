@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import model.*;
 import view.MainView;
@@ -29,7 +30,7 @@ public class AdminController {
 	}
 
 	public void logout() {
-		this.loggedInAdmin = null; // Clear admin session
+		this.loggedInAdmin = null;
 		this.showLoginView(false, "You have successfully logged out.");
 	}
 
@@ -77,6 +78,15 @@ public class AdminController {
 
 	public Order fetchOrderById(Long orderId) {
 		return this.dbManager.fetchOrderById(orderId);
+	}
+	public String fetchInvoiceById(Long invoiceId){
+		return this.dbManager.fetchInvoiceById(invoiceId);
+	}
+	public void getAllInvoices(ArrayList<Invoice>invoices,Long clientid){
+		 this.dbManager.getAllInvoices(invoices,clientid);
+	}
+	public Invoice fetchInvoiceDetailsById(Long invoiceid){
+		return this.dbManager.fetchInvoiceDetailsById(invoiceid);
 	}
 
 	public boolean updateCart(Long orderId, Long productId, int newQuantity) {
@@ -148,4 +158,8 @@ public class AdminController {
 	public ArrayList<Client> fetchClientsByName(String name){
 		return this.dbManager.fetchClientsByName(name);
 	}
+	public boolean saveInvoice(Invoice invoice){
+		return this.dbManager.saveInvoice(invoice);
+	}
+
 }

@@ -91,7 +91,7 @@ public class InvoiceDashboard extends JPanel {
 	}
 
 	private void openEditInvoiceView(Invoice invoice) {
-		InvoiceDialogView dialog = new InvoiceDialogView(invoice, invoiceController);
+		InvoiceDialogView dialog = new InvoiceDialogView(invoice, invoiceController,this.adminController);
 		dialog.setSize(400, 300);
 		dialog.setLocationRelativeTo(null);
 		dialog.setModal(true);

@@ -35,7 +35,7 @@ public class SignUpView extends JPanel {
 		this.add(firstNameLabel);
 
 		firstNameField = new JTextField(20);
-		firstNameField.setBounds(150, 30, 200, 25); // Increased width
+		firstNameField.setBounds(150, 30, 200, 25);
 		this.add(firstNameField);
 
 		JLabel lastNameLabel = new JLabel("Last Name:");
@@ -43,7 +43,7 @@ public class SignUpView extends JPanel {
 		this.add(lastNameLabel);
 
 		lastNameField = new JTextField(20);
-		lastNameField.setBounds(150, 70, 200, 25); // Increased width
+		lastNameField.setBounds(150, 70, 200, 25);
 		this.add(lastNameField);
 
 		JLabel emailLabel = new JLabel("Email:");
@@ -51,7 +51,7 @@ public class SignUpView extends JPanel {
 		this.add(emailLabel);
 
 		emailField = new JTextField(20);
-		emailField.setBounds(150, 110, 200, 25); // Increased width
+		emailField.setBounds(150, 110, 200, 25);
 		this.add(emailField);
 
 		emailRequirementsLabel = new JLabel("<html><i>Must be a valid email (e.g., example@domain.com)</i></html>");

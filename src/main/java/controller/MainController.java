@@ -3,6 +3,7 @@ package controller;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -223,6 +224,11 @@ public class MainController {
 		this.currentOrder = currentOrder;
 	}
 
+	public List<String> getDistinctMaterials(){
+		return this.dbManager.getDistinctMaterials();
+	}
+	/*ended up not suing search input but rather a panel
+
 	public ArrayList<? extends Bijoux> searchByKey(String query){
 		ArrayList<?> result = new ArrayList<>();
 		String[] orKeys = query.split("(?i)\\s+ou\\s+");
@@ -236,6 +242,6 @@ public class MainController {
 		}
 		return null;
 	}
-	
+	*/
 
 }

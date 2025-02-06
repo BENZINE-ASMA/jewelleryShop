@@ -1,7 +1,9 @@
 package view.admin;
 
 import controller.AdminController;
+import controller.InvoiceController;
 import model.Client;
+import model.Invoice;
 import model.Order;
 
 import javax.swing.*;
@@ -20,9 +22,11 @@ public class QuickSearchView extends JFrame {
     private JLabel clientIdValue, clientNameValue, clientEmailValue;
     private JPanel clientInfoPanel;
     private JPanel resultsPanel;
+    private InvoiceController invoiceController ;
 
     public QuickSearchView(AdminController adminController) {
         this.adminController = adminController;
+        this.invoiceController = new InvoiceController();
         setTitle("Quick Search");
         setSize(700, 500);
         setLayout(new BorderLayout());
@@ -30,7 +34,7 @@ public class QuickSearchView extends JFrame {
 
         // Search Panel
         JPanel searchPanel = new JPanel(new FlowLayout());
-        String[] searchOptions = {"Order ID", "Client ID", "Client Name", "Client Email"};
+        String[] searchOptions = {"Order ID", "Invoice ID", "Client ID", "Client Email"};
         searchTypeDropdown = new JComboBox<>(searchOptions);
         searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
@@ -82,20 +86,17 @@ public class QuickSearchView extends JFrame {
         resultsPanel.add(clientInfoPanel, BorderLayout.NORTH);
 
         // Results Table
-        tableModel = new DefaultTableModel(new String[]{"Order ID", "Order Details"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"ID", "Type", "Details"}, 0);
         resultsTable = new JTable(tableModel);
         resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         resultsPanel.add(new JScrollPane(resultsTable), BorderLayout.CENTER);
 
         add(resultsPanel, BorderLayout.CENTER);
 
-        // Initially hide client info panel
         clientInfoPanel.setVisible(false);
 
-        // Search Button Action
         searchButton.addActionListener(e -> performSearch());
 
-        // Table Click Listener
         resultsTable.getSelectionModel().addListSelectionListener(event -> {
             if (!event.getValueIsAdjusting() && resultsTable.getSelectedRow() != -1) {
                 handleRowSelection();
@@ -108,8 +109,8 @@ public class QuickSearchView extends JFrame {
     private void performSearch() {
         String searchQuery = searchField.getText().trim();
         String selectedSearchType = (String) searchTypeDropdown.getSelectedItem();
-        tableModel.setRowCount(0); // Clear previous results
-        clientInfoPanel.setVisible(false); // Hide client info until needed
+        tableModel.setRowCount(0);
+        clientInfoPanel.setVisible(false);
 
         if (searchQuery.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter a search query.", "Input Required", JOptionPane.WARNING_MESSAGE);
@@ -120,42 +121,114 @@ public class QuickSearchView extends JFrame {
             case "Order ID":
                 searchByOrderId(searchQuery);
                 break;
+            case "Invoice ID":
+                searchByInvoiceId(searchQuery);
+                break;
             case "Client ID":
                 searchByClientId(searchQuery);
-                break;
-            case "Client Name":
-                searchByClientName(searchQuery);
                 break;
             case "Client Email":
                 searchByClientEmail(searchQuery);
                 break;
         }
     }
+    private void searchByClientEmail(String clientEmail) {
+        if (clientEmail == null || clientEmail.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid email address.", "Input Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Client client = adminController.fetchClientByEmail(clientEmail.trim());
+        if (client != null) {
+            // Display the client's details
+            displayClientInfo(client);
+
+            // Fetch and display orders and invoices for the client
+            ArrayList<Invoice> invoices =new ArrayList<>();
+            adminController.getAllInvoices(invoices,client.getId());
+            ArrayList<Order> orders = adminController.fetchOrdersByClient(client.getId());
+
+            tableModel.setRowCount(0);
+
+            for (Invoice invoice : invoices) {
+                tableModel.addRow(new Object[]{invoice.getInvoiceId(), "Invoice", "Click to view"});
+            }
+
+            for (Order order : orders) {
+                tableModel.addRow(new Object[]{order.getOrderId(), "Order", "Click to view"});
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No client found with this email.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
 
     private void searchByOrderId(String orderIdString) {
+        if (orderIdString == null || orderIdString.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid Order ID.", "Input Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         try {
-            long orderId = Long.parseLong(orderIdString);
+            long orderId = Long.parseLong(orderIdString.trim());
             Order order = adminController.fetchOrderById(orderId);
+
             if (order != null) {
+                // Fetch the associated client for the order
                 Client client = adminController.fetchClientById(order.getClient().getId());
+
                 if (client != null) {
+                    // Display client details
                     displayClientInfo(client);
+
+                    // Fetch all orders and invoices for the client
+                    ArrayList<Order> orders = adminController.fetchOrdersByClient(client.getId());
+                    ArrayList<Invoice> invoices = new ArrayList<>();
+                    adminController.getAllInvoices(invoices,client.getId());
+
+                    // Clear previous table results
+                    tableModel.setRowCount(0);
+
+                    // Add all invoices to the table
+                    for (Invoice invoice : invoices) {
+                        tableModel.addRow(new Object[]{invoice.getInvoiceId(), "Invoice", "Click to view"});
+                    }
+
+                    // Add all orders to the table
+                    for (Order clientOrder : orders) {
+                        tableModel.addRow(new Object[]{clientOrder.getOrderId(), "Order", "Click to view"});
+                    }
                 }
-                tableModel.addRow(new Object[]{order.getOrderId(), "Click to view cart"});
             } else {
                 JOptionPane.showMessageDialog(this, "No order found with this ID.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid Order ID format.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Invalid Order ID format. Please enter a numeric value.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     private void searchByClientId(String clientIdString) {
         try {
             long clientId = Long.parseLong(clientIdString);
             Client client = adminController.fetchClientById(clientId);
             if (client != null) {
-                displayClientOrders(client);
+                displayClientInfo(client);
+
+                ArrayList<Invoice> invoices = new ArrayList<>();
+                adminController.getAllInvoices(invoices, clientId);
+
+                ArrayList<Order> orders = adminController.fetchOrdersByClient(clientId);
+
+                tableModel.setRowCount(0); // Clear previous results
+
+                for (Invoice invoice : invoices) {
+                    tableModel.addRow(new Object[]{invoice.getInvoiceId(), "Invoice", "Click to view"}); // Correct type
+                }
+
+                for (Order order : orders) {
+                    tableModel.addRow(new Object[]{order.getOrderId(), "Order", "Click to view"}); // Correct type
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "No client found with this ID.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -164,23 +237,38 @@ public class QuickSearchView extends JFrame {
         }
     }
 
-    private void searchByClientName(String clientName) {
-        ArrayList<Client> clients = adminController.fetchClientsByName(clientName);
-        if (clients.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No clients found with this name.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            for (Client client : clients) {
-                displayClientOrders(client);
-            }
-        }
-    }
 
-    private void searchByClientEmail(String clientEmail) {
-        Client client = adminController.fetchClientByEmail(clientEmail);
-        if (client != null) {
-            displayClientOrders(client);
-        } else {
-            JOptionPane.showMessageDialog(this, "No client found with this email.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
+    private void searchByInvoiceId(String invoiceIdString) {
+        try {
+            long invoiceId = Long.parseLong(invoiceIdString);
+            String clientId = adminController.fetchInvoiceById(invoiceId); // Returns client_id as a String
+
+            if (clientId != null) {
+                Client client = adminController.fetchClientById(Long.parseLong(clientId));
+
+                if (client != null) {
+                    displayClientInfo(client);
+                }
+
+                ArrayList<Invoice> invoices = new ArrayList<>();
+                adminController.getAllInvoices(invoices, Long.parseLong(clientId));
+
+                ArrayList<Order> orders = adminController.fetchOrdersByClient(Long.parseLong(clientId));
+
+                tableModel.setRowCount(0); // Clear previous results
+
+                for (Invoice invoice : invoices) {
+                    tableModel.addRow(new Object[]{invoice.getInvoiceId(), "Invoice", "Click to view"}); // Correct type
+                }
+
+                for (Order order : orders) {
+                    tableModel.addRow(new Object[]{order.getOrderId(), "Order", "Click to view"}); // Correct type
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No invoice found with this ID.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid Invoice ID format.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -189,13 +277,12 @@ public class QuickSearchView extends JFrame {
         clientNameValue.setText(client.getFirstName() + " " + client.getLastName());
         clientEmailValue.setText(client.getEmail());
 
-        clientInfoPanel.setVisible(true); // Show client info
+        clientInfoPanel.setVisible(true);
         revalidate();
         repaint();
     }
-
     private void displayClientOrders(Client client) {
-        displayClientInfo(client); // Show client info before listing orders
+        displayClientInfo(client);
 
         ArrayList<Order> orders = adminController.fetchOrdersByClient(client.getId());
         if (orders.isEmpty()) {
@@ -212,17 +299,29 @@ public class QuickSearchView extends JFrame {
         if (selectedRow == -1) return;
 
         Object idObject = resultsTable.getValueAt(selectedRow, 0);
-        if (!(idObject instanceof Long)) return;
+        String type = (String) resultsTable.getValueAt(selectedRow, 1);
 
+        if (!(idObject instanceof Long)) return;
         long selectedId = (Long) idObject;
-        Order order = adminController.fetchOrderById(selectedId);
-        if (order != null) {
-            JFrame orderFrame = new JFrame("Order Details");
-            orderFrame.setSize(500, 400);
-            orderFrame.setLayout(new BorderLayout());
-            orderFrame.add(new OrderPanel(order, adminController, selectedId, null), BorderLayout.CENTER);
-            orderFrame.setLocationRelativeTo(this);
-            orderFrame.setVisible(true);
+
+        if (type.equals("Order")) {
+            Order order = adminController.fetchOrderById(selectedId);
+            if (order != null) {
+                JFrame orderFrame = new JFrame("Order Details");
+                orderFrame.setSize(500, 400);
+                orderFrame.setLayout(new BorderLayout());
+                orderFrame.add(new OrderPanel(order, adminController, selectedId, new InvoiceDashboard(adminController,invoiceController)), BorderLayout.CENTER);
+                orderFrame.setLocationRelativeTo(this);
+                orderFrame.setVisible(true);
+            }
+        } else if (type.equals("Invoice")) {
+            Invoice invoice = adminController.fetchInvoiceDetailsById(selectedId);
+            if (invoice != null) {
+                InvoiceDialogView invoiceDialog = new InvoiceDialogView(invoice, invoiceController,this.adminController);
+                invoiceDialog.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Invoice not found.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

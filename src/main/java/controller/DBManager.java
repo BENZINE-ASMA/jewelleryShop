@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
@@ -671,6 +672,74 @@ public class DBManager {
 		return order;
 	}
 
+	private Invoice mapInvoice(ResultSet rs) throws SQLException {
+		Long invoiceId         = rs.getLong("invoice_id");
+		Long clientId          = rs.getLong("client_id");
+		Long orderId           = rs.getLong("order_id");
+		String invoiceNumber   = rs.getString("invoice_number");
+		String filePath        = rs.getString("file_path");
+		Timestamp invoiceDate  = rs.getTimestamp("invoice_date");
+		Timestamp updateDate   = rs.getTimestamp("invoice_update_date");
+		Double totalAmount     = rs.getDouble("total_amount");
+		String status          = rs.getString("status");
+
+		return new Invoice(invoiceId, clientId, orderId, invoiceNumber, filePath,
+				totalAmount, status, invoiceDate, updateDate);
+	}
+
+
+	public Invoice fetchInvoiceDetailsById(Long id) {
+		String query = "SELECT * FROM Invoices WHERE invoice_id = ?";
+		Invoice invoice = null;
+
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setLong(1, id);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					invoice = mapInvoice(rs);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return invoice;
+	}
+	public String fetchInvoiceById(Long id) {
+		String query = "SELECT client_id FROM Invoices WHERE invoice_id = ?";
+		String clientId = null;
+
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setLong(1, id);
+			try (ResultSet rs = statement.executeQuery()) {
+				if (rs.next()) {
+					clientId = rs.getString("client_id");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return clientId;
+	}
+
+	public void getAllInvoices(ArrayList<Invoice> invoices, Long clientId) {
+		String query = "SELECT * FROM Invoices WHERE client_id = ?";
+
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setLong(1, clientId);
+			try (ResultSet rs = statement.executeQuery()) {
+				while (rs.next()) {
+					Invoice invoice = mapInvoice(rs);
+					invoices.add(invoice);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
 	public Cart fetchCart(Long orderId) {
 		String query = "SELECT product_id, quantity FROM Cart_Items WHERE order_id = ?";
@@ -878,6 +947,45 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 			e.printStackTrace();
 		}
 		return clients;
+	}
+	public boolean saveInvoice(Invoice invoice) {
+		String query = "UPDATE Invoices " +
+				"SET invoice_number = ?, file_path = ?, total_amount = ?, status = ?, invoice_update_date = ?"+
+				"WHERE invoice_id = ?";
+
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			// Set parameters for the prepared statement
+			statement.setString(1, invoice.getInvoiceNumber());
+			statement.setString(2, invoice.getFilePath());
+			statement.setDouble(3, invoice.getTotalAmount());
+			statement.setString(4, invoice.getStatus());
+			statement.setTimestamp(5, new Timestamp(System.currentTimeMillis()));
+			statement.setLong(6, invoice.getInvoiceId());
+
+
+			int rowsUpdated = statement.executeUpdate();
+			return rowsUpdated > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false; // Return false if an error occurred
+		}
+	}
+	public List<String> getDistinctMaterials() {
+		String query = "SELECT DISTINCT(material) FROM products";
+		List<String> materials = new ArrayList<>();
+		materials.add("All");
+
+		try (PreparedStatement statement = connection.prepareStatement(query);
+			 ResultSet resultSet = statement.executeQuery()) {
+
+			while (resultSet.next()) {
+				materials.add(resultSet.getString("material"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return materials;
 	}
 
 

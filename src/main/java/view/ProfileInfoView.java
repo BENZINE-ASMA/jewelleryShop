@@ -61,7 +61,6 @@ public class ProfileInfoView extends JPanel {
 		emailField.setBounds(150, 110, 150, 25);
 
 		emailField.setText(loggedInClient.getEmail());
-		// emailField.setEnabled(false);
 		this.add(emailField);
 
 		JLabel passwordLabel = new JLabel("Password:");
@@ -71,7 +70,6 @@ public class ProfileInfoView extends JPanel {
 		passwordField = new JPasswordField(20);
 		passwordField.setBounds(150, 150, 150, 25);
 		passwordField.setText(loggedInClient.getPassword());
-		// passwordField.setEnabled(false);
 		this.add(passwordField);
 
 		editProfileButton = new JButton("Edit Profile");

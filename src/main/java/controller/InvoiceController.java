@@ -7,9 +7,6 @@ import shared.InvoiceGenerator;
 
 public class InvoiceController {
 	private Invoice invoice ;
-	
-	
-	
 	public InvoiceController() {
 		
 	}
@@ -28,16 +25,15 @@ public class InvoiceController {
 		
 		// the syntax taht m choosing is INV-CLclientID-001
 		String lastInvoiceNumber = dbManager.getLastInvoiceNumberOfDB(clientId);
-		System.out.println("test debug "+lastInvoiceNumber);
 		int nextSequenceNumber = 1;
 		 if (lastInvoiceNumber != null && !lastInvoiceNumber.isEmpty()) {
 			 String next = lastInvoiceNumber.split("-")[2];
 			 nextSequenceNumber=Integer.parseInt(next)+1;
 		 }
 		 String formattedSequence = String.format("%03d", nextSequenceNumber);
-		 System.out.println("test debug " +"INV-CL" + clientId + "-" + formattedSequence);
 		 return "INV-CL" + clientId + "-" + formattedSequence;
 		
 	}
+
 
 }
