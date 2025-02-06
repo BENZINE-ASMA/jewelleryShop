@@ -45,6 +45,13 @@ public class Bijoux {
 	public String formattedPrice() {
 		return String.format("%.2f €", price);
 	}
+	public void decrementStock(int quantity) {
+		if (stock >= quantity) {
+			stock -= quantity;
+		} else {
+			stock = 0;
+		}
+	}
 
 	@Override
 	public String toString() {

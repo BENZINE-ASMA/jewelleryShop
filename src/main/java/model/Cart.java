@@ -1,6 +1,7 @@
 package model;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -41,13 +42,17 @@ public class Cart {
 
 	}
 	public void deleteFromCart(Long id) {
-		// since it s a new object this returns null cz it checks the equality with the whole object not only item itself
-		for(Bijoux b: this.cart.keySet()){
-			if (b.getId()==id){
-				cart.remove(b);
+		Iterator<Entry<Bijoux, Integer>> iterator = cart.entrySet().iterator();
+
+		while (iterator.hasNext()) {
+			Map.Entry<Bijoux, Integer> entry = iterator.next();
+			if (entry.getKey().getId().equals(id)) {
+				iterator.remove();
+				break;
 			}
 		}
 	}
+
 
 	public void removeFromCart(Bijoux b) {
 		if(cart.containsKey(b)) {

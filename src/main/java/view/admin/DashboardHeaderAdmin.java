@@ -28,7 +28,8 @@ public class DashboardHeaderAdmin extends JPanel {
         logoIcon.setVerticalAlignment(SwingConstants.CENTER);
 
         this.catalogue = new JButton("Catalogue");
-        catalogue.addActionListener(e -> adminController.ShowMaindashboardAdminView());
+        catalogue.addActionListener(e ->
+                adminController.ShowMaindashboardAdminView());
 
         this.products = new JButton("PRODUCTS");
         products.addActionListener(e -> adminController.showProductsDashbaordView());

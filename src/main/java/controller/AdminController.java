@@ -103,11 +103,9 @@ public class AdminController {
 	public boolean deleteInvoice(Long invoiceId) {
 		return this.dbManager.deleteInvoice(invoiceId);
 	}
-
 	public boolean deleteFromCart(Long orderId, Long productId) {
 		return this.dbManager.deleteFromCart(orderId, productId);
 	}
-
 	public void showRingDashboardsView() {
 		mainView.loadRingsDashboardView();
 		mainView.showPanel("ringsDashbaord");
@@ -129,6 +127,7 @@ public class AdminController {
 	}
 
 	public void ShowMaindashboardAdminView() {
+
 		mainView.loadMainDashboardAdminView();
 		mainView.showPanel("mainDashboardAdminView");
 	}
@@ -160,6 +159,9 @@ public class AdminController {
 	}
 	public boolean saveInvoice(Invoice invoice){
 		return this.dbManager.saveInvoice(invoice);
+	}
+	public void incrementStock(Long productId, int quantity) {
+		dbManager.incrementStock(productId, quantity);
 	}
 
 }

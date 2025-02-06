@@ -21,7 +21,7 @@ public class OrderPanel extends JPanel {
         this.adminController = adminController;
         this.invoiceId = invoiceId;
         this.invoiceDashboard = invoiceDashboard;
-
+        this.setPreferredSize(new Dimension(800,500));
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding around the panel
 
@@ -77,19 +77,23 @@ public class OrderPanel extends JPanel {
             int selectedRow = cartTable.getSelectedRow();
             if (selectedRow != -1) {
                 Long productId = (Long) tableModel.getValueAt(selectedRow, 0);
-                order.getCartItems().deleteFromCart(productId);
+                int quantity = (Integer) tableModel.getValueAt(selectedRow, 2); // Get the quantity before deletion
 
+                order.getCartItems().deleteFromCart(productId);
                 double newTotalPrice = order.getCartItems().getTotalPrice();
                 totalPriceLabel.setText(String.format("%.2f", newTotalPrice));
 
+                // Update the database: Remove from cart and increment the stock
                 adminController.deleteFromCart(order.getOrderId(), productId);
                 adminController.updateOrder(order.getOrderId(), newTotalPrice);
+                adminController.incrementStock(productId, quantity); // Increment stock in DB
 
                 tableModel.removeRow(selectedRow);
             } else {
                 JOptionPane.showMessageDialog(this, "Please select an item to delete.");
             }
         });
+
 
         buttonPanel.add(validateOrderButton);
         buttonPanel.add(deleteItemButton);

@@ -181,13 +181,18 @@ public class DBManager {
 						int size = rs.getInt("size");
 
 						Ring ring = new Ring(id, name, brand, type, description, price, material, size, imagePath, stock);
-						results.add(ring);
+						if(ring.getStock()>0){
+							results.add(ring);
+						}
+
 
 						break;
 					case "Necklace":
 						double length = rs.getDouble("length");
 						Necklace necklace = new Necklace(id, name, brand, type, description, price, material, length, imagePath, stock);
-						results.add(necklace);
+						if(necklace.getStock()>0){
+							results.add(necklace);
+						}
 						break;
 				}
 			}
@@ -200,11 +205,10 @@ public class DBManager {
 	}
 
 	public ArrayList<Bijoux> getAllProducts(ArrayList<Bijoux> results) {
-		String query = "Select * from products";
-		Statement stmt;
-		try {
-			stmt = connection.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+		String query = "SELECT * FROM products WHERE stock > 0"; // Ensures only products with stock > 0 are retrieved
+
+		try (Statement stmt = connection.createStatement();
+			 ResultSet rs = stmt.executeQuery(query)) {
 
 			while (rs.next()) {
 				Long id = rs.getLong("id");
@@ -216,28 +220,24 @@ public class DBManager {
 				String material = rs.getString("material");
 				String imagePath = rs.getString("image_path");
 				int stock = rs.getInt("stock");
+
 				switch (type) {
 					case "Ring":
 						int size = rs.getInt("size");
-
-						Ring ring = new Ring(id, name, brand, type, description, price, material, size, imagePath, stock);
-						results.add(ring);
-
+						results.add(new Ring(id, name, brand, type, description, price, material, size, imagePath, stock));
 						break;
 					case "Necklace":
 						double length = rs.getDouble("length");
-						Necklace necklace = new Necklace(id, name, brand, type, description, price, material, length, imagePath, stock);
-						results.add(necklace);
+						results.add(new Necklace(id, name, brand, type, description, price, material, length, imagePath, stock));
 						break;
 				}
 			}
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
-		return null;
-
+		return results;
 	}
+
 
 
 	public Client authenticateUser(String email, String password) {
@@ -858,17 +858,92 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 		return false;
 }
 	public boolean deleteInvoice(Long invoiceId) {
-		String query = "DELETE FROM Invoices WHERE invoice_id = ?";
-		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setLong(1, invoiceId);
+		String findOrdersQuery = "SELECT order_id FROM Invoices WHERE invoice_id = ?";
+		String findCartItemsQuery = "SELECT product_id, quantity FROM Cart_Items WHERE order_id = ?";
+		String deleteInvoiceQuery = "DELETE FROM Invoices WHERE invoice_id = ?";
+		String deleteCartQuery = "DELETE FROM Cart_Items WHERE order_id = ?";
+		String deleteOrdersQuery = "DELETE FROM Orders WHERE order_id = ?";
+		String updateStockQuery = "UPDATE products SET stock = stock + ? WHERE id = ?";
 
+		try {
+			connection.setAutoCommit(false); // Start transaction
 
-			return statement.executeUpdate() > 0;
+			// Step 1: Find all orders linked to this invoice
+			List<Long> orderIds = new ArrayList<>();
+			try (PreparedStatement findOrdersStmt = connection.prepareStatement(findOrdersQuery)) {
+				findOrdersStmt.setLong(1, invoiceId);
+				try (ResultSet rs = findOrdersStmt.executeQuery()) {
+					while (rs.next()) {
+						orderIds.add(rs.getLong("order_id"));
+					}
+				}
+			}
+
+			// Step 2: Retrieve all products and quantities in the cart before deletion
+			Map<Long, Integer> productQuantities = new HashMap<>();
+			try (PreparedStatement findCartStmt = connection.prepareStatement(findCartItemsQuery)) {
+				for (Long orderId : orderIds) {
+					findCartStmt.setLong(1, orderId);
+					try (ResultSet rs = findCartStmt.executeQuery()) {
+						while (rs.next()) {
+							Long productId = rs.getLong("product_id");
+							int quantity = rs.getInt("quantity");
+							productQuantities.put(productId, productQuantities.getOrDefault(productId, 0) + quantity);
+						}
+					}
+				}
+			}
+
+			// Step 3: Delete the invoice first to prevent foreign key constraint issues
+			try (PreparedStatement deleteInvoiceStmt = connection.prepareStatement(deleteInvoiceQuery)) {
+				deleteInvoiceStmt.setLong(1, invoiceId);
+				deleteInvoiceStmt.executeUpdate();
+			}
+
+			// Step 4: Delete all cart items linked to these orders
+			try (PreparedStatement deleteCartStmt = connection.prepareStatement(deleteCartQuery)) {
+				for (Long orderId : orderIds) {
+					deleteCartStmt.setLong(1, orderId);
+					deleteCartStmt.executeUpdate();
+				}
+			}
+
+			// Step 5: Restore stock for all products that were in the deleted cart
+			try (PreparedStatement updateStockStmt = connection.prepareStatement(updateStockQuery)) {
+				for (Map.Entry<Long, Integer> entry : productQuantities.entrySet()) {
+					updateStockStmt.setInt(1, entry.getValue());
+					updateStockStmt.setLong(2, entry.getKey());
+					updateStockStmt.executeUpdate();
+				}
+			}
+
+			// Step 6: Delete all orders related to this invoice
+			try (PreparedStatement deleteOrdersStmt = connection.prepareStatement(deleteOrdersQuery)) {
+				for (Long orderId : orderIds) {
+					deleteOrdersStmt.setLong(1, orderId);
+					deleteOrdersStmt.executeUpdate();
+				}
+			}
+
+			connection.commit(); // Commit transaction
+			return true;
 		} catch (SQLException e) {
+			try {
+				connection.rollback(); // Rollback on error
+			} catch (SQLException rollbackEx) {
+				rollbackEx.printStackTrace();
+			}
 			e.printStackTrace();
+		} finally {
+			try {
+				connection.setAutoCommit(true); // Restore auto-commit
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
+
 
 	public ArrayList<Order> fetchOrdersByClient(Long clientId) {
 		String query = "SELECT * FROM Orders WHERE client_id = ?";
@@ -988,6 +1063,33 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 		return materials;
 	}
 
+
+	public void incrementStock(Long productId, int quantity) {
+		String query = "UPDATE products SET stock = stock + ? WHERE id = ?";
+
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, quantity);
+			statement.setLong(2, productId);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	public boolean decrementStock(Long productId, int quantity) {
+		String query = "UPDATE products SET stock = GREATEST(stock - ?, 0) WHERE id = ? AND stock >= ?";
+
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, quantity);
+			statement.setLong(2, productId);
+			statement.setInt(3, quantity);
+
+			int rowsAffected = statement.executeUpdate();
+			return rowsAffected > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 
 }

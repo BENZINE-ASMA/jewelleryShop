@@ -36,7 +36,7 @@ public class UtilDisplayingDashboards {
         }
     }
 
-    public static JPanel createBijouxPanel(Bijoux bijou, MainController mainController,String role) {
+    public static JPanel createBijouxPanel(Bijoux bijou, MainController mainController,String role,ArrayList<? extends Bijoux> products) {
         JPanel bijouPanel = new JPanel();
         bijouPanel.setBackground(Color.white);
         bijouPanel.setLayout(new BorderLayout());
@@ -77,7 +77,15 @@ public class UtilDisplayingDashboards {
 
             addButton.addActionListener(e -> {
                 mainController.addToCart(bijou);
-                JOptionPane.showMessageDialog(null, "Added to cart!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                mainController.decrementStock(bijou.getId(),1);
+                bijou.decrementStock(1);
+                quantityLabel.setText("Stock: " + bijou.getStock());
+                if(bijou.getStock()==0){
+                    System.out.println("hellooo");
+                    addButton.setEnabled(false);
+                }
+
+               // JOptionPane.showMessageDialog(null, "Added to cart!", "Success", JOptionPane.INFORMATION_MESSAGE);
             });
 
             buttonPanel.add(addButton);
@@ -145,7 +153,7 @@ public class UtilDisplayingDashboards {
             }
 
 
-            JPanel bijouxPanel = UtilDisplayingDashboards.createBijouxPanel(products.get(i - 1), mainController,role);
+            JPanel bijouxPanel = UtilDisplayingDashboards.createBijouxPanel(products.get(i - 1), mainController,role,products);
 
 
             bijouxPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));

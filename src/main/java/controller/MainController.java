@@ -38,7 +38,7 @@ public class MainController {
 	public void initializeDatabase() {
 		try {
 			dbManager.connect();
-		//	dbManager.executeSQLScript("resources/init.sql");
+			//dbManager.executeSQLScript("resources/init.sql");
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -54,7 +54,6 @@ public class MainController {
 			mainView.setLoggedInClient(authenticatedUser);
 
 			if (authenticatedUser.getRole().equals("ADMIN")) {
-				// Set the logged-in admin in AdminController
 				mainView.getAdminController().setLoggedInAdmin(authenticatedUser);
 				this.createAndShowMaindashboardAdminView();
 			} else {
@@ -243,5 +242,10 @@ public class MainController {
 		return null;
 	}
 	*/
+	public boolean decrementStock(Long productId, int quantity) {
+		boolean updated = dbManager.decrementStock(productId, quantity);
+
+		return updated;
+	}
 
 }
