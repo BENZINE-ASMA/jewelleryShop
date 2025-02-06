@@ -22,8 +22,7 @@ public class InvoiceController {
 	}
 	
 	public String generateInvoiceNumber(Long clientId ,DBManager dbManager) {
-		
-		// the syntax taht m choosing is INV-CLclientID-001
+
 		String lastInvoiceNumber = dbManager.getLastInvoiceNumberOfDB(clientId);
 		int nextSequenceNumber = 1;
 		 if (lastInvoiceNumber != null && !lastInvoiceNumber.isEmpty()) {

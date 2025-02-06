@@ -91,10 +91,10 @@ public class ClientDialogView extends JDialog {
             client.setLastName(lastname);
             client.setEmail(email);
             client.setRole(role);
-            client.setPassword(password); // Set the password
+            client.setPassword(password);
             adminController.updateClient(client);
         }
 
-        this.dispose();  // Close the dialog after saving
+        this.dispose();
     }
 }

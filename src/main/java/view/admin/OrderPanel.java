@@ -77,17 +77,15 @@ public class OrderPanel extends JPanel {
             int selectedRow = cartTable.getSelectedRow();
             if (selectedRow != -1) {
                 Long productId = (Long) tableModel.getValueAt(selectedRow, 0);
-                int quantity = (Integer) tableModel.getValueAt(selectedRow, 2); // Get the quantity before deletion
+                int quantity = (Integer) tableModel.getValueAt(selectedRow, 2);
 
                 order.getCartItems().deleteFromCart(productId);
                 double newTotalPrice = order.getCartItems().getTotalPrice();
                 totalPriceLabel.setText(String.format("%.2f", newTotalPrice));
 
-                // Update the database: Remove from cart and increment the stock
                 adminController.deleteFromCart(order.getOrderId(), productId);
                 adminController.updateOrder(order.getOrderId(), newTotalPrice);
-                adminController.incrementStock(productId, quantity); // Increment stock in DB
-
+                adminController.incrementStock(productId, quantity);
                 tableModel.removeRow(selectedRow);
             } else {
                 JOptionPane.showMessageDialog(this, "Please select an item to delete.");
