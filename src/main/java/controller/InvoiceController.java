@@ -1,24 +1,51 @@
 package controller;
 
+import model.Cart;
 import model.Client;
 import model.Invoice;
 import model.Order;
+import shared.EmailSender;
 import shared.InvoiceGenerator;
 
 public class InvoiceController {
 	private Invoice invoice ;
-	public InvoiceController() {
-		
+	EmailSender emailSender;
+	public InvoiceController(Invoice invoice) {
+		this.invoice = invoice;
+		this.emailSender = new EmailSender("asma.benzine010@gmail.com");
 	}
-	
 	public void generateInvoice(Client loggedInClient, Order order, DBManager dbManager ,MainController mainController) {
 		String invoiceNumber = generateInvoiceNumber(loggedInClient.getId(),dbManager);
 		InvoiceGenerator invoiceGenerator = new InvoiceGenerator(order, loggedInClient,mainController.getClientCart()) ;
 		invoiceGenerator.generateInvoice(invoiceNumber+".pdf");
 		Invoice invoice = new Invoice(loggedInClient.getId(),order.getOrderId(), invoiceNumber,invoiceNumber+".pdf",mainController.getClientCart().getTotalPrice(),"Pending");
 		dbManager.addInvoice(invoice ,mainController.getCurrentOrder().getOrderId());
-		
-		
+
+	}
+
+	public void updateInvoice(Client loggedInClient, Order order, Cart cart) {
+		if (this.invoice == null) {
+			throw new IllegalStateException("No existing invoice to update.");
+		}
+
+		String existingInvoicePath = this.invoice.getFilePath();
+		String invoiceNumber = this.invoice.getInvoiceNumber();
+
+
+		InvoiceGenerator invoiceGenerator = new InvoiceGenerator(order, loggedInClient, cart);
+		invoiceGenerator.generateInvoice(existingInvoicePath);
+
+		this.invoice.setStatus("Updated");
+
+		String subject = "Invoice for your order "+ invoice.getOrderId() ;
+		String messageText = "Hello " + loggedInClient.getFirstName() + ",\n\n"
+				+ "Thank you for your purchase at Precious.\n"
+				+ "Please find attached the invoice corresponding to your order.\n\n"
+				+ "Best regards,\n"
+				+ "The Precious Team";
+		System.out.println("path "+ this.invoice.getFilePath());
+		this.emailSender.sendEmailWithAttachment(subject,messageText,"src/main/resources/output/"+this.invoice.getFilePath());
+
 	}
 	
 	public String generateInvoiceNumber(Long clientId ,DBManager dbManager) {
@@ -32,6 +59,13 @@ public class InvoiceController {
 		 String formattedSequence = String.format("%03d", nextSequenceNumber);
 		 return "INV-CL" + clientId + "-" + formattedSequence;
 		
+	}
+	public Invoice getInvoice() {
+		return this.invoice;
+	}
+
+	public void setInvoice(final Invoice invoice) {
+		this.invoice = invoice;
 	}
 
 

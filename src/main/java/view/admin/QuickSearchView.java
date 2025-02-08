@@ -26,7 +26,7 @@ public class QuickSearchView extends JFrame {
 
     public QuickSearchView(AdminController adminController) {
         this.adminController = adminController;
-        this.invoiceController = new InvoiceController();
+        this.invoiceController = new InvoiceController(null);
         setTitle("Quick Search");
         setSize(700, 500);
         setLayout(new BorderLayout());

@@ -10,10 +10,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 
-import model.Bijoux;
-import model.Cart;
-import model.Client;
-import model.Order;
+import model.*;
 
 public class InvoiceGenerator {
     private Order clientOrder;
@@ -52,7 +49,7 @@ public class InvoiceGenerator {
                     .setFontSize(10)
                     .setBold());
             document.add(new Paragraph("Hello " + this.loggedInClient.getFirstName()));
-            document.add(new Paragraph("Thank you for your purchase at Privé by Zalando. Here is a summary of your order:"));
+            document.add(new Paragraph("Thank you for your purchase at Precious. Here is a summary of your order:"));
             //document.add(new Paragraph("Price per Item: $5.00"));
             document.add(new Paragraph("Total: "+ this.clientCart.getTotalPrice()));
 
@@ -80,10 +77,10 @@ public class InvoiceGenerator {
 
             String subject = "Invoice for your order "+ clientOrder.getOrderId() ;
             String messageText = "Hello " + this.loggedInClient.getFirstName() + ",\n\n"
-                    + "Thank you for your purchase at Privé by Zalando.\n"
+                    + "Thank you for your purchase at Precious.\n"
                     + "Please find attached the invoice corresponding to your order.\n\n"
                     + "Best regards,\n"
-                    + "The Privé by Zalando Team";
+                    + "The Precious Team";
 
             this.emailSender.sendEmailWithAttachment(subject, messageText, filePath);
         } catch (Exception e) {

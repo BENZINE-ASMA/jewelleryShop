@@ -1,9 +1,8 @@
 package view.admin;
 
 import controller.AdminController;
-import model.Bijoux;
-import model.Cart;
-import model.Order;
+import controller.InvoiceController;
+import model.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,11 +15,14 @@ public class OrderPanel extends JPanel {
     private AdminController adminController;
     private InvoiceDashboard invoiceDashboard;
 
+    private InvoiceController invoiceController;
+
     public OrderPanel(Order order, AdminController adminController, long invoiceId, InvoiceDashboard invoiceDashboard) {
         this.order = order;
         this.adminController = adminController;
         this.invoiceId = invoiceId;
         this.invoiceDashboard = invoiceDashboard;
+        this.invoiceController = new InvoiceController(null);
         this.setPreferredSize(new Dimension(800,500));
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding around the panel
@@ -69,7 +71,11 @@ public class OrderPanel extends JPanel {
             order.validateOrder();
             adminController.updateInvoice(invoiceId, order.getCartItems().getTotalPrice());
             invoiceDashboard.loadInvoiceData();
+            Invoice inv = this.adminController.getInvoice(invoiceId);
             JOptionPane.showMessageDialog(this, "Order validated successfully.");
+            this.invoiceController.setInvoice(inv);
+            this.invoiceController.updateInvoice(order.getClient(),order,order.getCartItems());
+
         });
 
         JButton deleteItemButton = new JButton("Delete Item");
@@ -127,7 +133,7 @@ public class OrderPanel extends JPanel {
         return new DefaultTableModel(data, columns) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 2; // Allow editing only for the "Quantity" column
+                return column == 2;
             }
         };
     }

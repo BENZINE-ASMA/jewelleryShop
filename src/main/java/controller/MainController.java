@@ -33,12 +33,12 @@ public class MainController {
 		this.dbManager = dbManager;
 		this.products= new ArrayList<Bijoux>();
 		this.clientCart = new Cart();
-		this.invoiceController = new InvoiceController();
+		this.invoiceController = new InvoiceController(null);
 	}
 	public void initializeDatabase() {
 		try {
 			dbManager.connect();
-			//dbManager.executeSQLScript("resources/init.sql");
+			dbManager.executeSQLScript("resources/init.sql");
 		} catch (SQLException e) {
 
 			e.printStackTrace();

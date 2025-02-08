@@ -1,0 +1,45 @@
+@startuml
+package view.Admin {
+    class MainDashboardAdminView
+    class DashboardHeaderAdmin
+    class ClientDashboard
+    class ClientDialogView
+    class ProductDashboard
+    class ProductDialogView
+    class InvoiceDashboard
+    class InvoiceDialogView
+    class OrderPanel
+    class QuickSearchView
+}
+
+package view {
+    class MainView
+    class DashboardHeader
+    class FilterDashboardPanel
+    class ProductDetailView
+}
+
+MainDashboardAdminView --> DashboardHeaderAdmin
+MainDashboardAdminView --> FilterDashboardPanel
+
+ClientDashboard --> DashboardHeaderAdmin
+ClientDashboard --> ClientDialogView
+
+ProductDashboard --> DashboardHeaderAdmin
+ProductDashboard --> ProductDialogView
+
+InvoiceDashboard --> DashboardHeaderAdmin
+InvoiceDashboard --> InvoiceDialogView
+InvoiceDashboard --> OrderPanel
+
+OrderPanel --> InvoiceDashboard
+QuickSearchView --> DashboardHeaderAdmin
+QuickSearchView --> InvoiceDashboard
+QuickSearchView --> OrderPanel
+
+MainDashboardAdminView --> MainView
+DashboardHeaderAdmin --> DashboardHeader
+ProductDashboard --> ProductDetailView
+MainDashboardAdminView --> FilterDashboardPanel
+}
+@enduml

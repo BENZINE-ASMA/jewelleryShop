@@ -1045,6 +1045,31 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 			return false; // Return false if an error occurred
 		}
 	}
+	public Invoice getInvoice(long invoiceId) {
+		String query = "SELECT invoice_id, client_id, order_id, invoice_number, file_path, total_amount, status, invoice_update_date " +
+				"FROM Invoices WHERE invoice_id = ?";
+
+		try (PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setLong(1, invoiceId);
+
+			try (ResultSet resultSet = statement.executeQuery()) {
+				if (resultSet.next()) {
+					return new Invoice(
+							resultSet.getLong("client_id"),
+							resultSet.getLong("order_id"),
+							resultSet.getString("invoice_number"),
+							resultSet.getString("file_path"),
+							resultSet.getDouble("total_amount"),
+							resultSet.getString("status")
+					);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public List<String> getDistinctMaterials() {
 		String query = "SELECT DISTINCT(material) FROM products";
 		List<String> materials = new ArrayList<>();

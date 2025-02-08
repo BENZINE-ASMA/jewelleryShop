@@ -10,6 +10,7 @@ public class AdminController {
 	private ArrayList<Client> clients;
 	private ArrayList<Bijoux> products;
 	private ArrayList<Invoice> invoices;
+
 	private DBManager dbManager;
 	private MainView mainView;
 	private Client loggedInAdmin; // Admin session
@@ -160,8 +161,14 @@ public class AdminController {
 	public boolean saveInvoice(Invoice invoice){
 		return this.dbManager.saveInvoice(invoice);
 	}
+
+	public Invoice getInvoice(long invoiceId){
+		return this.dbManager.getInvoice(invoiceId);
+	}
 	public void incrementStock(Long productId, int quantity) {
 		dbManager.incrementStock(productId, quantity);
 	}
-
+	public DBManager getDbManager() {
+		return this.dbManager;
+	}
 }
