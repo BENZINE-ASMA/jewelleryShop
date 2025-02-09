@@ -110,6 +110,7 @@ public class MainController {
 
 	public void createAndShowMyOrdesView(){
 		mainView.loadMyOrdersView();
+		mainView.loadMyOrdersView();
 	}
 
 	public void createAndShowMaindashboardAdminView() {
