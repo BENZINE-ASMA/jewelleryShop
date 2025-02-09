@@ -96,7 +96,7 @@ VALUES
     'Or Rose, Diamant',
     48,
     NULL,
-    1,
+    8,
     'resources/jewelry/rings/atlas_tiffany_co.png'
 ),
 (

@@ -30,7 +30,6 @@ public class ProductDialogView extends JDialog {
         setLocationRelativeTo(null);
         setModal(true);
 
-        // Main Panel with GridBagLayout for alignment
         JPanel mainPanel = new JPanel(new GridBagLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
@@ -39,7 +38,6 @@ public class ProductDialogView extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // Labels & Fields
         mainPanel.add(new JLabel("Name:"), gbc);
         gbc.gridx = 1;
         nameField = new JTextField(20);
@@ -72,8 +70,6 @@ public class ProductDialogView extends JDialog {
         descriptionField.setText(product != null ? product.getDescription() : "");
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
         descriptionScrollPane.setPreferredSize(new Dimension(250, 100));
-        descriptionScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        descriptionScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         mainPanel.add(descriptionScrollPane, gbc);
 
         gbc.gridx = 0;
@@ -149,12 +145,15 @@ public class ProductDialogView extends JDialog {
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
             String fileName = selectedFile.getName();
-            String targetPath = "src/main/java/resources/images/" + fileName;
+            String selectedType = (String) this.typeComboBox.getSelectedItem();
+
+            String relativePath = "resources/jewelry/" + (selectedType.equals("Ring") ? "rings/" : "necklaces/");
+            String targetDirectory = "src/main/" + relativePath;
+            String targetPath = targetDirectory + fileName;
 
             try {
-                Files.createDirectories(Paths.get("src/main/java/resources/images"));
                 Files.copy(selectedFile.toPath(), Paths.get(targetPath));
-                uploadedImagePath = targetPath;
+                uploadedImagePath = relativePath + fileName;
                 imagePathField.setText(uploadedImagePath);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Error uploading image: " + ex.getMessage());
@@ -164,30 +163,38 @@ public class ProductDialogView extends JDialog {
 
     private void saveProduct() {
         try {
+            // Retrieve field values
             String name = nameField.getText();
             String brand = brandField.getText();
             String description = descriptionField.getText();
             String material = materialField.getText();
             String type = (String) typeComboBox.getSelectedItem();
-            String imagePath = uploadedImagePath != null ? uploadedImagePath : imagePathField.getText();
+            String imagePath = (uploadedImagePath != null) ? uploadedImagePath : imagePathField.getText();
+
             int stock = Integer.parseInt(stockField.getText());
             double price = Double.parseDouble(priceField.getText());
 
-            if (type.equals("Ring")) {
+            int reservedStock = 0; // Reserved stock is always 0 when adding a new product
+
+            if ("Ring".equals(type)) {
                 int size = Integer.parseInt(sizeField.getText());
-                product = (product == null) ? new Ring(null, name, brand, type, description, price, material, size, imagePath, stock)
-                        : (Ring) product;
-                ((Ring) product).setSize(size);
-            } else if (type.equals("Necklace")) {
+
+                if (product == null) {
+                    product = new Ring(null, name, brand, type, description, price, material, size, imagePath, stock);
+                } else {
+                    ((Ring) product).setSize(size);
+                }
+            } else if ("Necklace".equals(type)) {
                 double length = Double.parseDouble(lengthField.getText());
-                product = (product == null) ? new Necklace(null, name, brand, type, description, price, material, length, imagePath, stock)
-                        : (Necklace) product;
-                ((Necklace) product).setLength(length);
+
+                if (product == null) {
+                    product = new Necklace(null, name, brand, type, description, price, material, length, imagePath, stock);
+                } else {
+                    ((Necklace) product).setLength(length);
+                }
             }
 
-            if (product != null) adminController.updateProduct(product);
-            else adminController.addProduct(product);
-
+            adminController.addProduct(product);
             if (refreshCallback != null) refreshCallback.run();
             dispose();
 
