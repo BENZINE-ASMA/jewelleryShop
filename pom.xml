@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.dauphine</groupId>
     <artifactId>jewelleryShop</artifactId>
     <version>V1</version>
@@ -42,6 +46,7 @@
             <artifactId>kernel</artifactId>
             <version>7.2.5</version>
         </dependency>
+
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -54,7 +59,6 @@
             <version>7.2.5</version>
         </dependency>
 
-        <!-- Use angus-mail instead of javax.mail -->
         <dependency>
             <groupId>org.eclipse.angus</groupId>
             <artifactId>angus-mail</artifactId>
@@ -71,17 +75,21 @@
         </resources>
 
         <plugins>
+            <!-- JAR Plugin: Define the Main Class -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
                     <archive>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                        <manifest>
+                            <mainClass>view.MainView</mainClass>
+                        </manifest>
                     </archive>
                 </configuration>
             </plugin>
 
+            <!-- Shade Plugin: Include Dependencies in JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -110,4 +118,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
