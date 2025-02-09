@@ -1,4 +1,4 @@
-# Projet Java - Gestion de Vente
+# Projet Java - Gestion de Vente de Produits
 
 ## Informations Utiles
 - [Explication du projet](https://github.com/BENZINE-ASMA/jewelleryShop/blob/main/Enonc%C3%A9/Gestion%20de%20Vente%20de%20produit(s).pdf)
@@ -15,18 +15,18 @@ Admin Interface
 ## Fonctionnalités
 - **Catalogue de bijoux** : Affichage des bagues et colliers avec images, descriptions et stocks disponibles.
 - **Panier d'achat** : Ajout, modification des quantités et suppression des articles avant validation.
-- **Gestion des commandes **: Suivi des commandes avec statut évolutif : "En cours", "Validée", "Livrée".
+- **Gestion des commandes**: Suivi des commandes avec statut évolutif : "En cours", "Validée", "Livrée".
 - **Facturation** : Génération automatique de factures téléchargeables et envoyées par email.
 - **Gestion des clients** : Ajout et modification des informations clients pour un suivi personnalisé.
-- **Gestion des stocks **: Mise à jour des quantités après validation des commandes et ajustement en cas de retour client.
-- **Filtrage avancé **: Certains filtres, comme le matériau, affichent dynamiquement les valeurs en fonction des bijoux disponibles dans la base de données.
+- **Gestion des stocks**: Mise à jour des quantités après validation des commandes et ajustement en cas de retour client.
+- **Filtrage avancé**: Certains filtres, comme le matériau, affichent dynamiquement les valeurs en fonction des bijoux disponibles dans la base de données.
 - **Quick Search pour les administrateurs** : Recherche rapide par ID client, email, ID commande ou ID facture pour afficher les informations associées et effectuer des modifications en cas de besoin.
 
 ## Guide utilisateur
-- [Explication du projet](https://github.com/BENZINE-ASMA/jewelleryShop/blob/main/Enonc%C3%A9/Gestion%20de%20Vente%20de%20produit(s).pdf)
+- [Explication du projet](https://github.com/BENZINE-ASMA/jewelleryShop/blob/main/Enonc%C3%A9/guide%20utilisateur.pdf)
   
 
-##Technologies Utilisées
+## Technologies Utilisées
 - Java (JDK 18)
 - Swing (Interface graphique)
 - JDBC (Gestion de la base de données avec MySQL)
