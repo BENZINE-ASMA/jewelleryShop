@@ -240,6 +240,7 @@ public class DBManager {
 
 
 
+
 	public Client authenticateUser(String email, String password) {
 		String query = "SELECT * FROM client where email =? and password=?";
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -1100,16 +1101,22 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 			e.printStackTrace();
 		}
 	}
-	public boolean decrementStock(Long productId, int quantity) {
+	public boolean decrementStock(Map<Long, Integer> productQuantities) {
 		String query = "UPDATE products SET stock = GREATEST(stock - ?, 0) WHERE id = ? AND stock >= ?";
 
 		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setInt(1, quantity);
-			statement.setLong(2, productId);
-			statement.setInt(3, quantity);
+			for (Map.Entry<Long, Integer> entry : productQuantities.entrySet()) {
+				Long productId = entry.getKey();
+				int quantity = entry.getValue();
 
-			int rowsAffected = statement.executeUpdate();
-			return rowsAffected > 0;
+				statement.setInt(1, quantity);
+				statement.setLong(2, productId);
+				statement.setInt(3, quantity);
+				statement.addBatch();
+			}
+
+			int[] rowsAffected = statement.executeBatch();
+			return rowsAffected.length > 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

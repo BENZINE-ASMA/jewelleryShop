@@ -11,6 +11,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -22,6 +24,7 @@ import view.MainDashboardView;
 import view.ProductDetailView;
 
 public class UtilDisplayingDashboards {
+    public static Map<Bijoux, JButton> addToCartButtons = new HashMap<>();
     public static Image loadImageBijou(String path) {
         try {
             InputStream input = UtilDisplayingDashboards.class.getClassLoader().getResourceAsStream(path);
@@ -36,7 +39,7 @@ public class UtilDisplayingDashboards {
         }
     }
 
-    public static JPanel createBijouxPanel(Bijoux bijou, MainController mainController,String role,ArrayList<? extends Bijoux> products) {
+    public static JPanel createBijouxPanel(Bijoux bijou, MainController mainController, String role, ArrayList<? extends Bijoux> products) {
         JPanel bijouPanel = new JPanel();
         bijouPanel.setBackground(Color.white);
         bijouPanel.setLayout(new BorderLayout());
@@ -71,27 +74,23 @@ public class UtilDisplayingDashboards {
         JLabel priceLabel = new JLabel("Price: " + bijou.getPrice() + "€");
         priceLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         imagePanel.add(priceLabel);
-        if (role =="client"){
+
+        if (role.equals("client")) {
             JPanel buttonPanel = new JPanel(new FlowLayout());
             JButton addButton = new JButton("Add to Cart");
 
             addButton.addActionListener(e -> {
                 mainController.addToCart(bijou);
-                mainController.decrementStock(bijou.getId(),1);
-                bijou.decrementStock(1);
                 quantityLabel.setText("Stock: " + bijou.getStock());
-                if(bijou.getStock()==0){
-                    System.out.println("hellooo");
-                    addButton.setEnabled(false);
-                }
+                addButton.setEnabled(false);
 
-               // JOptionPane.showMessageDialog(null, "Added to cart!", "Success", JOptionPane.INFORMATION_MESSAGE);
+               
+                addToCartButtons.put(bijou, addButton);
             });
 
             buttonPanel.add(addButton);
             imagePanel.add(buttonPanel);
         }
-
 
         bijouPanel.add(imagePanel, BorderLayout.CENTER);
 

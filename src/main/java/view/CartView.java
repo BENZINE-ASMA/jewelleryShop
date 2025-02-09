@@ -18,7 +18,7 @@ public class CartView extends JPanel {
 		this.cart = mainController.getClientCart();
 		this.setLayout(new BorderLayout());
 
-		// Top Button Panel (for "Close" button)
+
 		buttonPanelTop = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		JButton closeButton = new JButton("Close");
 		closeButton.addActionListener(e -> mainController.showMainDashboardView());
@@ -37,11 +37,16 @@ public class CartView extends JPanel {
 				);
 				mainController.showLoginView(false, "Please log in to complete your purchase.");
 			} else {
+				mainController.decrementStockForConfirmedOrder(cart);
+
 				mainController.ChangeOrderStatus(OrderStatus.VALIDEE);
 				cart.getCart().clear();
-				mainController.showMainDashboardView();
+
+				mainController.createAndShowMaindashboardView();
 			}
 		});
+
+
 		buttonPanelBottom.add(confirmButton);
 
 		// Add the button panels
@@ -63,7 +68,7 @@ public class CartView extends JPanel {
 		cartPanel.setBackground(Color.WHITE);
 
 		JPanel rowPanel = null;
-		int itemsPerRow = 4; // Display four items per row
+		int itemsPerRow = 4;
 		int count = 0;
 
 		for (Bijoux bijoux : new ArrayList<>(cart.getCart().keySet())) {
@@ -84,7 +89,7 @@ public class CartView extends JPanel {
 		scrollPane.setPreferredSize(new Dimension(800, 600));
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-		add(scrollPane, BorderLayout.CENTER); // Add cart content back to the CENTER panel
+		add(scrollPane, BorderLayout.CENTER);
 		revalidate();
 		repaint();
 	}
@@ -128,18 +133,18 @@ public class CartView extends JPanel {
 		infoPanel.setBackground(Color.WHITE);
 
 		JLabel nameLabel = new JLabel("<html><center>" + bijou.getName() + "</center></html>");
-		nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the label horizontally
+		nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		JLabel priceLabel = new JLabel("Price: €" + bijou.getPrice());
-		priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the label horizontally
+		priceLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		JLabel stockLabel = new JLabel("Stock: " + bijou.getStock() + " available");
-		stockLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Center the label horizontally
+		stockLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		infoPanel.add(nameLabel);
-		infoPanel.add(Box.createRigidArea(new Dimension(0, 5))); // Add spacing between labels
+		infoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		infoPanel.add(priceLabel);
-		infoPanel.add(Box.createRigidArea(new Dimension(0, 5))); // Add spacing between labels
+		infoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		infoPanel.add(stockLabel);
 
 		// Quantity Panel
@@ -153,17 +158,25 @@ public class CartView extends JPanel {
 		addButton.addActionListener(e -> {
 			int newQuantity = mainController.getClientCart().addToCart(bijou);
 			quantityLabel.setText("Quantity: " + newQuantity);
+
 		});
 
 		removeButton.addActionListener(e -> {
 			mainController.getClientCart().removeFromCart(bijou);
 			int newQuantity = mainController.getClientCart().getCart().getOrDefault(bijou, 0);
 			quantityLabel.setText("Quantity: " + newQuantity);
+
 			if (newQuantity == 0) {
 				cart.getCart().remove(bijou);
 				refreshCartView(mainController);
+
+
+				if (UtilDisplayingDashboards.addToCartButtons.containsKey(bijou)) {
+					UtilDisplayingDashboards.addToCartButtons.get(bijou).setEnabled(true);
+				}
 			}
 		});
+
 
 		quantityPanel.add(removeButton);
 		quantityPanel.add(quantityLabel);

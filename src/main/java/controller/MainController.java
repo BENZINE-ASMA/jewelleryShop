@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -247,11 +248,21 @@ public class MainController {
 		return null;
 	}
 	*/
-	public boolean decrementStock(Long productId, int quantity) {
-		boolean updated = dbManager.decrementStock(productId, quantity);
+	public void decrementStockForConfirmedOrder(Cart cart) {
+		Map<Long, Integer> productQuantities = new HashMap<>();
 
-		return updated;
+		for (Map.Entry<Bijoux, Integer> entry : cart.getCart().entrySet()) {
+			Bijoux bijoux = entry.getKey();
+			int quantityPurchased = entry.getValue();
+
+			productQuantities.put(bijoux.getId(), quantityPurchased);
+		}
+
+		// Call DBManager to update stock in batch
+		dbManager.decrementStock(productQuantities);
 	}
+
+
 	public ArrayList<Order> fetchOrdersByClient(Long clientId){
 		return this.dbManager.fetchOrdersByClient(clientId);
 	}
