@@ -1,4 +1,4 @@
-# Projet Java - Gestion de Vente
+# Projet Java - Gestion de Vente de Produits
 
 ## Informations Utiles
 - [Explication du projet](https://github.com/BENZINE-ASMA/jewelleryShop/blob/main/Enonc%C3%A9/Gestion%20de%20Vente%20de%20produit(s).pdf)
