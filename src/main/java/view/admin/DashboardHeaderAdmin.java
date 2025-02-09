@@ -66,7 +66,14 @@ public class DashboardHeaderAdmin extends JPanel {
         hotlineIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                JOptionPane.showMessageDialog(
+                        null,
+                        "📞 Support & Assistance\n\n" +
+                                "En cas de problème, contactez l’administrateur principal ou l’équipe technique :\n" +
+                                "✉ Email : asma.benzine01@gmail.com",
+                        "Support",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
             }
         });
 

@@ -144,6 +144,7 @@ public class MainView extends JFrame {
     	mainPanel.add(ringsDashboardView,"ringsDashbaord");
     }
 
+
     public void loadMyOrdersView() {
         if (loggedInClient != null) {
             MyOrdersView myOrdersView = new MyOrdersView(mainController);
