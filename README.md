@@ -23,10 +23,10 @@ Admin Interface
 - **Quick Search pour les administrateurs** : Recherche rapide par ID client, email, ID commande ou ID facture pour afficher les informations associées et effectuer des modifications en cas de besoin.
 
 ## Guide utilisateur
-- [Explication du projet](https://github.com/BENZINE-ASMA/jewelleryShop/blob/main/Enonc%C3%A9/Gestion%20de%20Vente%20de%20produit(s).pdf)
+- [Explication du projet](https://github.com/BENZINE-ASMA/jewelleryShop/blob/main/Enonc%C3%A9/guide%20utilisateur.pdf)
   
 
-##Technologies Utilisées
+## Technologies Utilisées
 - Java (JDK 18)
 - Swing (Interface graphique)
 - JDBC (Gestion de la base de données avec MySQL)
