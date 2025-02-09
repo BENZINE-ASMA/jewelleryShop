@@ -23,7 +23,7 @@ public class InvoiceDashboard extends JPanel {
 		this.invoiceController = invoiceController;
 		setLayout(new BorderLayout());
 
-		// Header
+
 		DashboardHeaderAdmin header = new DashboardHeaderAdmin(adminController);
 		header.setBorder(new EmptyBorder(0, 0, 5, 0));
 		add(header, BorderLayout.NORTH);

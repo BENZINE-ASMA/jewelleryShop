@@ -37,9 +37,13 @@ public class DashboardHeader extends JPanel {
         JButton necklaceButton = new JButton("Necklace");
         necklaceButton.addActionListener(e -> mainController.showNecklaceDashboardsView());
 
+        JButton myOrdersButton = new JButton("My Orders");
+        myOrdersButton.addActionListener(e -> mainController.createAndShowMyOrdesView());
+
         allButton.setMargin(new Insets(3, 13, 3, 13));
         ringButton.setMargin(new Insets(3, 10, 3, 10));
         necklaceButton.setMargin(new Insets(3, 10, 3, 10));
+        myOrdersButton.setMargin(new Insets(3, 10, 3, 10));
 
         leftPanel.add(logoIcon);
         leftPanel.add(Box.createHorizontalStrut(15));
@@ -48,6 +52,8 @@ public class DashboardHeader extends JPanel {
         leftPanel.add(ringButton);
         leftPanel.add(Box.createHorizontalStrut(15));
         leftPanel.add(necklaceButton);
+        leftPanel.add(Box.createHorizontalStrut(15));
+        leftPanel.add(myOrdersButton);
 
         add(leftPanel, BorderLayout.WEST);
 

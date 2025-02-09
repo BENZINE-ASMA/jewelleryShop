@@ -108,6 +108,10 @@ public class MainController {
 		mainView.showPanel("MainDashboard");
 	}
 
+	public void createAndShowMyOrdesView(){
+		mainView.loadMyOrdersView();
+	}
+
 	public void createAndShowMaindashboardAdminView() {
 		mainView.loadMainDashboardAdminView();
 		mainView.showPanel("mainDashboardAdminView");
@@ -247,5 +251,14 @@ public class MainController {
 
 		return updated;
 	}
+	public ArrayList<Order> fetchOrdersByClient(Long clientId){
+		return this.dbManager.fetchOrdersByClient(clientId);
+	}
+	public Order fetchOrderById(Long id){
+		return this.dbManager.fetchOrderById(id);
+	}
+
+
+
 
 }

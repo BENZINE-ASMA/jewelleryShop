@@ -144,6 +144,21 @@ public class MainView extends JFrame {
     	mainPanel.add(ringsDashboardView,"ringsDashbaord");
     }
 
+    public void loadMyOrdersView() {
+        if (loggedInClient != null) {
+            MyOrdersView myOrdersView = new MyOrdersView(mainController);
+            mainPanel.add(myOrdersView, "myOrdersView");
+            this.showPanel("myOrdersView");
+        } else {
+            JOptionPane.showMessageDialog(this, "You need to log in to view your orders.", "Authentication Required", JOptionPane.WARNING_MESSAGE);
+
+            LoginView loginView = new LoginView(mainController);
+            mainPanel.add(loginView, "loginView");
+            this.showPanel("loginView");
+        }
+    }
+
+
     public void loadNecklacesDashboardView() {
     	NecklacesDashboardView necklacesDashboardView = new NecklacesDashboardView(mainController);
     	mainPanel.add(necklacesDashboardView,"necklacesDashbaord");
