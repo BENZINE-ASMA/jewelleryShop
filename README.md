@@ -7,10 +7,9 @@
 L'application de gestion de vente de bijoux permet aux clients de naviguer efficacement dans un catalogue en ligne, d'ajouter des articles à leur panier et de finaliser leurs commandes. Elle offre également aux administrateurs des outils avancés pour gérer les produits, suivre les commandes et administrer les factures. Grâce à une interface intuitive et des fonctionnalités de filtrage dynamiques, l'expérience utilisateur est optimisée.
 
 ## Prototype
-## Prototype
-
+Client Interface
 ![Client Interface](https://github.com/BENZINE-ASMA/jewelleryShop/blob/main/Enonc%C3%A9/Client-Interface.png)
-
+Admin Interface
 ![Admin Interface](https://github.com/BENZINE-ASMA/jewelleryShop/blob/main/Enonc%C3%A9/Admin-interface.png)
 
 ## Fonctionnalités
@@ -23,19 +22,9 @@ L'application de gestion de vente de bijoux permet aux clients de naviguer effic
 - **Filtrage avancé **: Certains filtres, comme le matériau, affichent dynamiquement les valeurs en fonction des bijoux disponibles dans la base de données.
 - **Quick Search pour les administrateurs** : Recherche rapide par ID client, email, ID commande ou ID facture pour afficher les informations associées et effectuer des modifications en cas de besoin.
 
-## Exécution du jeu
-
-1. **Cloner le dépôt** 
-
-2. **Télécharger le JAR et exécuter le jeu en version console**
-    ```bash
-    jar cvfe IAmTheHero.jar main.JeuMain -C bin .
-    java -jar IAmTheHero.jar
-
-   ```
-   
-3. **Base de données**
-Un script SQL est conservé dans les ressources du projet pour initialiser les tables de la base de données au lancement de l’application "init.sql".
+## Guide utilisateur
+- [Explication du projet](https://github.com/BENZINE-ASMA/jewelleryShop/blob/main/Enonc%C3%A9/Gestion%20de%20Vente%20de%20produit(s).pdf)
+  
 
 ##Technologies Utilisées
 - Java (JDK 18)
