@@ -83,16 +83,29 @@ public class OrderPanel extends JPanel {
             int selectedRow = cartTable.getSelectedRow();
             if (selectedRow != -1) {
                 Long productId = (Long) tableModel.getValueAt(selectedRow, 0);
-                int quantity = (Integer) tableModel.getValueAt(selectedRow, 2);
+                int currentQuantity = (Integer) tableModel.getValueAt(selectedRow, 2);
 
-                order.getCartItems().deleteFromCart(productId);
-                double newTotalPrice = order.getCartItems().getTotalPrice();
-                totalPriceLabel.setText(String.format("%.2f", newTotalPrice));
+                if (currentQuantity > 1) {
+                    int newQuantity = currentQuantity - 1;
+                    tableModel.setValueAt(newQuantity, selectedRow, 2);
+                    order.getCartItems().modifyQuantityOfProduct(productId, newQuantity);
 
-                adminController.deleteFromCart(order.getOrderId(), productId);
-                adminController.updateOrder(order.getOrderId(), newTotalPrice);
-                adminController.incrementStock(productId, quantity);
-                tableModel.removeRow(selectedRow);
+                    double newTotalPrice = order.getCartItems().getTotalPrice();
+                    totalPriceLabel.setText(String.format("%.2f", newTotalPrice));
+                    adminController.updateCart(order.getOrderId(), productId, newQuantity);
+                    adminController.updateOrder(order.getOrderId(), newTotalPrice);
+                    adminController.updateInvoice(invoiceId, newTotalPrice);
+
+                } else {
+                    order.getCartItems().deleteFromCart(productId);
+                    double newTotalPrice = order.getCartItems().getTotalPrice();
+                    totalPriceLabel.setText(String.format("%.2f", newTotalPrice));
+
+                    adminController.deleteFromCart(order.getOrderId(), productId);
+                    adminController.updateOrder(order.getOrderId(), newTotalPrice);
+                    adminController.incrementStock(productId, currentQuantity);
+                    tableModel.removeRow(selectedRow);
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "Please select an item to delete.");
             }
