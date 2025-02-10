@@ -532,27 +532,28 @@ public class DBManager {
 	}
 
 	public boolean updateProduct(Bijoux b) {
-		String query = "UPDATE products SET name = ?, type = ?, description = ?, price = ?, material = ?, size = ?, length = ?, stock = ?, image_path = ? WHERE id = ?";
+		String query = "UPDATE products SET name = ?, brand = ?, type = ?, description = ?, price = ?, material = ?, size = ?, length = ?, stock = ?, image_path = ? WHERE id = ?";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
 			preparedStatement.setString(1, b.getName());
-			preparedStatement.setString(2, b.getCategory());
-			preparedStatement.setString(3, b.getDescription());
-			preparedStatement.setDouble(4, b.getPrice());
-			preparedStatement.setString(5, b.getMateriel());
-
+			preparedStatement.setString(2, b.getBrand());  // ✅ Brand added
+			preparedStatement.setString(3, b.getCategory());
+			preparedStatement.setString(4, b.getDescription());
+			preparedStatement.setDouble(5, b.getPrice());
+			preparedStatement.setString(6, b.getMateriel());
 
 			if ("Ring".equalsIgnoreCase(b.getCategory())) {
-				preparedStatement.setDouble(6, ((Ring) b).getSize());
-				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+				preparedStatement.setDouble(7, ((Ring) b).getSize());
+				preparedStatement.setNull(8, java.sql.Types.DOUBLE);
 			} else if ("Necklace".equalsIgnoreCase(b.getCategory())) {
-				preparedStatement.setNull(6, java.sql.Types.DOUBLE);
-				preparedStatement.setDouble(7, ((Necklace) b).getLength());
+				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+				preparedStatement.setDouble(8, ((Necklace) b).getLength());
 			}
-			preparedStatement.setInt(8, b.getStock());
-			preparedStatement.setString(9, b.getImagePath());
-			preparedStatement.setLong(10, b.getId());
+
+			preparedStatement.setInt(9, b.getStock());
+			preparedStatement.setString(10, b.getImagePath());
+			preparedStatement.setLong(11, b.getId());
 
 			int rowsAffected = preparedStatement.executeUpdate();
 			if (rowsAffected > 0) {
@@ -569,29 +570,30 @@ public class DBManager {
 	}
 
 	public boolean addProduct(Bijoux b) {
-		String query = "INSERT INTO products (name, type, description, price, material, size, length, stock, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
 			preparedStatement.setString(1, b.getName());
-			preparedStatement.setString(2, b.getCategory());
-			preparedStatement.setString(3, b.getDescription());
-			preparedStatement.setDouble(4, b.getPrice());
-			preparedStatement.setString(5, b.getMateriel());
+			preparedStatement.setString(2, b.getBrand());
+			preparedStatement.setString(3, b.getCategory());
+			preparedStatement.setString(4, b.getDescription());
+			preparedStatement.setDouble(5, b.getPrice());
+			preparedStatement.setString(6, b.getMateriel());
 
 			if (b.getCategory().equals("Ring")) {
-				preparedStatement.setDouble(6, ((Ring) b).getSize());
-				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+				preparedStatement.setDouble(7, ((Ring) b).getSize());
+				preparedStatement.setNull(8, java.sql.Types.DOUBLE);
 			} else if (b.getCategory().equals("Necklace")) {
-				preparedStatement.setNull(6, java.sql.Types.DOUBLE);
-				preparedStatement.setDouble(7, ((Necklace) b).getLength());
-			} else {
-				preparedStatement.setNull(6, java.sql.Types.DOUBLE);
 				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+				preparedStatement.setDouble(8, ((Necklace) b).getLength());
+			} else {
+				preparedStatement.setNull(7, java.sql.Types.DOUBLE);
+				preparedStatement.setNull(8, java.sql.Types.DOUBLE);
 			}
 
-			preparedStatement.setInt(8, b.getStock());
-			preparedStatement.setString(9, b.getImagePath());
+			preparedStatement.setInt(9, b.getStock());
+			preparedStatement.setString(10, b.getImagePath());
 
 			int result = preparedStatement.executeUpdate();
 
@@ -602,6 +604,7 @@ public class DBManager {
 			return false;
 		}
 	}
+
 
 	public boolean deleteProduct(Long id) {
 

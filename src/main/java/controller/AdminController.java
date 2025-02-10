@@ -57,8 +57,8 @@ public class AdminController {
 		this.dbManager.updateProduct(b);
 	}
 
-	public void addProduct(Bijoux b) {
-		this.dbManager.addProduct(b);
+	public boolean addProduct(Bijoux b) {
+		return this.dbManager.addProduct(b);
 	}
 
 	public void deleteProduct(Long id) {

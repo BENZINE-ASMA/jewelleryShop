@@ -19,13 +19,16 @@ public class ProductDialogView extends JDialog {
     private AdminController adminController;
     private String uploadedImagePath;
     private Runnable refreshCallback;
+    private boolean isEditMode;  // Added flag for edit mode
+
 
     public ProductDialogView(Bijoux product, AdminController adminController, Runnable refreshCallback) {
         this.product = product;
         this.adminController = adminController;
         this.refreshCallback = refreshCallback;
+        this.isEditMode = (product != null); // If product is not null, it's edit mode
 
-        setTitle(product == null ? "Add New Product" : "Edit Product Details");
+        setTitle(isEditMode ? "Edit Product Details" : "Add New Product");
         setSize(450, 600);
         setLocationRelativeTo(null);
         setModal(true);
@@ -41,7 +44,7 @@ public class ProductDialogView extends JDialog {
         mainPanel.add(new JLabel("Name:"), gbc);
         gbc.gridx = 1;
         nameField = new JTextField(20);
-        nameField.setText(product != null ? product.getName() : "");
+        nameField.setText(isEditMode ? product.getName() : "");
         mainPanel.add(nameField, gbc);
 
         gbc.gridx = 0;
@@ -49,7 +52,7 @@ public class ProductDialogView extends JDialog {
         mainPanel.add(new JLabel("Brand:"), gbc);
         gbc.gridx = 1;
         brandField = new JTextField(20);
-        brandField.setText(product != null ? product.getBrand() : "");
+        brandField.setText(isEditMode ? product.getBrand() : "");
         mainPanel.add(brandField, gbc);
 
         gbc.gridx = 0;
@@ -57,7 +60,7 @@ public class ProductDialogView extends JDialog {
         mainPanel.add(new JLabel("Type:"), gbc);
         gbc.gridx = 1;
         typeComboBox = new JComboBox<>(new String[]{"Ring", "Necklace"});
-        typeComboBox.setSelectedItem(product != null ? product.getCategory() : "Ring");
+        typeComboBox.setSelectedItem(isEditMode ? product.getCategory() : "Ring");
         mainPanel.add(typeComboBox, gbc);
 
         gbc.gridx = 0;
@@ -67,7 +70,7 @@ public class ProductDialogView extends JDialog {
         descriptionField = new JTextArea(5, 20);
         descriptionField.setLineWrap(true);
         descriptionField.setWrapStyleWord(true);
-        descriptionField.setText(product != null ? product.getDescription() : "");
+        descriptionField.setText(isEditMode ? product.getDescription() : "");
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionField);
         descriptionScrollPane.setPreferredSize(new Dimension(250, 100));
         mainPanel.add(descriptionScrollPane, gbc);
@@ -77,7 +80,7 @@ public class ProductDialogView extends JDialog {
         mainPanel.add(new JLabel("Price (€):"), gbc);
         gbc.gridx = 1;
         priceField = new JTextField(20);
-        priceField.setText(product != null ? String.valueOf(product.getPrice()) : "");
+        priceField.setText(isEditMode ? String.valueOf(product.getPrice()) : "");
         mainPanel.add(priceField, gbc);
 
         gbc.gridx = 0;
@@ -85,7 +88,7 @@ public class ProductDialogView extends JDialog {
         mainPanel.add(new JLabel("Material:"), gbc);
         gbc.gridx = 1;
         materialField = new JTextField(20);
-        materialField.setText(product != null ? product.getMateriel() : "");
+        materialField.setText(isEditMode ? product.getMateriel() : "");
         mainPanel.add(materialField, gbc);
 
         gbc.gridx = 0;
@@ -93,7 +96,7 @@ public class ProductDialogView extends JDialog {
         mainPanel.add(new JLabel("Size:"), gbc);
         gbc.gridx = 1;
         sizeField = new JTextField(20);
-        sizeField.setText(product instanceof Ring ? String.valueOf(((Ring) product).getSize()) : "");
+        sizeField.setText((isEditMode && product instanceof Ring) ? String.valueOf(((Ring) product).getSize()) : "");
         mainPanel.add(sizeField, gbc);
 
         gbc.gridx = 0;
@@ -101,7 +104,7 @@ public class ProductDialogView extends JDialog {
         mainPanel.add(new JLabel("Length (cm):"), gbc);
         gbc.gridx = 1;
         lengthField = new JTextField(20);
-        lengthField.setText(product instanceof Necklace ? String.valueOf(((Necklace) product).getLength()) : "");
+        lengthField.setText((isEditMode && product instanceof Necklace) ? String.valueOf(((Necklace) product).getLength()) : "");
         mainPanel.add(lengthField, gbc);
 
         gbc.gridx = 0;
@@ -109,7 +112,7 @@ public class ProductDialogView extends JDialog {
         mainPanel.add(new JLabel("Stock:"), gbc);
         gbc.gridx = 1;
         stockField = new JTextField(20);
-        stockField.setText(product != null ? String.valueOf(product.getStock()) : "");
+        stockField.setText(isEditMode ? String.valueOf(product.getStock()) : "");
         mainPanel.add(stockField, gbc);
 
         gbc.gridx = 0;
@@ -124,7 +127,7 @@ public class ProductDialogView extends JDialog {
         gbc.gridy++;
         imagePathField = new JTextField(20);
         imagePathField.setEditable(false);
-        imagePathField.setText(product != null ? product.getImagePath() : "");
+        imagePathField.setText(isEditMode ? product.getImagePath() : "");
         mainPanel.add(imagePathField, gbc);
 
         // Save Button
@@ -164,40 +167,46 @@ public class ProductDialogView extends JDialog {
     private void saveProduct() {
         try {
             // Retrieve field values
-            String name = nameField.getText();
-            String brand = brandField.getText();
-            String description = descriptionField.getText();
-            String material = materialField.getText();
+            String name = nameField.getText().trim();
+            String brand = brandField.getText().trim();
+            String description = descriptionField.getText().trim();
+            String material = materialField.getText().trim();
             String type = (String) typeComboBox.getSelectedItem();
             String imagePath = (uploadedImagePath != null) ? uploadedImagePath : imagePathField.getText();
+            int stock = Integer.parseInt(stockField.getText().trim());
+            double price = Double.parseDouble(priceField.getText().trim());
 
-            int stock = Integer.parseInt(stockField.getText());
-            double price = Double.parseDouble(priceField.getText());
-
-            int reservedStock = 0; // Reserved stock is always 0 when adding a new product
-
-            if ("Ring".equals(type)) {
-                int size = Integer.parseInt(sizeField.getText());
-
-                if (product == null) {
-                    product = new Ring(null, name, brand, type, description, price, material, size, imagePath, stock);
-                } else {
-                    ((Ring) product).setSize(size);
-                }
-            } else if ("Necklace".equals(type)) {
-                double length = Double.parseDouble(lengthField.getText());
-
-                if (product == null) {
-                    product = new Necklace(null, name, brand, type, description, price, material, length, imagePath, stock);
-                } else {
-                    ((Necklace) product).setLength(length);
-                }
+            if (brand.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Brand cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-            adminController.addProduct(product);
+            if (isEditMode) {
+                product.setName(name);
+                product.setBrand(brand);
+                product.setDescription(description);
+                product.setPrice(price);
+                product.setMateriel(material);
+                product.setImagePath(imagePath);
+                product.setStock(stock);
+                if (product instanceof Ring) {
+                    ((Ring) product).setSize(Integer.parseInt(sizeField.getText().trim()));
+                } else if (product instanceof Necklace) {
+                    ((Necklace) product).setLength(Double.parseDouble(lengthField.getText().trim()));
+                }
+
+                adminController.updateProduct(product);
+            } else {
+                if ("Ring".equals(type)) {
+                    product = new Ring(null, name, brand, type, description, price, material, Integer.parseInt(sizeField.getText().trim()), imagePath, stock);
+                } else {
+                    product = new Necklace(null, name, brand, type, description, price, material, Double.parseDouble(lengthField.getText().trim()), imagePath, stock);
+                }
+                adminController.addProduct(product);
+            }
+
             if (refreshCallback != null) refreshCallback.run();
             dispose();
-
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Please enter valid numeric values for stock, price, size, and length.");
         }

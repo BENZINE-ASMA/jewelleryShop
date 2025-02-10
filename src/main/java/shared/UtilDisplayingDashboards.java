@@ -70,7 +70,6 @@ public class UtilDisplayingDashboards {
         quantityLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         imagePanel.add(quantityLabel);
 
-        // Adding price label
         JLabel priceLabel = new JLabel("Price: " + bijou.getPrice() + "€");
         priceLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         imagePanel.add(priceLabel);
@@ -79,13 +78,18 @@ public class UtilDisplayingDashboards {
             JPanel buttonPanel = new JPanel(new FlowLayout());
             JButton addButton = new JButton("Add to Cart");
 
+            // ✅ Check if the item is already in the cart and disable the button
+            if (mainController.isItemInCart(bijou)) {
+                addButton.setEnabled(false);
+            }
+
             addButton.addActionListener(e -> {
                 mainController.addToCart(bijou);
                 quantityLabel.setText("Stock: " + bijou.getStock());
-                addButton.setEnabled(false);
+                addButton.setEnabled(false); // Disable after adding
 
-               
-                addToCartButtons.put(bijou, addButton);
+                // Store reference for re-enabling if item is removed later
+                UtilDisplayingDashboards.addToCartButtons.put(bijou, addButton);
             });
 
             buttonPanel.add(addButton);
@@ -105,7 +109,6 @@ public class UtilDisplayingDashboards {
 
         return bijouPanel;
     }
-
 
 
 

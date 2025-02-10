@@ -25,6 +25,7 @@ public class MainController {
 	private InvoiceController invoiceController;
 
 	private Cart clientCart;
+	private Cart preLoginCart;
 
 
 	private Client loggedInClient;
@@ -34,12 +35,13 @@ public class MainController {
 		this.dbManager = dbManager;
 		this.products= new ArrayList<Bijoux>();
 		this.clientCart = new Cart();
+		this.preLoginCart = new Cart();
 		this.invoiceController = new InvoiceController(null);
 	}
 	public void initializeDatabase() {
 		try {
 			dbManager.connect();
-			dbManager.executeSQLScript("resources/init.sql");
+		//	dbManager.executeSQLScript("resources/init.sql");
 		} catch (SQLException e) {
 
 			e.printStackTrace();
@@ -47,9 +49,22 @@ public class MainController {
 			}
 
 	}
+	public boolean isItemInCart(Bijoux bijoux) {
+		for (Bijoux b : clientCart.getCart().keySet()) {
+			if (b.getId().equals(bijoux.getId())) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public void authenticateUser(String username, String password) {
+		// Save pre-login cart
+		preLoginCart = new Cart();
+		preLoginCart.setCart(new HashMap<>(clientCart.getCart())); // Copy the current cart
+
 		Client authenticatedUser = dbManager.authenticateUser(username, password);
+
 		if (authenticatedUser != null) {
 			this.setLoggedInClient(authenticatedUser);
 			mainView.setLoggedInClient(authenticatedUser);
@@ -61,10 +76,32 @@ public class MainController {
 				this.createAndShowMaindashboardView();
 			}
 
+			// Restore pre-login cart
+			restoreCartAfterLogin();
 		} else {
 			mainView.showAuthenticationError();
 		}
 	}
+	private void restoreCartAfterLogin() {
+		HashMap<Bijoux, Integer> updatedCart = new HashMap<>();
+
+		for (Map.Entry<Bijoux, Integer> entry : preLoginCart.getCart().entrySet()) {
+			Long oldBijouxId = entry.getKey().getId();
+			int quantity = entry.getValue();
+
+			// Find the same product in the new list after login
+			for (Bijoux newBijoux : products) {
+				if (newBijoux.getId().equals(oldBijouxId)) {
+					updatedCart.put(newBijoux, quantity);
+					break;
+				}
+			}
+		}
+
+		// Update the clientCart with matched items
+		clientCart.setCart(updatedCart);
+	}
+
 
 	public void fetchAllFilteredProducts(ArrayList<Bijoux> filteredDashboard,String name2, String description2,
 										 String brand2, String type2, String pricemin2,String pricemax2, String material2){

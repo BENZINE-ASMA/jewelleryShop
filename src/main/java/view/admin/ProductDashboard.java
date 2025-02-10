@@ -26,7 +26,7 @@ public class ProductDashboard extends JPanel {
         // Table Model
         tableModel = new DefaultTableModel(new String[]{
                 "ID", "Name", "Brand", "Type", "Description", "Price",
-                "Material", "Size", "Length", "Stock", "Reserved Stock", "Image_Path"
+                "Material", "Size", "Length", "Stock", "Image_Path"
         }, 0);
 
         productTable = new JTable(tableModel);
@@ -102,8 +102,7 @@ public class ProductDashboard extends JPanel {
         Integer size = (tableModel.getValueAt(rowIndex, 7) != null) ? (Integer) tableModel.getValueAt(rowIndex, 7) : null;
         Double length = (tableModel.getValueAt(rowIndex, 8) != null) ? (Double) tableModel.getValueAt(rowIndex, 8) : null;
         int stock = (int) tableModel.getValueAt(rowIndex, 9);
-        int reservedStock = (int) tableModel.getValueAt(rowIndex, 10);
-        String imagePath = (String) tableModel.getValueAt(rowIndex, 11);
+        String imagePath = (String) tableModel.getValueAt(rowIndex, 10);
 
         if ("Ring".equalsIgnoreCase(type)) {
             return new Ring(id, name, brand, type, description, price, material, size, imagePath, stock);
