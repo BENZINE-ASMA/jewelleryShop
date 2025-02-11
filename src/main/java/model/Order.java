@@ -10,9 +10,7 @@ public class Order {
 	private Cart clientCart;
 	private OrderStatus status;
 
-	public Timestamp getOrderDate() {
-		return this.orderDate;
-	}
+
 
 	private Timestamp orderDate;
 	private Client client;
@@ -62,6 +60,8 @@ public class Order {
 	public void setOrderId(Long orderId) {
 		this.orderId = orderId;
 	}
-	
+	public Timestamp getOrderDate() {
+		return this.orderDate;
+	}
 
 }

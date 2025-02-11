@@ -17,6 +17,8 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import Exceptions.ImageLoadingException;
+import Exceptions.ResourceNotFoundException;
 import controller.MainController;
 import model.Bijoux;
 import model.Ring;
@@ -32,10 +34,10 @@ public class UtilDisplayingDashboards {
                 BufferedImage image = ImageIO.read(input);
                 return image;
             } else {
-                throw new RuntimeException("icon " + path + " not found in the classpath!");
+                throw new ResourceNotFoundException("Icon " + path + " not found in the classpath!");
             }
         } catch (IOException e) {
-            throw new RuntimeException("image " + path + " not found in the classpath!");
+            throw new ImageLoadingException("Failed to load image from " + path, e);
         }
     }
 
@@ -126,11 +128,11 @@ public class UtilDisplayingDashboards {
 
             }else {
 
-            throw new RuntimeException("icon " + path + " not found in the classpath!");
+                throw new ResourceNotFoundException("Icon " + path + " not found in the classpath!");
         }
     } catch (IOException e) {
 
-        throw new RuntimeException("Failed to load icon from " + path + " due to an I/O error.", e);
+            throw new ImageLoadingException("Failed to load icon from " + path, e);
     }
 
     }

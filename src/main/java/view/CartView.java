@@ -24,7 +24,6 @@ public class CartView extends JPanel {
 		closeButton.addActionListener(e -> mainController.showMainDashboardView());
 		buttonPanelTop.add(closeButton);
 
-		// Bottom Button Panel (for "Confirm Purchase" button)
 		buttonPanelBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 		JButton confirmButton = new JButton("Confirm Purchase");
 		confirmButton.addActionListener(e -> {

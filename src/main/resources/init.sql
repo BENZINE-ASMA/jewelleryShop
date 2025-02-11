@@ -27,7 +27,7 @@ CREATE TABLE client (
 INSERT INTO client (firstName, lastName, email, password, role)
 VALUES ('admin', 'admin', 'admin', 'admin', 'ADMIN');
 INSERT INTO client (firstName, lastName, email, password, role)
-VALUES ('asma', 'as', 'asma', '123', 'CLIENT');
+VALUES ('asma', 'as', 'asma.benzine010@gmail.com', '123', 'CLIENT');
 
 -- Create the `products` table
 CREATE TABLE products (

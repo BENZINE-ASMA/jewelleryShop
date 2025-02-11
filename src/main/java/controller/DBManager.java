@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Exceptions.DataNotFoundException;
+import Exceptions.DatabaseConnectionException;
+import Exceptions.SQLExecutionException;
 import lombok.Getter;
 import lombok.Setter;
 import model.*;
@@ -27,14 +30,10 @@ public class DBManager {
 
 	public DBManager() {
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver"); // Load MySQL driver
-			connect(); // Call the connect method
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connect();
 		} catch (ClassNotFoundException e) {
-			System.out.println("MySQL JDBC Driver not found!");
-			e.printStackTrace();
-		} catch (SQLException e) {
-			System.out.println("Failed to connect to the database.");
-			e.printStackTrace();
+			throw new DatabaseConnectionException("MySQL JDBC Driver not found!", e);
 		}
 	}
 
@@ -42,12 +41,17 @@ public class DBManager {
 		return connection;
 	}
 
-	public void connect() throws SQLException {
-		if (connection == null || connection.isClosed()) {
-			connection = DriverManager.getConnection(url, user, password);
-			System.out.println("Database connected!");
+	public void connect() {
+		try {
+			if (connection == null || connection.isClosed()) {
+				connection = DriverManager.getConnection(url, user, password);
+				System.out.println("Database connected!");
+			}
+		} catch (SQLException e) {
+			throw new DatabaseConnectionException("Unable to establish a database connection.", e);
 		}
 	}
+
 
 	public void executeSQLScript(String scriptFile) {
 		InputStream inputStream = null;
@@ -58,8 +62,7 @@ public class DBManager {
 
 			inputStream = DBManager.class.getClassLoader().getResourceAsStream(scriptFile);
 			if (inputStream == null) {
-				System.err.println("SQL script file not found: " + scriptFile);
-				return;
+				throw new SQLExecutionException("SQL script file not found: " + scriptFile);
 			}
 			reader = new BufferedReader(new InputStreamReader(inputStream));
 			StringBuilder sqlScript = new StringBuilder();
@@ -96,8 +99,7 @@ public class DBManager {
 					inputStream.close();
 				}
 			} catch (IOException | SQLException e) {
-				e.printStackTrace();
-			}
+				throw new SQLExecutionException("Error executing SQL script.", e);			}
 		}
 	}
 
@@ -295,15 +297,14 @@ public class DBManager {
 
 				return client;
 			} else {
-				System.out.println("Invalid email or password.");
+				throw new DataNotFoundException("Invalid email or password.");
 
 			}
 		} catch (SQLException e) {
-			System.out.println("Error during user authentication.");
-			e.printStackTrace();
+			throw new SQLExecutionException("Error during user authentication.", e);
 
 		}
-		return null;
+
 
 	}
 
@@ -321,9 +322,7 @@ public class DBManager {
 
 			return result > 0;
 		} catch (SQLException e) {
-			System.out.println("Error inserting new client");
-			e.printStackTrace();
-			return false;
+			throw new SQLExecutionException("Error inserting new client.", e);
 		}
 	}
 
@@ -698,9 +697,11 @@ public class DBManager {
 				Cart cartOfOrder = this.fetchCart(orderId);
 				order = new Order(orderId, clientId, cartOfOrder,orderDate, status);
 
+			} else {
+				throw new DataNotFoundException("Order with ID " + id + " not found.");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new SQLExecutionException("Error fetching order by ID.", e);
 		}
 
 		return order;
@@ -731,10 +732,12 @@ public class DBManager {
 			try (ResultSet rs = statement.executeQuery()) {
 				if (rs.next()) {
 					invoice = mapInvoice(rs);
+				}else {
+					throw new DataNotFoundException("Invoice with ID " + id + " not found.");
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new SQLExecutionException("Error fetching invoice details.", e);
 		}
 
 		return invoice;
@@ -826,7 +829,7 @@ public class DBManager {
 				}
 			}
 		}catch(SQLException e){
-			e.printStackTrace();
+			throw new SQLExecutionException("Error fetching Bijoux.", e);
 		}
 return null;
 	}
@@ -900,9 +903,8 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 		String updateStockQuery = "UPDATE products SET stock = stock + ? WHERE id = ?";
 
 		try {
-			connection.setAutoCommit(false); // Start transaction
+			connection.setAutoCommit(false);
 
-			// Step 1: Find all orders linked to this invoice
 			List<Long> orderIds = new ArrayList<>();
 			try (PreparedStatement findOrdersStmt = connection.prepareStatement(findOrdersQuery)) {
 				findOrdersStmt.setLong(1, invoiceId);
@@ -913,7 +915,6 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 				}
 			}
 
-			// Step 2: Retrieve all products and quantities in the cart before deletion
 			Map<Long, Integer> productQuantities = new HashMap<>();
 			try (PreparedStatement findCartStmt = connection.prepareStatement(findCartItemsQuery)) {
 				for (Long orderId : orderIds) {
@@ -928,13 +929,11 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 				}
 			}
 
-			// Step 3: Delete the invoice first to prevent foreign key constraint issues
 			try (PreparedStatement deleteInvoiceStmt = connection.prepareStatement(deleteInvoiceQuery)) {
 				deleteInvoiceStmt.setLong(1, invoiceId);
 				deleteInvoiceStmt.executeUpdate();
 			}
 
-			// Step 4: Delete all cart items linked to these orders
 			try (PreparedStatement deleteCartStmt = connection.prepareStatement(deleteCartQuery)) {
 				for (Long orderId : orderIds) {
 					deleteCartStmt.setLong(1, orderId);
@@ -942,7 +941,6 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 				}
 			}
 
-			// Step 5: Restore stock for all products that were in the deleted cart
 			try (PreparedStatement updateStockStmt = connection.prepareStatement(updateStockQuery)) {
 				for (Map.Entry<Long, Integer> entry : productQuantities.entrySet()) {
 					updateStockStmt.setInt(1, entry.getValue());
@@ -951,7 +949,6 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 				}
 			}
 
-			// Step 6: Delete all orders related to this invoice
 			try (PreparedStatement deleteOrdersStmt = connection.prepareStatement(deleteOrdersQuery)) {
 				for (Long orderId : orderIds) {
 					deleteOrdersStmt.setLong(1, orderId);
@@ -959,18 +956,18 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 				}
 			}
 
-			connection.commit(); // Commit transaction
+			connection.commit();
 			return true;
 		} catch (SQLException e) {
 			try {
-				connection.rollback(); // Rollback on error
+				connection.rollback();
 			} catch (SQLException rollbackEx) {
 				rollbackEx.printStackTrace();
 			}
 			e.printStackTrace();
 		} finally {
 			try {
-				connection.setAutoCommit(true); // Restore auto-commit
+				connection.setAutoCommit(true);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

@@ -81,12 +81,26 @@ public class InvoiceDashboard extends JPanel {
 				(Long) tableModel.getValueAt(rowIndex, 2),
 				(String) tableModel.getValueAt(rowIndex, 3),
 				(String) tableModel.getValueAt(rowIndex, 8),
-				(Double) tableModel.getValueAt(rowIndex, 4),
+				convertToDouble(tableModel.getValueAt(rowIndex, 4)), // Fix here
 				(String) tableModel.getValueAt(rowIndex, 5),
 				(Timestamp) tableModel.getValueAt(rowIndex, 6),
 				(Timestamp) tableModel.getValueAt(rowIndex, 7)
 		);
 	}
+
+	private Double convertToDouble(Object value) {
+		if (value instanceof Double) {
+			return (Double) value;
+		} else if (value instanceof String) {
+			try {
+				return Double.parseDouble((String) value);
+			} catch (NumberFormatException e) {
+				throw new RuntimeException("Error parsing total amount as Double: " + value);
+			}
+		}
+		throw new RuntimeException("Unexpected type for total amount: " + value.getClass());
+	}
+
 
 	private void openEditInvoiceView(Invoice invoice) {
 		InvoiceDialogView dialog = new InvoiceDialogView(invoice, invoiceController,this.adminController);

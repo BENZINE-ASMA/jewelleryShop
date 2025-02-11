@@ -71,8 +71,9 @@ public class OrderPanel extends JPanel {
             invoiceDashboard.loadInvoiceData();
             Invoice inv = this.adminController.getInvoice(invoiceId);
             JOptionPane.showMessageDialog(this, "Order validated successfully.");
+            Client tosendto = adminController.fetchClientById(inv.getClientId());
             this.invoiceController.setInvoice(inv);
-            this.invoiceController.updateInvoice(order.getClient(),order,order.getCartItems());
+            this.invoiceController.updateInvoice(tosendto,order,order.getCartItems());
 
         });
 

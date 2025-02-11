@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
+import Exceptions.DatabaseConnectionException;
+import Exceptions.SQLExecutionException;
 import model.Bijoux;
 import model.Cart;
 import model.Client;
@@ -42,13 +44,15 @@ public class MainController {
 		try {
 			dbManager.connect();
 			dbManager.executeSQLScript("resources/init.sql");
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-
-			}
-
+		} catch (DatabaseConnectionException e) {
+			JOptionPane.showMessageDialog(null, "Database connection error: " + e.getMessage(),
+					"Database Error", JOptionPane.ERROR_MESSAGE);
+		} catch (SQLExecutionException e) {
+			JOptionPane.showMessageDialog(null, "SQL execution error: " + e.getMessage(),
+					"SQL Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
+
 	public boolean isItemInCart(Bijoux bijoux) {
 		for (Bijoux b : clientCart.getCart().keySet()) {
 			if (b.getId().equals(bijoux.getId())) {
@@ -146,7 +150,7 @@ public class MainController {
 
 	public void createAndShowMyOrdesView(){
 		mainView.loadMyOrdersView();
-		mainView.loadMyOrdersView();
+
 	}
 
 	public void createAndShowMaindashboardAdminView() {
@@ -292,7 +296,6 @@ public class MainController {
 			productQuantities.put(bijoux.getId(), quantityPurchased);
 		}
 
-		// Call DBManager to update stock in batch
 		dbManager.decrementStock(productQuantities);
 	}
 

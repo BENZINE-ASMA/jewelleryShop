@@ -11,6 +11,7 @@ import jakarta.mail.internet.MimeMultipart;
 import java.util.Properties;
 
 public class EmailSender {
+
     private String to;
     private String from;
     private String host;
@@ -64,4 +65,8 @@ public class EmailSender {
             mex.printStackTrace();
         }
     }
+    public void setTo(final String to) {
+        this.to = to;
+    }
+
 }

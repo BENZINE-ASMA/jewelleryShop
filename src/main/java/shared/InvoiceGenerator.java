@@ -25,7 +25,7 @@ public class InvoiceGenerator {
         this.emailSender = new EmailSender(client.getEmail());
     }
 
-    public void generateInvoice(String path) {
+    public void generateInvoice(String path,String messageText) {
         String filePath = "src/main/resources/output/" + path;
         try {
             PdfWriter writer = new PdfWriter(filePath);
@@ -76,11 +76,14 @@ public class InvoiceGenerator {
             System.out.println("PDF generated successfully at: " + filePath);
 
             String subject = "Invoice for your order "+ clientOrder.getOrderId() ;
+            /*
             String messageText = "Hello " + this.loggedInClient.getFirstName() + ",\n\n"
                     + "Thank you for your purchase at Precious.\n"
                     + "Please find attached the invoice corresponding to your order.\n\n"
                     + "Best regards,\n"
                     + "The Precious Team";
+
+             */
 
             this.emailSender.sendEmailWithAttachment(subject, messageText, filePath);
         } catch (Exception e) {

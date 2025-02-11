@@ -30,10 +30,12 @@ public class InvoiceDialogView extends JDialog {
         invoiceNumberLabel.setBounds(50, 30, 120, 25);
         this.add(invoiceNumberLabel);
 
+
         invoiceNumberField = new JTextField(20);
         invoiceNumberField.setBounds(180, 30, 150, 25);
         invoiceNumberField.setText(invoice != null ? invoice.getInvoiceNumber() : "");
         this.add(invoiceNumberField);
+        invoiceNumberField.setEnabled(false);
 
         JLabel filePathLabel = new JLabel("File Path:");
         filePathLabel.setBounds(50, 70, 120, 25);
@@ -43,10 +45,12 @@ public class InvoiceDialogView extends JDialog {
         filePathField.setBounds(180, 70, 150, 25);
         filePathField.setText(invoice != null ? invoice.getFilePath() : "");
         this.add(filePathField);
+        filePathField.setEnabled(false);
 
         JLabel totalAmountLabel = new JLabel("Total Amount:");
         totalAmountLabel.setBounds(50, 110, 120, 25);
         this.add(totalAmountLabel);
+
 
         totalAmountField = new JTextField(20);
         totalAmountField.setBounds(180, 110, 150, 25);

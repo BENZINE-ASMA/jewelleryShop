@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Exceptions.DatabaseConnectionException;
 import controller.AdminController;
 import controller.DBManager;
 import controller.InvoiceController;
@@ -33,7 +34,14 @@ public class MainView extends JFrame {
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
-        DBManager dbManager = new DBManager();
+        DBManager dbManager;
+        try {
+            dbManager = new DBManager();
+        } catch (DatabaseConnectionException e) {
+            JOptionPane.showMessageDialog(this, "Error connecting to database: " + e.getMessage(),
+                    "Database Error", JOptionPane.ERROR_MESSAGE);
+            throw e;
+        }
         mainController = new MainController(this, dbManager);
         adminController= new AdminController(dbManager,this);
 
