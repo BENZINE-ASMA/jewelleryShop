@@ -67,7 +67,7 @@ public class AdminController {
 
 	public ArrayList<Bijoux> fetchAllProducts() {
 		this.products = new ArrayList<>();
-		this.dbManager.getAllProducts(this.products);
+		this.dbManager.getAllProductsForAdmin(this.products);
 		return this.products;
 	}
 

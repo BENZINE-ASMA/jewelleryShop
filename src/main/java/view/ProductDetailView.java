@@ -14,11 +14,9 @@ public class ProductDetailView extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Main container
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
 
-        // Left Panel: Product Image
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.setBackground(Color.WHITE);
         imagePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -34,22 +32,18 @@ public class ProductDetailView extends JFrame {
         }
         imagePanel.add(imageLabel, BorderLayout.CENTER);
 
-        // Right Panel: Product Info
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(Color.WHITE);
         infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // Title and Brand Panel
         JPanel titleBrandPanel = new JPanel(new GridLayout(2, 1, 0, 5));
         titleBrandPanel.setBackground(Color.WHITE);
 
-        // Title
         JLabel titleLabel = new JLabel("<html><h2>" + bijou.getName() + "</h2></html>");
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center alignment
         titleBrandPanel.add(titleLabel);
 
-        // Brand
         JLabel brandLabel = new JLabel("<html><b>Brand:</b> " + bijou.getBrand() + "</html>");
         brandLabel.setHorizontalAlignment(SwingConstants.LEFT); // Center alignment
         brandLabel.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -57,7 +51,6 @@ public class ProductDetailView extends JFrame {
 
         infoPanel.add(titleBrandPanel);
 
-        // Description
         JTextArea descriptionArea = new JTextArea(bijou.getDescription() != null ? bijou.getDescription() : "No description available.");
         descriptionArea.setWrapStyleWord(true);
         descriptionArea.setLineWrap(true);
@@ -69,7 +62,6 @@ public class ProductDetailView extends JFrame {
         descriptionScrollPane.setBorder(BorderFactory.createEmptyBorder());
         infoPanel.add(descriptionScrollPane);
 
-        // Price, Material, and Stock Info
         JPanel detailsPanel = new JPanel(new GridLayout(3, 2, 10, 5));
         detailsPanel.setBackground(Color.WHITE);
 
@@ -87,7 +79,7 @@ public class ProductDetailView extends JFrame {
         // Buttons Panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         buttonPanel.setBackground(Color.WHITE);
-
+/*
         JButton addToCartButton = new JButton(" Add to Cart");
         addToCartButton.setFont(new Font("Arial", Font.BOLD, 14));
         addToCartButton.setForeground(Color.WHITE);
@@ -98,18 +90,15 @@ public class ProductDetailView extends JFrame {
             mainController.addToCart(bijou);
             JOptionPane.showMessageDialog(this, "Added to Cart!", "Success", JOptionPane.INFORMATION_MESSAGE);
         });
-
+*/
         JButton closeButton = new JButton("Close");
         closeButton.setFont(new Font("Arial", Font.BOLD, 14));
         closeButton.setPreferredSize(new Dimension(100, 30));
         closeButton.addActionListener(e -> dispose());
-
-        buttonPanel.add(addToCartButton);
         buttonPanel.add(closeButton);
 
         infoPanel.add(buttonPanel);
 
-        // Assemble panels
         mainPanel.add(imagePanel, BorderLayout.WEST);
         mainPanel.add(infoPanel, BorderLayout.CENTER);
 

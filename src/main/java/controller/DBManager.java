@@ -205,7 +205,7 @@ public class DBManager {
 	}
 
 	public ArrayList<Bijoux> getAllProducts(ArrayList<Bijoux> results) {
-		String query = "SELECT * FROM products WHERE stock > 0"; // Ensures only products with stock > 0 are retrieved
+		String query = "SELECT * FROM products WHERE stock > 0";
 
 		try (Statement stmt = connection.createStatement();
 			 ResultSet rs = stmt.executeQuery(query)) {
@@ -238,6 +238,39 @@ public class DBManager {
 		return results;
 	}
 
+	public ArrayList<Bijoux> getAllProductsForAdmin(ArrayList<Bijoux> results) {
+		String query = "SELECT * FROM products ";
+
+		try (Statement stmt = connection.createStatement();
+			 ResultSet rs = stmt.executeQuery(query)) {
+
+			while (rs.next()) {
+				Long id = rs.getLong("id");
+				String type = rs.getString("type");
+				String name = rs.getString("name");
+				String brand = rs.getString("brand");
+				String description = rs.getString("description");
+				double price = rs.getDouble("price");
+				String material = rs.getString("material");
+				String imagePath = rs.getString("image_path");
+				int stock = rs.getInt("stock");
+
+				switch (type) {
+					case "Ring":
+						int size = rs.getInt("size");
+						results.add(new Ring(id, name, brand, type, description, price, material, size, imagePath, stock));
+						break;
+					case "Necklace":
+						double length = rs.getDouble("length");
+						results.add(new Necklace(id, name, brand, type, description, price, material, length, imagePath, stock));
+						break;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
 
 
 
@@ -608,7 +641,7 @@ public class DBManager {
 
 	public boolean deleteProduct(Long id) {
 
-		String query = "DELETE FROM products WHERE id = ?";
+		String query = "UPDATE products set stock =0 where id = ?";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -623,7 +656,6 @@ public class DBManager {
 			return false;
 		}
 	}
-	//public boolean updateInvoice()
 
 	public void getAllInvoices(ArrayList<Invoice> invoices) {
 		String query = "select * from Invoices";

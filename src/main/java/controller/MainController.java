@@ -41,7 +41,7 @@ public class MainController {
 	public void initializeDatabase() {
 		try {
 			dbManager.connect();
-		//	dbManager.executeSQLScript("resources/init.sql");
+			dbManager.executeSQLScript("resources/init.sql");
 		} catch (SQLException e) {
 
 			e.printStackTrace();

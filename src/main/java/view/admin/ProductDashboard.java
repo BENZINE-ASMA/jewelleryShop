@@ -71,7 +71,7 @@ public class ProductDashboard extends JPanel {
     }
 
     private void loadProductData() {
-        tableModel.setRowCount(0); // Clear table
+        tableModel.setRowCount(0);
 
         for (Bijoux bijou : adminController.fetchAllProducts()) {
             if ("Ring".equalsIgnoreCase(bijou.getCategory())) {
@@ -91,7 +91,6 @@ public class ProductDashboard extends JPanel {
     }
 
     private Bijoux getProductFromTable(int rowIndex) {
-        // Retrieve values safely, handling nulls where necessary
         Long id = (Long) tableModel.getValueAt(rowIndex, 0);
         String name = (String) tableModel.getValueAt(rowIndex, 1);
         String brand = (String) tableModel.getValueAt(rowIndex, 2);
@@ -130,7 +129,7 @@ public class ProductDashboard extends JPanel {
         if (selectedRow >= 0) {
             Long id = (Long) tableModel.getValueAt(selectedRow, 0);
             adminController.deleteProduct(id);
-            loadProductData(); // Refresh table after deletion
+            loadProductData();
         } else {
             JOptionPane.showMessageDialog(this, "Please select a product to delete.");
         }

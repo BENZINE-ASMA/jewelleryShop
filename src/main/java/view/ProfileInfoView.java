@@ -59,6 +59,7 @@ public class ProfileInfoView extends JPanel {
 
 		emailField = new JTextField(20);
 		emailField.setBounds(150, 110, 150, 25);
+		this.emailField.setEnabled(false);
 
 		emailField.setText(loggedInClient.getEmail());
 		this.add(emailField);

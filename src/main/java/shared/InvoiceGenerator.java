@@ -22,7 +22,7 @@ public class InvoiceGenerator {
         this.clientOrder = order;
         this.loggedInClient = client;
         this.clientCart = clientCart;
-        this.emailSender = new EmailSender("asma.benzine010@gmail.com");
+        this.emailSender = new EmailSender(client.getEmail());
     }
 
     public void generateInvoice(String path) {
