@@ -167,7 +167,7 @@ public class MainView extends JFrame {
     public void loadMainDashboardAdminView() {
     	MainDashboardAdminView mainDashboardAdminView = new MainDashboardAdminView(mainController, adminController);
     	mainPanel.add(mainDashboardAdminView,"mainDashboardAdminView");
-        System.out.println("this is the admin interface showing");
+
     }
     public void loadInvoiceDashbaordView(){
         InvoiceDashboard invoiceDashbaord = new InvoiceDashboard(adminController,new InvoiceController(null));

@@ -85,7 +85,7 @@ public class UtilDisplayingDashboards {
             addButton.addActionListener(e -> {
                 mainController.addToCart(bijou);
                 quantityLabel.setText("Stock: " + bijou.getStock());
-                addButton.setEnabled(false); // Disable after adding
+                addButton.setEnabled(false);
 
                 UtilDisplayingDashboards.addToCartButtons.put(bijou, addButton);
             });

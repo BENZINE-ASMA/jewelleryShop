@@ -43,7 +43,6 @@ public class InvoiceController {
 				+ "Please find attached the invoice corresponding to your order.\n\n"
 				+ "Best regards,\n"
 				+ "The Precious Team";
-		System.out.println("path "+ this.invoice.getFilePath());
 		this.emailSender.sendEmailWithAttachment(subject,messageText,"src/main/resources/output/"+this.invoice.getFilePath());
 
 	}

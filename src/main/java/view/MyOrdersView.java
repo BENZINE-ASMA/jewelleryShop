@@ -38,9 +38,8 @@ public class MyOrdersView extends JPanel {
 
         add(new JScrollPane(ordersTable), BorderLayout.CENTER);
 
-        // Add Close Button
         JButton closeButton = new JButton("Close");
-        closeButton.addActionListener(e -> mainController.showMainDashboardView()); // Go back to main dashboard
+        closeButton.addActionListener(e -> mainController.showMainDashboardView());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(closeButton);

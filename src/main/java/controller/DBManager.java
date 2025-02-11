@@ -632,7 +632,6 @@ public class DBManager {
 
 			return result > 0;
 		} catch (SQLException e) {
-			System.out.println("Error inserting new product");
 			e.printStackTrace();
 			return false;
 		}
@@ -651,7 +650,6 @@ public class DBManager {
 
 			return rowsAffected != 0;
 		} catch (SQLException e) {
-			System.out.println("Error inserting new client");
 			e.printStackTrace();
 			return false;
 		}
@@ -1065,7 +1063,6 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 				"WHERE invoice_id = ?";
 
 		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			// Set parameters for the prepared statement
 			statement.setString(1, invoice.getInvoiceNumber());
 			statement.setString(2, invoice.getFilePath());
 			statement.setDouble(3, invoice.getTotalAmount());
@@ -1078,7 +1075,7 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 			return rowsUpdated > 0;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false; // Return false if an error occurred
+			return false;
 		}
 	}
 	public Invoice getInvoice(long invoiceId) {
