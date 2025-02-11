@@ -475,7 +475,6 @@ public class DBManager {
 		String query = "INSERT INTO Cart_Items (order_id, product_id, quantity) VALUES (?, ?, ?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-			// Iterate over the cart items and insert them into the Cart_Items table
 			for (Map.Entry<Bijoux, Integer> entry : cart.getCart().entrySet()) {
 				Bijoux bijoux = entry.getKey();
 				Integer quantity = entry.getValue();
@@ -569,7 +568,7 @@ public class DBManager {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
 			preparedStatement.setString(1, b.getName());
-			preparedStatement.setString(2, b.getBrand());  // ✅ Brand added
+			preparedStatement.setString(2, b.getBrand());
 			preparedStatement.setString(3, b.getCategory());
 			preparedStatement.setString(4, b.getDescription());
 			preparedStatement.setDouble(5, b.getPrice());
@@ -783,7 +782,7 @@ public class DBManager {
 		Cart cart = new Cart();
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-			preparedStatement.setLong(1, orderId); 
+			preparedStatement.setLong(1, orderId);
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -894,6 +893,33 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 		}
 		return false;
 }
+	public boolean deleteItemIfZero(Long orderId, Long productId) {
+		String checkQuery = "SELECT quantity FROM Cart_Items WHERE order_id = ? AND product_id = ?";
+		String deleteQuery = "DELETE FROM Cart_Items WHERE order_id = ? AND product_id = ?";
+
+		try (PreparedStatement checkStmt = connection.prepareStatement(checkQuery)) {
+			checkStmt.setLong(1, orderId);
+			checkStmt.setLong(2, productId);
+			ResultSet rs = checkStmt.executeQuery();
+
+			if (rs.next()) {
+				int quantity = rs.getInt("quantity");
+				if (quantity == 0) {
+					try (PreparedStatement deleteStmt = connection.prepareStatement(deleteQuery)) {
+						deleteStmt.setLong(1, orderId);
+						deleteStmt.setLong(2, productId);
+						int result = deleteStmt.executeUpdate();
+						return result > 0;
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+
 	public boolean deleteInvoice(Long invoiceId) {
 		String findOrdersQuery = "SELECT order_id FROM Invoices WHERE invoice_id = ?";
 		String findCartItemsQuery = "SELECT product_id, quantity FROM Cart_Items WHERE order_id = ?";
@@ -1121,7 +1147,6 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 
 	public void incrementStock(Long productId, int quantity) {
 		String query = "UPDATE products SET stock = stock + ? WHERE id = ?";
-
 		try (PreparedStatement statement = connection.prepareStatement(query)) {
 			statement.setInt(1, quantity);
 			statement.setLong(2, productId);
@@ -1130,6 +1155,7 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 			e.printStackTrace();
 		}
 	}
+
 	public boolean decrementStock(Map<Long, Integer> productQuantities) {
 		String query = "UPDATE products SET stock = GREATEST(stock - ?, 0) WHERE id = ? AND stock >= ?";
 

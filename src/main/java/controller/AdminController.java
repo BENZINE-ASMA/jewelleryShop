@@ -111,6 +111,9 @@ public class AdminController {
 		mainView.loadRingsDashboardView();
 		mainView.showPanel("ringsDashbaord");
 	}
+	public boolean deleteItemIfZero(Long orderId, Long productId) {
+		return this.dbManager.deleteItemIfZero(orderId,productId);
+	}
 
 	public void showInvoiceView() {
 		mainView.loadInvoiceDashbaordView();

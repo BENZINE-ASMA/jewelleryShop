@@ -8,14 +8,19 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Map;
+import java.util.HashMap;
 
 public class OrderPanel extends JPanel {
     private Order order;
     private long invoiceId;
     private AdminController adminController;
     private InvoiceDashboard invoiceDashboard;
-
     private InvoiceController invoiceController;
+    private JButton deleteItemButton;
+    private Map<Long, Integer> deletedQuantities = new HashMap<>();
+
+
+    private Map<Long, Integer> updatedQuantities = new HashMap<>();
 
     public OrderPanel(Order order, AdminController adminController, long invoiceId, InvoiceDashboard invoiceDashboard) {
         this.order = order;
@@ -23,7 +28,7 @@ public class OrderPanel extends JPanel {
         this.invoiceId = invoiceId;
         this.invoiceDashboard = invoiceDashboard;
         this.invoiceController = new InvoiceController(null);
-        this.setPreferredSize(new Dimension(800,500));
+        this.setPreferredSize(new Dimension(800, 500));
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -53,31 +58,50 @@ public class OrderPanel extends JPanel {
                 double newTotalPrice = order.getCartItems().getTotalPrice();
                 totalPriceLabel.setText(String.format("%.2f", newTotalPrice));
 
-                adminController.updateCart(order.getOrderId(), productId, newQuantity);
-                adminController.updateOrder(order.getOrderId(), newTotalPrice);
-                adminController.updateInvoice(invoiceId, newTotalPrice);
+                updatedQuantities.put(productId, newQuantity);
             }
         });
+
 
         JScrollPane tableScrollPane = new JScrollPane(cartTable);
         add(tableScrollPane, BorderLayout.CENTER);
 
-
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton validateOrderButton = new JButton("Validate Order");
+
         validateOrderButton.addActionListener(e -> {
             order.validateOrder();
+
+            for (Map.Entry<Long, Integer> entry : updatedQuantities.entrySet()) {
+                Long productId = entry.getKey();
+                int quantity = entry.getValue();
+                adminController.updateCart(order.getOrderId(), productId, quantity);
+
+                if (quantity == 0) {
+                    adminController.deleteItemIfZero(order.getOrderId(), productId);
+                }
+            }
+
+            for (Map.Entry<Long, Integer> entry : deletedQuantities.entrySet()) {
+                Long productId = entry.getKey();
+                int quantityRestored = entry.getValue();
+                adminController.incrementStock(productId, quantityRestored);
+            }
+
             adminController.updateInvoice(invoiceId, order.getCartItems().getTotalPrice());
             invoiceDashboard.loadInvoiceData();
+
             Invoice inv = this.adminController.getInvoice(invoiceId);
             JOptionPane.showMessageDialog(this, "Order validated successfully.");
             Client tosendto = adminController.fetchClientById(inv.getClientId());
+
             this.invoiceController.setInvoice(inv);
-            this.invoiceController.updateInvoice(tosendto,order,order.getCartItems());
+            this.invoiceController.updateInvoice(tosendto, order, order.getCartItems());
 
+            updatedQuantities.clear();
+            deletedQuantities.clear();
         });
-
-        JButton deleteItemButton = new JButton("Delete Item");
+        deleteItemButton = new JButton("Delete Item");
         deleteItemButton.addActionListener(e -> {
             int selectedRow = cartTable.getSelectedRow();
             if (selectedRow != -1) {
@@ -91,29 +115,34 @@ public class OrderPanel extends JPanel {
 
                     double newTotalPrice = order.getCartItems().getTotalPrice();
                     totalPriceLabel.setText(String.format("%.2f", newTotalPrice));
-                    adminController.updateCart(order.getOrderId(), productId, newQuantity);
-                    adminController.updateOrder(order.getOrderId(), newTotalPrice);
-                    adminController.updateInvoice(invoiceId, newTotalPrice);
 
+                    updatedQuantities.put(productId, newQuantity);
+
+                    deletedQuantities.put(productId, deletedQuantities.getOrDefault(productId, 0) + 1);
                 } else {
                     order.getCartItems().deleteFromCart(productId);
+                    tableModel.removeRow(selectedRow);
+
                     double newTotalPrice = order.getCartItems().getTotalPrice();
                     totalPriceLabel.setText(String.format("%.2f", newTotalPrice));
 
-                    adminController.deleteFromCart(order.getOrderId(), productId);
-                    adminController.updateOrder(order.getOrderId(), newTotalPrice);
-                    adminController.incrementStock(productId, currentQuantity);
-                    tableModel.removeRow(selectedRow);
+                    updatedQuantities.put(productId, 0);
+
+                    deletedQuantities.put(productId, deletedQuantities.getOrDefault(productId, 0) + currentQuantity);
                 }
+
+                checkAndDisableDeleteButton();
             } else {
                 JOptionPane.showMessageDialog(this, "Please select an item to delete.");
             }
         });
 
 
+
         buttonPanel.add(validateOrderButton);
         buttonPanel.add(deleteItemButton);
         add(buttonPanel, BorderLayout.SOUTH);
+        checkAndDisableDeleteButton();
     }
 
     private JLabel addDetail(JPanel panel, String label, String value) {
@@ -130,6 +159,19 @@ public class OrderPanel extends JPanel {
         return valueComponent;
     }
 
+    private void checkAndDisableDeleteButton() {
+        long remainingItems = order.getCartItems().getCart().size();
+        int totalQuantity = order.getCartItems().getCart().values().stream().mapToInt(Integer::intValue).sum();
+
+        if (remainingItems == 1 && totalQuantity == 1) {
+            deleteItemButton.setEnabled(false);
+        } else {
+            deleteItemButton.setEnabled(true);
+        }
+    }
+
+
+
     private DefaultTableModel createTableModel(Cart cart) {
         String[] columns = {"Product ID", "Product Name", "Quantity", "Price Per Unit", "Total Price"};
         Object[][] data = new Object[cart.getCart().size()][columns.length];
@@ -145,8 +187,9 @@ public class OrderPanel extends JPanel {
         return new DefaultTableModel(data, columns) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 2;
+                return false;
             }
         };
     }
+
 }
