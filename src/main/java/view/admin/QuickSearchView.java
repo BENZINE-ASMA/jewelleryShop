@@ -18,7 +18,6 @@ public class QuickSearchView extends JFrame {
     private DefaultTableModel tableModel;
     private JComboBox<String> searchTypeDropdown;
 
-    // Labels for client details
     private JLabel clientIdValue, clientNameValue, clientEmailValue;
     private JPanel clientInfoPanel;
     private JPanel resultsPanel;
@@ -32,7 +31,6 @@ public class QuickSearchView extends JFrame {
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
 
-        // Search Panel
         JPanel searchPanel = new JPanel(new FlowLayout());
         String[] searchOptions = {"Order ID", "Invoice ID", "Client ID", "Client Email"};
         searchTypeDropdown = new JComboBox<>(searchOptions);
@@ -45,11 +43,10 @@ public class QuickSearchView extends JFrame {
         searchPanel.add(searchButton);
         add(searchPanel, BorderLayout.NORTH);
 
-        // Client Info Panel
         clientInfoPanel = new JPanel(new GridBagLayout());
         clientInfoPanel.setBorder(BorderFactory.createTitledBorder("Client Information"));
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 10, 5, 10); // Padding
+        gbc.insets = new Insets(5, 10, 5, 10);
 
         JLabel clientIdLabel = new JLabel("Client ID:");
         clientIdValue = new JLabel("-");
@@ -58,24 +55,20 @@ public class QuickSearchView extends JFrame {
         JLabel clientEmailLabel = new JLabel("Email:");
         clientEmailValue = new JLabel("-");
 
-        // Set Font Styles
         clientIdLabel.setFont(new Font("Arial", Font.BOLD, 12));
         clientNameLabel.setFont(new Font("Arial", Font.BOLD, 12));
         clientEmailLabel.setFont(new Font("Arial", Font.BOLD, 12));
 
-        // Row 1: Client ID
         gbc.gridx = 0; gbc.gridy = 0;
         clientInfoPanel.add(clientIdLabel, gbc);
         gbc.gridx = 1;
         clientInfoPanel.add(clientIdValue, gbc);
 
-        // Row 2: Name
         gbc.gridx = 0; gbc.gridy = 1;
         clientInfoPanel.add(clientNameLabel, gbc);
         gbc.gridx = 1;
         clientInfoPanel.add(clientNameValue, gbc);
 
-        // Row 3: Email
         gbc.gridx = 0; gbc.gridy = 2;
         clientInfoPanel.add(clientEmailLabel, gbc);
         gbc.gridx = 1;
@@ -85,7 +78,6 @@ public class QuickSearchView extends JFrame {
         resultsPanel.setLayout(new BorderLayout());
         resultsPanel.add(clientInfoPanel, BorderLayout.NORTH);
 
-        // Results Table
         tableModel = new DefaultTableModel(new String[]{"ID", "Type", "Details"}, 0);
         resultsTable = new JTable(tableModel);
         resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -140,10 +132,8 @@ public class QuickSearchView extends JFrame {
 
         Client client = adminController.fetchClientByEmail(clientEmail.trim());
         if (client != null) {
-            // Display the client's details
             displayClientInfo(client);
 
-            // Fetch and display orders and invoices for the client
             ArrayList<Invoice> invoices =new ArrayList<>();
             adminController.getAllInvoices(invoices,client.getId());
             ArrayList<Order> orders = adminController.fetchOrdersByClient(client.getId());
@@ -174,27 +164,21 @@ public class QuickSearchView extends JFrame {
             Order order = adminController.fetchOrderById(orderId);
 
             if (order != null) {
-                // Fetch the associated client for the order
                 Client client = adminController.fetchClientById(order.getClient().getId());
 
                 if (client != null) {
-                    // Display client details
                     displayClientInfo(client);
 
-                    // Fetch all orders and invoices for the client
                     ArrayList<Order> orders = adminController.fetchOrdersByClient(client.getId());
                     ArrayList<Invoice> invoices = new ArrayList<>();
                     adminController.getAllInvoices(invoices,client.getId());
 
-                    // Clear previous table results
                     tableModel.setRowCount(0);
 
-                    // Add all invoices to the table
                     for (Invoice invoice : invoices) {
                         tableModel.addRow(new Object[]{invoice.getInvoiceId(), "Invoice", "Click to view"});
                     }
 
-                    // Add all orders to the table
                     for (Order clientOrder : orders) {
                         tableModel.addRow(new Object[]{clientOrder.getOrderId(), "Order", "Click to view"});
                     }
@@ -220,14 +204,14 @@ public class QuickSearchView extends JFrame {
 
                 ArrayList<Order> orders = adminController.fetchOrdersByClient(clientId);
 
-                tableModel.setRowCount(0); // Clear previous results
+                tableModel.setRowCount(0);
 
                 for (Invoice invoice : invoices) {
-                    tableModel.addRow(new Object[]{invoice.getInvoiceId(), "Invoice", "Click to view"}); // Correct type
+                    tableModel.addRow(new Object[]{invoice.getInvoiceId(), "Invoice", "Click to view"});
                 }
 
                 for (Order order : orders) {
-                    tableModel.addRow(new Object[]{order.getOrderId(), "Order", "Click to view"}); // Correct type
+                    tableModel.addRow(new Object[]{order.getOrderId(), "Order", "Click to view"});
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "No client found with this ID.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
@@ -241,7 +225,7 @@ public class QuickSearchView extends JFrame {
     private void searchByInvoiceId(String invoiceIdString) {
         try {
             long invoiceId = Long.parseLong(invoiceIdString);
-            String clientId = adminController.fetchInvoiceById(invoiceId); // Returns client_id as a String
+            String clientId = adminController.fetchInvoiceById(invoiceId);
 
             if (clientId != null) {
                 Client client = adminController.fetchClientById(Long.parseLong(clientId));
@@ -255,14 +239,14 @@ public class QuickSearchView extends JFrame {
 
                 ArrayList<Order> orders = adminController.fetchOrdersByClient(Long.parseLong(clientId));
 
-                tableModel.setRowCount(0); // Clear previous results
+                tableModel.setRowCount(0);
 
                 for (Invoice invoice : invoices) {
-                    tableModel.addRow(new Object[]{invoice.getInvoiceId(), "Invoice", "Click to view"}); // Correct type
+                    tableModel.addRow(new Object[]{invoice.getInvoiceId(), "Invoice", "Click to view"});
                 }
 
                 for (Order order : orders) {
-                    tableModel.addRow(new Object[]{order.getOrderId(), "Order", "Click to view"}); // Correct type
+                    tableModel.addRow(new Object[]{order.getOrderId(), "Order", "Click to view"});
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "No invoice found with this ID.", "Search Result", JOptionPane.INFORMATION_MESSAGE);
@@ -305,6 +289,7 @@ public class QuickSearchView extends JFrame {
         long selectedId = (Long) idObject;
 
         if (type.equals("Order")) {
+
             Order order = adminController.fetchOrderById(selectedId);
             if (order != null) {
                 JFrame orderFrame = new JFrame("Order Details");

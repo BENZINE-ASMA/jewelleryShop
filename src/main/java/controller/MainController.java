@@ -59,9 +59,9 @@ public class MainController {
 	}
 
 	public void authenticateUser(String username, String password) {
-		// Save pre-login cart
 		preLoginCart = new Cart();
-		preLoginCart.setCart(new HashMap<>(clientCart.getCart())); // Copy the current cart
+		preLoginCart.setCart(new HashMap<>(clientCart.getCart()));
+
 
 		Client authenticatedUser = dbManager.authenticateUser(username, password);
 
@@ -76,7 +76,7 @@ public class MainController {
 				this.createAndShowMaindashboardView();
 			}
 
-			// Restore pre-login cart
+
 			restoreCartAfterLogin();
 		} else {
 			mainView.showAuthenticationError();
@@ -89,7 +89,6 @@ public class MainController {
 			Long oldBijouxId = entry.getKey().getId();
 			int quantity = entry.getValue();
 
-			// Find the same product in the new list after login
 			for (Bijoux newBijoux : products) {
 				if (newBijoux.getId().equals(oldBijouxId)) {
 					updatedCart.put(newBijoux, quantity);
@@ -98,7 +97,6 @@ public class MainController {
 			}
 		}
 
-		// Update the clientCart with matched items
 		clientCart.setCart(updatedCart);
 	}
 
@@ -270,7 +268,6 @@ public class MainController {
 		return this.dbManager.getDistinctMaterials();
 	}
 	/*ended up not suing search input but rather a panel
-
 	public ArrayList<? extends Bijoux> searchByKey(String query){
 		ArrayList<?> result = new ArrayList<>();
 		String[] orKeys = query.split("(?i)\\s+ou\\s+");

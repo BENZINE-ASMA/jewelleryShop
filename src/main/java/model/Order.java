@@ -22,7 +22,7 @@ public class Order {
 	        this.setClient(client);
 	        this.setStatus(OrderStatus.EN_COURS);
 		 	this.orderDate = new Timestamp(System.currentTimeMillis());
-	    } //how i call it in the dbmanager new Order(orderId,clientId,orderDate,status,total);
+	    }
 	public Order(Long orderId,Long clientId,Cart clientCart, Timestamp orderDate, OrderStatus status) {
 		this.clientCart = clientCart;
 		this.client= new Client();
@@ -30,7 +30,7 @@ public class Order {
 		this.orderId=orderId;
 		this.status= status;
 		this.orderDate=orderDate;
-	}//order = new Order(orderId, clientId, orderDate, status);
+	}
 	 public void validateOrder() {
 	        this.setStatus(OrderStatus.VALIDEE);
 	 }

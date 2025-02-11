@@ -25,12 +25,11 @@ public class OrderPanel extends JPanel {
         this.invoiceController = new InvoiceController(null);
         this.setPreferredSize(new Dimension(800,500));
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Add padding around the panel
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Left panel for order details
         JPanel orderDetailsPanel = new JPanel();
         orderDetailsPanel.setLayout(new BoxLayout(orderDetailsPanel, BoxLayout.Y_AXIS));
-        orderDetailsPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10)); // Add space between details and table
+        orderDetailsPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 10));
 
         addDetail(orderDetailsPanel, "Order ID:", String.valueOf(order.getOrderId()));
         addDetail(orderDetailsPanel, "Order Date:", order.getOrderDate().toString());
@@ -40,7 +39,6 @@ public class OrderPanel extends JPanel {
 
         add(orderDetailsPanel, BorderLayout.WEST);
 
-        // Table for cart items
         DefaultTableModel tableModel = createTableModel(order.getCartItems());
         JTable cartTable = new JTable(tableModel);
         cartTable.setRowHeight(25);
@@ -48,7 +46,7 @@ public class OrderPanel extends JPanel {
         cartTable.getModel().addTableModelListener(e -> {
             int row = e.getFirstRow();
             int column = e.getColumn();
-            if (column == 2) { // Quantity column
+            if (column == 2) {
                 Long productId = (Long) tableModel.getValueAt(row, 0);
                 int newQuantity = Integer.parseInt(tableModel.getValueAt(row, column).toString());
                 order.getCartItems().modifyQuantityOfProduct(productId, newQuantity);
@@ -64,7 +62,7 @@ public class OrderPanel extends JPanel {
         JScrollPane tableScrollPane = new JScrollPane(cartTable);
         add(tableScrollPane, BorderLayout.CENTER);
 
-        // Button panel
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton validateOrderButton = new JButton("Validate Order");
         validateOrderButton.addActionListener(e -> {
@@ -120,7 +118,7 @@ public class OrderPanel extends JPanel {
     private JLabel addDetail(JPanel panel, String label, String value) {
         JPanel detailPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel labelComponent = new JLabel(label);
-        labelComponent.setFont(labelComponent.getFont().deriveFont(Font.BOLD)); // Make label bold
+        labelComponent.setFont(labelComponent.getFont().deriveFont(Font.BOLD));
         JLabel valueComponent = new JLabel(value);
 
         detailPanel.add(labelComponent);

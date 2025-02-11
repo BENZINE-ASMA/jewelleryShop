@@ -19,14 +19,14 @@ public class ProductDialogView extends JDialog {
     private AdminController adminController;
     private String uploadedImagePath;
     private Runnable refreshCallback;
-    private boolean isEditMode;  // Added flag for edit mode
+    private boolean isEditMode;
 
 
     public ProductDialogView(Bijoux product, AdminController adminController, Runnable refreshCallback) {
         this.product = product;
         this.adminController = adminController;
         this.refreshCallback = refreshCallback;
-        this.isEditMode = (product != null); // If product is not null, it's edit mode
+        this.isEditMode = (product != null);
 
         setTitle(isEditMode ? "Edit Product Details" : "Add New Product");
         setSize(450, 600);
@@ -130,7 +130,6 @@ public class ProductDialogView extends JDialog {
         imagePathField.setText(isEditMode ? product.getImagePath() : "");
         mainPanel.add(imagePathField, gbc);
 
-        // Save Button
         gbc.gridx = 1;
         gbc.gridy++;
         JButton saveButton = new JButton("Save");
@@ -166,7 +165,6 @@ public class ProductDialogView extends JDialog {
 
     private void saveProduct() {
         try {
-            // Retrieve field values
             String name = nameField.getText().trim();
             String brand = brandField.getText().trim();
             String description = descriptionField.getText().trim();

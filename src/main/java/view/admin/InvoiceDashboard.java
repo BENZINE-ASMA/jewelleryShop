@@ -28,7 +28,6 @@ public class InvoiceDashboard extends JPanel {
 		header.setBorder(new EmptyBorder(0, 0, 5, 0));
 		add(header, BorderLayout.NORTH);
 
-		// Table
 		tableModel = new DefaultTableModel(new String[]{
 				"ID", "ClientId", "OrderId", "InvoiceNumber", "Total",
 				"Status", "InvoiceDate", "UpdatedDate", "InvoicePath"}, 0);
@@ -36,7 +35,6 @@ public class InvoiceDashboard extends JPanel {
 		invoiceTable.setAutoCreateRowSorter(true);
 		add(new JScrollPane(invoiceTable), BorderLayout.CENTER);
 
-		// Button Panel
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
 		JButton editInvoice = new JButton("Edit Invoice");
@@ -96,7 +94,7 @@ public class InvoiceDashboard extends JPanel {
 		dialog.setLocationRelativeTo(null);
 		dialog.setModal(true);
 		dialog.setVisible(true);
-		loadInvoiceData(); // Refresh after editing
+		loadInvoiceData();
 	}
 
 	private void deleteInvoice() {

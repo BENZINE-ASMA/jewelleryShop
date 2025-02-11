@@ -18,12 +18,10 @@ public class ProductDashboard extends JPanel {
         this.adminController = adminController;
         setLayout(new BorderLayout());
 
-        // Header
         DashboardHeaderAdmin header = new DashboardHeaderAdmin(adminController);
         header.setBorder(new EmptyBorder(0, 0, 5, 0));
         add(header, BorderLayout.NORTH);
 
-        // Table Model
         tableModel = new DefaultTableModel(new String[]{
                 "ID", "Name", "Brand", "Type", "Description", "Price",
                 "Material", "Size", "Length", "Stock", "Image_Path"
@@ -33,7 +31,6 @@ public class ProductDashboard extends JPanel {
         loadProductData();
         add(new JScrollPane(productTable), BorderLayout.CENTER);
 
-        // Button Panel
         JPanel buttonPanel = new JPanel();
 
         JButton addProduct = new JButton("Add");
