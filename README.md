@@ -29,8 +29,8 @@ Admin Interface
    
 2. **Télécharger le JAR et exécuter le JAR**
     ```bash
-    jar cvfe IAmTheHero.jar main.MainUI -C bin .
-    java -jar IAmTheHero.jar
+    mvn clean install
+    java -jar target/jewelleryShop-V1.jar
    ```
 
 
