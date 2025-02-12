@@ -6,8 +6,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dauphine</groupId>
-    <artifactId>jewelleryShop</artifactId>
-    <version>V1</version>
+    <artifactId>Ben</artifactId>
+    <version>Zine</version>
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>

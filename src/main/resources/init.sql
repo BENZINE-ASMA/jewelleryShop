@@ -21,6 +21,8 @@ INSERT INTO client (firstName, lastName, email, password, role)
 VALUES ('admin', 'admin', 'admin', 'admin', 'ADMIN');
 INSERT INTO client (firstName, lastName, email, password, role)
 VALUES ('asma', 'as', 'asma.benzine010@gmail.com', '123', 'CLIENT');
+INSERT INTO client (firstName, lastName, email, password, role)
+VALUES ('asma', 'ben-zine', 'asma.ben-zine@dauphine.eu', '123', 'CLIENT');
 
 CREATE TABLE products (
     id INT PRIMARY KEY AUTO_INCREMENT,
