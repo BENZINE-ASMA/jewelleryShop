@@ -16,14 +16,22 @@ public class EmailSender {
     private String from;
     private String host;
     private String password;
-
+    /**
+     * This class handles email sending operations, including sending emails
+     * with attachments using SMTP.
+     */
     public EmailSender(String to) {
         this.to = to;
         this.from = "asma.benzine01@gmail.com";
         this.host = "smtp.gmail.com";
         this.password = "trwl nrer ljbk caoh";
     }
-
+    /**
+     * Sends an email with an optional attachment.
+     * @param subject The subject of the email.
+     * @param messageText The message body of the email.
+     * @param filePath The file path of the attachment (optional).
+     */
     public void sendEmailWithAttachment(String subject, String messageText, String filePath) {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);

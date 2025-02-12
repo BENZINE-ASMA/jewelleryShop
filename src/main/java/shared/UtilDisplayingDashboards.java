@@ -24,7 +24,9 @@ import model.Bijoux;
 import model.Ring;
 import view.MainDashboardView;
 import view.ProductDetailView;
-
+/**
+ * Utility class for displaying dashboards and loading images related to jewelry products.
+ */
 public class UtilDisplayingDashboards {
     public static Map<Bijoux, JButton> addToCartButtons = new HashMap<>();
     public static Image loadImageBijou(String path) {
@@ -40,7 +42,14 @@ public class UtilDisplayingDashboards {
             throw new ImageLoadingException("Failed to load image from " + path, e);
         }
     }
-
+    /**
+     * Creates a JPanel displaying a jewelry product with its details.
+     * @param bijou The jewelry item to display.
+     * @param mainController The main controller handling the view logic.
+     * @param role The role of the user (e.g., client, admin).
+     * @param products The list of available products.
+     * @return A JPanel displaying the product details.
+     */
     public static JPanel createBijouxPanel(Bijoux bijou, MainController mainController, String role, ArrayList<? extends Bijoux> products) {
         JPanel bijouPanel = new JPanel();
         bijouPanel.setBackground(Color.white);
@@ -136,7 +145,13 @@ public class UtilDisplayingDashboards {
     }
 
     }
-
+    /**
+     * Loads and displays product images into a dashboard.
+     * @param mainController The main controller handling the dashboard logic.
+     * @param products The list of products to display.
+     * @param current The JPanel where the products will be displayed.
+     * @param role The role of the user viewing the dashboard.
+     */
     public static void loadDashbaordImages(MainController mainController, ArrayList<? extends Bijoux> products, JPanel current,String role) {
         JPanel panelImages = new JPanel();
         panelImages.setLayout(new BoxLayout(panelImages, BoxLayout.Y_AXIS));

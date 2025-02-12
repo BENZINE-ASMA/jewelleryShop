@@ -7,6 +7,10 @@ import model.Order;
 import shared.EmailSender;
 import shared.InvoiceGenerator;
 
+/**
+ * This class manages invoice-related operations such as generating,
+ * updating, and retrieving invoices for orders.
+ */
 public class InvoiceController {
 	private Invoice invoice ;
 	EmailSender emailSender;
@@ -14,6 +18,13 @@ public class InvoiceController {
 		this.invoice = invoice;
 		this.emailSender = new EmailSender("");
 	}
+	/**
+	 * Generates an invoice for a given order and stores it in the database.
+	 * @param loggedInClient The client associated with the invoice.
+	 * @param order The order for which the invoice is generated.
+	 * @param dbManager The database manager.
+	 * @param mainController The main controller for accessing cart information.
+	 */
 	public void generateInvoice(Client loggedInClient, Order order, DBManager dbManager ,MainController mainController) {
 		String invoiceNumber = generateInvoiceNumber(loggedInClient.getId(),dbManager);
 		String messageText = "Hello " + loggedInClient.getFirstName() + ",\n\n"
@@ -27,7 +38,13 @@ public class InvoiceController {
 		dbManager.addInvoice(invoice ,mainController.getCurrentOrder().getOrderId());
 
 	}
-
+	/**
+	 * Updates an existing invoice with new order and cart details.
+	 * @param loggedInClient The client associated with the invoice.
+	 * @param order The order whose invoice is updated.
+	 * @param cart The updated cart information.
+	 * @throws IllegalStateException If no existing invoice is available to update.
+	 */
 	public void updateInvoice(Client loggedInClient, Order order, Cart cart) {
 		if (this.invoice == null) {
 			throw new IllegalStateException("No existing invoice to update.");
@@ -50,6 +67,12 @@ public class InvoiceController {
 
 
 
+	/**
+	 * Generates a unique invoice number based on the client's ID and the last recorded invoice number.
+	 * @param clientId The client's unique ID.
+	 * @param dbManager The database manager to retrieve the last invoice number.
+	 * @return A formatted invoice number string.
+	 */
 	public String generateInvoiceNumber(Long clientId ,DBManager dbManager) {
 
 		String lastInvoiceNumber = dbManager.getLastInvoiceNumberOfDB(clientId);

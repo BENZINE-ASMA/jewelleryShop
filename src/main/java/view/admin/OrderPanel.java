@@ -9,7 +9,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Map;
 import java.util.HashMap;
-
+/**
+ * This class represents the order panel in the admin view, providing functionalities
+ * to manage and validate orders, update product quantities, and handle invoices.
+ */
 public class OrderPanel extends JPanel {
     private Order order;
     private long invoiceId;
@@ -158,7 +161,9 @@ public class OrderPanel extends JPanel {
         panel.add(detailPanel);
         return valueComponent;
     }
-
+    /**
+     * Checks the order and disables the delete button when there is one item left in this order, it can't be deleted unless you delete the invoice itself
+     */
     private void checkAndDisableDeleteButton() {
         long remainingItems = order.getCartItems().getCart().size();
         int totalQuantity = order.getCartItems().getCart().values().stream().mapToInt(Integer::intValue).sum();

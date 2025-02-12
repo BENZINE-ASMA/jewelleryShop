@@ -27,7 +27,10 @@ public class DBManager {
 	private static final String password = "7867";
 
 	private Connection connection;
-
+	/**
+	 * This class manages database operations, including connections, queries,
+	 * and updates for various entities such as clients, products, invoices, and orders.
+	 */
 	public DBManager() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -52,7 +55,11 @@ public class DBManager {
 		}
 	}
 
-
+	/**
+	 * Executes a SQL script from a file.
+	 * @param scriptFile The name of the SQL script file to execute
+	 * to enrich the database with the first values and create tables
+	 */
 	public void executeSQLScript(String scriptFile) {
 		InputStream inputStream = null;
 		BufferedReader reader = null;
@@ -110,7 +117,18 @@ public class DBManager {
 		}
 	}
 
-
+	/**
+	 * Fetches all filtered products based on multiple search criteria.
+	 * @param results The list to store the filtered products.
+	 * @param name2 Product name filter.
+	 * @param description2 Product description filter.
+	 * @param brand2 Product brand filter.
+	 * @param type2 Product type filter.
+	 * @param pricemin2 Minimum price filter.
+	 * @param pricemax2 Maximum price filter.
+	 * @param material2 Product material filter.
+	 * @return A list of filtered products.
+	 */
 	public ArrayList<Bijoux> getAllFilteredProducts(ArrayList<Bijoux> results, String name2, String description2,
 													String brand2, String type2, String pricemin2, String pricemax2, String material2) {
 
@@ -205,7 +223,11 @@ public class DBManager {
 		return null;
 
 	}
-
+	/**
+	 * Fetches all available products.
+	 * @param results The list to store the products.
+	 * @return A list of all available products.
+	 */
 	public ArrayList<Bijoux> getAllProducts(ArrayList<Bijoux> results) {
 		String query = "SELECT * FROM products WHERE stock > 0";
 
@@ -239,7 +261,11 @@ public class DBManager {
 		}
 		return results;
 	}
-
+	/**
+	 * Fetches all products including those with zero stock for admin.
+	 * @param results The list to store the products.
+	 * @return A list of all products for admin view.
+	 */
 	public ArrayList<Bijoux> getAllProductsForAdmin(ArrayList<Bijoux> results) {
 		String query = "SELECT * FROM products ";
 
@@ -757,7 +783,11 @@ public class DBManager {
 				totalAmount, status, invoiceDate, updateDate);
 	}
 
-
+	/**
+	 * Fetches an invoice by its ID.
+	 * @param id The invoice ID.
+	 * @return The invoice object.
+	 */
 	public Invoice fetchInvoiceDetailsById(Long id) {
 		String query = "SELECT * FROM Invoices WHERE invoice_id = ?";
 		Invoice invoice = null;
@@ -868,6 +898,13 @@ public class DBManager {
 		}
 return null;
 	}
+	/**
+	 * Updates the quantity of a product in an order.
+	 * @param orderId The order ID.
+	 * @param productId The product ID.
+	 * @param newQuantity The new quantity.
+	 * @return True if the update was successful, false otherwise.
+	 */
 	public boolean updateCart(Long orderId, Long productId , int newQuantity){
 
 		String query = "update Cart_Items\n" +
@@ -929,6 +966,12 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 		}
 		return false;
 }
+	/**
+	 * delete Item from cart by decrementing stock and if stock =0, the item is removed from CART.
+	 * @param orderId The order ID.
+	 * @param productId The product ID.
+	 * @return True if the delete was successful, false otherwise.
+	 */
 	public boolean deleteItemIfZero(Long orderId, Long productId) {
 		String checkQuery = "SELECT quantity FROM Cart_Items WHERE order_id = ? AND product_id = ?";
 		String deleteQuery = "DELETE FROM Cart_Items WHERE order_id = ? AND product_id = ?";
@@ -1037,7 +1080,11 @@ public boolean updateInvoice(Long invoiceId, Double newTotal){
 		return false;
 	}
 
-
+	/**
+	 * Fetches all orders for a specific client.
+	 * @param clientId The client's ID.
+	 * @return A list of the client's orders.
+	 */
 	public ArrayList<Order> fetchOrdersByClient(Long clientId) {
 		String query = "SELECT * FROM Orders WHERE client_id = ?";
 		ArrayList<Order> orders = new ArrayList<>();

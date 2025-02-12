@@ -11,20 +11,31 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 
 import model.*;
-
+/**
+ * This class handles invoice generation and sending emails with attached invoices.
+ */
 public class InvoiceGenerator {
     private Order clientOrder;
     private Cart clientCart;
     private Client loggedInClient;
     private EmailSender emailSender;
-
+    /**
+     * Constructs an InvoiceGenerator for a given order and client.
+     * @param order The order associated with the invoice.
+     * @param client The client who placed the order.
+     * @param clientCart The cart associated with the client order.
+     */
     public InvoiceGenerator(Order order, Client client, Cart clientCart) {
         this.clientOrder = order;
         this.loggedInClient = client;
         this.clientCart = clientCart;
         this.emailSender = new EmailSender(client.getEmail());
     }
-
+    /**
+     * Generates an invoice in PDF format and sends it via email.
+     * @param path The file path where the invoice will be saved.
+     * @param messageText The email message to be sent with the invoice.
+     */
     public void generateInvoice(String path,String messageText) {
         String filePath = "src/main/resources/output/" + path;
         try {

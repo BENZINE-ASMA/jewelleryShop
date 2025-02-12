@@ -56,10 +56,9 @@ public class CartView extends JPanel {
 	}
 
 	private void refreshCartView(MainController mainController) {
-		// Remove only the CENTER panel content while keeping the button panels
 		this.removeAll();
-		add(buttonPanelTop, BorderLayout.NORTH); // Re-add the top button panel
-		add(buttonPanelBottom, BorderLayout.SOUTH); // Re-add the bottom button panel
+		add(buttonPanelTop, BorderLayout.NORTH);
+		add(buttonPanelBottom, BorderLayout.SOUTH);
 
 		JPanel cartPanel = new JPanel();
 		cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.Y_AXIS));
