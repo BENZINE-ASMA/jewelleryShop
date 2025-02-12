@@ -544,23 +544,59 @@ public class DBManager {
 		}
 	}
 
-	public boolean deleteCLient(Long id) {
+	public boolean deleteClient(Long clientId) {
+		String deleteCartItemsQuery = "DELETE FROM cart_items WHERE order_id IN (SELECT order_id FROM orders WHERE client_id = ?)";
+		String deleteInvoicesQuery = "DELETE FROM invoices WHERE order_id IN (SELECT order_id FROM orders WHERE client_id = ?)";
+		String deleteOrdersQuery = "DELETE FROM orders WHERE client_id = ?";
+		String deleteClientQuery = "DELETE FROM client WHERE id = ?";
 
-		String query = "DELETE FROM client WHERE id = ?";
+		try {
+			connection.setAutoCommit(false);  
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+			try (PreparedStatement deleteCartItemsStmt = connection.prepareStatement(deleteCartItemsQuery)) {
+				deleteCartItemsStmt.setLong(1, clientId);
+				deleteCartItemsStmt.executeUpdate();
+			}
 
-			preparedStatement.setLong(1, id);
+			try (PreparedStatement deleteInvoicesStmt = connection.prepareStatement(deleteInvoicesQuery)) {
+				deleteInvoicesStmt.setLong(1, clientId);
+				deleteInvoicesStmt.executeUpdate();
+			}
 
-			int rowsAffected = preparedStatement.executeUpdate();
+			try (PreparedStatement deleteOrdersStmt = connection.prepareStatement(deleteOrdersQuery)) {
+				deleteOrdersStmt.setLong(1, clientId);
+				deleteOrdersStmt.executeUpdate();
+			}
 
-			return rowsAffected != 0;
+			// Step 4: Delete client
+			try (PreparedStatement deleteClientStmt = connection.prepareStatement(deleteClientQuery)) {
+				deleteClientStmt.setLong(1, clientId);
+				int rowsAffected = deleteClientStmt.executeUpdate();
+				if (rowsAffected == 0) {
+					connection.rollback();
+					return false;
+				}
+			}
+
+			connection.commit();
+			return true;
 		} catch (SQLException e) {
-			System.out.println("Error inserting new client");
+			try {
+				connection.rollback();
+			} catch (SQLException rollbackEx) {
+				rollbackEx.printStackTrace();
+			}
 			e.printStackTrace();
 			return false;
+		} finally {
+			try {
+				connection.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
+
 
 	public boolean updateProduct(Bijoux b) {
 		String query = "UPDATE products SET name = ?, brand = ?, type = ?, description = ?, price = ?, material = ?, size = ?, length = ?, stock = ?, image_path = ? WHERE id = ?";

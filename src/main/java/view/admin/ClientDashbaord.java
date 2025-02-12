@@ -102,14 +102,28 @@ public class ClientDashbaord extends JPanel{
 	}
 
 	private void deteletclient() {
-		 int selectedRow = clientTable.getSelectedRow();
-		 if (selectedRow >= 0) {
-			 Long id = (Long) tableModel.getValueAt(selectedRow,0);
-			 adminController.deleteClient(id);
-	            loadClientData();
-		 }else {
-	            JOptionPane.showMessageDialog(this, "Please select a client to delete.");
-	        }
-		
-	 }
+		int selectedRow = clientTable.getSelectedRow();
+
+		if (selectedRow >= 0) {
+			int confirm = JOptionPane.showConfirmDialog(this,
+					"Are you sure you want to delete this client?",
+					"Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+			if (confirm == JOptionPane.YES_OPTION) {
+				Long id = (Long) tableModel.getValueAt(selectedRow, 0);
+				boolean success = adminController.deleteClient(id);
+
+				if (success) {
+					JOptionPane.showMessageDialog(this, "Client deleted successfully.");
+					loadClientData();
+				} else {
+					JOptionPane.showMessageDialog(this, "Failed to delete client. Check dependencies.");
+				}
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "Please select a client to delete.");
+		}
+	}
+
+
 }

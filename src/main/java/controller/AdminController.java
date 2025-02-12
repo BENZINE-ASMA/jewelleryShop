@@ -49,8 +49,8 @@ public class AdminController {
 		this.dbManager.addClient(c);
 	}
 
-	public void deleteClient(Long id) {
-		this.dbManager.deleteCLient(id);
+	public boolean deleteClient(Long id) {
+		return this.dbManager.deleteClient(id);
 	}
 
 	public void updateProduct(Bijoux b) {
