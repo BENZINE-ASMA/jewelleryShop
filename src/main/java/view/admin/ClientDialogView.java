@@ -85,7 +85,7 @@ public class ClientDialogView extends JDialog {
         String password = passwordField.getText();
 
         if (password.trim().isEmpty() && client != null) {
-            password = client.getPassword(); 
+            password = client.getPassword();
         }
 
         if (client == null) {

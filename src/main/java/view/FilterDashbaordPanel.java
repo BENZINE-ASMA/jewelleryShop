@@ -49,8 +49,9 @@ public class FilterDashbaordPanel extends JPanel{
         } else if (parent.equals("NECKLACE")) {
             productTypeComboBox.setSelectedItem("Necklace");
         }else{
-            this.add(productTypeComboBox);
             this.add(productTypeLabel);
+            this.add(productTypeComboBox);
+
         }
 
         this.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -107,6 +108,12 @@ and price ='299.99' and material='Gold';
         this.add(emptyPanel);
         setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.LIGHT_GRAY));
 
+        nameLabel.setHorizontalAlignment(JLabel.LEFT);
+        descLabel.setHorizontalAlignment(JLabel.LEFT);
+        productTypeLabel.setHorizontalAlignment(JLabel.LEFT);
+        brandLabel.setHorizontalAlignment(JLabel.LEFT);
+        productMatièreLabel.setHorizontalAlignment(JLabel.LEFT);
+        priceLabel.setHorizontalAlignment(JLabel.LEFT);
 
     }
 

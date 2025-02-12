@@ -43,7 +43,7 @@ public class MainController {
 	public void initializeDatabase() {
 		try {
 			dbManager.connect();
-			//executeSQLScript("resources/init.sql");
+			executeSQLScript("resources/init.sql");
 
 		} catch (DatabaseConnectionException e) {
 			JOptionPane.showMessageDialog(null, "Database connection error: " + e.getMessage(),
