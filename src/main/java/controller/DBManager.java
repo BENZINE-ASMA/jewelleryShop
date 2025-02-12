@@ -90,7 +90,6 @@ public class DBManager {
 				}
 			}
 
-			System.out.println("SQL script executed successfully.");
 		} catch (IOException | SQLException e) {
 			System.err.println("Error executing SQL script: " + e.getMessage());
 			e.printStackTrace();
@@ -158,7 +157,7 @@ public class DBManager {
 		}
 		queryBuilder.append(";");
 		String query = queryBuilder.toString();
-		System.out.println("totest : , " + query);
+
 		try (PreparedStatement stmt = connection.prepareStatement(query)) {
 			int paramIndex = 1;
 			if (!name2.isEmpty()) {
@@ -182,11 +181,11 @@ public class DBManager {
 			if (!material2.isEmpty() && !material2.equals("All")) {
 				stmt.setString(paramIndex++, material2);
 			}
-			System.out.println("tes stm 2 " + stmt.toString());
+
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				System.out.println("orkinng , " + rs.getString("name"));
+
 				Long id = rs.getLong("id");
 				String type = rs.getString("type");
 				String name = rs.getString("name");
