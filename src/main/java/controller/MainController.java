@@ -43,7 +43,8 @@ public class MainController {
 	public void initializeDatabase() {
 		try {
 			dbManager.connect();
-			//dbManager.executeSQLScript("resources/init.sql");
+			//executeSQLScript("resources/init.sql");
+
 		} catch (DatabaseConnectionException e) {
 			JOptionPane.showMessageDialog(null, "Database connection error: " + e.getMessage(),
 					"Database Error", JOptionPane.ERROR_MESSAGE);
@@ -85,6 +86,10 @@ public class MainController {
 		} else {
 			mainView.showAuthenticationError();
 		}
+	}
+	public void executeSQLScript(String path){
+		this.dbManager.executeSQLScript(path);
+		this.dbManager.executeSQLScript(path);
 	}
 	private void restoreCartAfterLogin() {
 		HashMap<Bijoux, Integer> updatedCart = new HashMap<>();

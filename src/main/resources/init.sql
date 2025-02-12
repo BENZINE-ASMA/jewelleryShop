@@ -1,19 +1,13 @@
--- Use the system database
 USE sys;
 
--- Enable updates
 SET SQL_SAFE_UPDATES = 0;
 
--- Drop tables if they exist
 DROP TABLE IF EXISTS Cart_Items;
 DROP TABLE IF EXISTS Invoices;
 DROP TABLE IF EXISTS Orders;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS client;
 
-
-
--- Create the `client` table
 CREATE TABLE client (
     id INT PRIMARY KEY AUTO_INCREMENT,
     firstName VARCHAR(100) NOT NULL,
@@ -23,13 +17,11 @@ CREATE TABLE client (
     role ENUM('ADMIN', 'CLIENT') DEFAULT 'CLIENT'
 );
 
--- Insert initial admin client
 INSERT INTO client (firstName, lastName, email, password, role)
 VALUES ('admin', 'admin', 'admin', 'admin', 'ADMIN');
 INSERT INTO client (firstName, lastName, email, password, role)
 VALUES ('asma', 'as', 'asma.benzine010@gmail.com', '123', 'CLIENT');
 
--- Create the `products` table
 CREATE TABLE products (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
@@ -42,6 +34,37 @@ CREATE TABLE products (
     length DOUBLE,
     stock INT NOT NULL,
     image_path VARCHAR(255)
+);
+
+CREATE TABLE Orders (
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    client_id INT NOT NULL,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('EN_COURS', 'VALIDEE', 'LIVREE') DEFAULT 'EN_COURS',
+    total_amount DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES client(id)
+);
+CREATE TABLE Invoices (
+    invoice_id INT PRIMARY KEY AUTO_INCREMENT,
+    client_id INT NOT NULL,
+    order_id INT NOT NULL,
+    invoice_number VARCHAR(50) UNIQUE NOT NULL,
+    file_path VARCHAR(255) NOT NULL,
+    invoice_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    invoice_update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    status ENUM('Pending', 'Paid', 'Overdue','Updated') DEFAULT 'Pending',
+    FOREIGN KEY (client_id) REFERENCES client(id),
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id)
+);
+
+CREATE TABLE Cart_Items (
+    cart_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT,
+    product_id INT,
+    quantity INT,
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
 );
 INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
 VALUES
@@ -226,7 +249,7 @@ VALUES (
     'Or Blanc',
     59, -- Assuming size T59 corresponds to 59
     NULL, -- Length is not applicable for rings
-    1, -- Default stock value, adjust if needed
+    4, -- Default stock value, adjust if needed
     'resources/jewelry/rings/empreinte_louis_vuitton.png' -- Adjust with actual image path
 );
 INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
@@ -268,7 +291,7 @@ VALUES (
     'Platine, Diamant',
     NULL, -- Size is not applicable for necklaces
     45, -- Invented length for the necklace (45 cm)
-    1, -- Default stock value, adjust if needed
+    2, -- Default stock value, adjust if needed
     'resources/jewelry/necklaces/infinity_tiffany_co.png' -- Adjust with actual image path
 );
 INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
@@ -292,41 +315,196 @@ VALUES (
     1, -- Default stock value, adjust if needed
     'resources/jewelry/necklaces/menottes_r10_dinh_van.png' -- Adjust with actual image path
 );
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    ' Lucky Alhambra Papillon',
+    'Van Cleef & Arpels',
+    'Necklace',
+    'Collier Lucky Alhambra Van Cleef & Arpels de seconde main en or blanc 18 carats (750/1000). Un charmant motif de papillon orné de turquoise.
 
+     Le motif iconique de la marque est ici décliné en taille plus grande et en forme de papillon entouré d’un contour perlé, élément distinctif de la collection Alhambra.
 
+     Un délicat papillon au charme fou à suspendre à votre cou.
 
--- Insert initial
+     Etat : Seconde Main de Catégorie A : Excellent Etat avec peu de traces d’usage visibles.
 
-
--- Create the `Orders` table
-CREATE TABLE Orders (
-    order_id INT PRIMARY KEY AUTO_INCREMENT,
-    client_id INT NOT NULL,
-    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('EN_COURS', 'VALIDEE', 'LIVREE') DEFAULT 'EN_COURS',
-    total_amount DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (client_id) REFERENCES client(id)
+     Prix du neuf : 5 350 €',
+    5350.00,
+    'Or Blanc, Turquoise',
+    NULL,  -- No size needed for necklaces
+    42,  -- Estimated length of the necklace in cm (adjust if needed)
+    6,  -- Default stock, adjust as needed
+    'resources/jewelry/necklaces/lucky_alhambra_papillon_vca.png'  -- Ensure correct image path
 );
--- Create the `Invoices` table
-CREATE TABLE Invoices (
-    invoice_id INT PRIMARY KEY AUTO_INCREMENT,
-    client_id INT NOT NULL,
-    order_id INT NOT NULL,
-    invoice_number VARCHAR(50) UNIQUE NOT NULL,
-    file_path VARCHAR(255) NOT NULL,
-    invoice_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    invoice_update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    total_amount DECIMAL(10, 2) NOT NULL,
-    status ENUM('Pending', 'Paid', 'Overdue','Updated') DEFAULT 'Pending',
-    FOREIGN KEY (client_id) REFERENCES client(id),
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id)
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    'Cartier d’Amour Cartier',
+    'Cartier',
+    'Necklace',
+    'Collier Cartier d’Amour de seconde main en or blanc 18 carats (750/1000) et saphir. Une chaîne fine et délicate retenant un saphir bleu dans un double serti clos.
+
+     Pureté du design, élégance intemporelle… Ce bijou tout en délicatesse porte en lui les valeurs chères à la maison Cartier.
+
+     Portez le raffinement à l’état pur avec ce bijou léger et délicat.
+
+     Etat : Seconde Main de Catégorie A : Excellent Etat avec peu de traces d’usage visibles.
+
+     Prix du neuf : 562 €',
+    562.00,
+    'Or Blanc, Saphir',
+    NULL,  -- No size needed for necklaces
+    42,  -- Estimated length of the necklace in cm (adjust if needed)
+    2,  -- Default stock, adjust as needed
+    'resources/jewelry/necklaces/cartier_damour_saphir.png'  -- Ensure correct image path
+);
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    'Pendentif Jeux de Liens Chaumet',
+    'Chaumet',
+    'Necklace',
+    'Pendentif Jeux de Liens Chaumet de seconde main en or blanc 750/1000 serti de nacre et d’un diamant taille brillant arrondi, monté sur une chaîne en or blanc.
+
+     Une collection historique de Chaumet qui propose des pièces contemporaines, symbolisant le sentiment qui unit 2 êtres.
+
+     Un peu, beaucoup, passionnément : le lien qui vous unit mérite bien son bijou.
+
+     Etat : Seconde Main de Catégorie A : Excellent Etat avec peu de traces d’usage visibles.
+
+     Prix du neuf : 1 880 €',
+    1880.00,
+    'Or Blanc, Nacre, Diamant',
+    NULL,  -- No size needed for necklaces
+    45,  -- Estimated length of the necklace in cm (adjust if needed)
+    1,  -- Default stock, adjust as needed
+    'resources/jewelry/necklaces/jeux_de_chaumet.png'  -- Ensure correct image path
+);
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    'Pendentif Lockit Key',
+    'Louis Vuitton',
+    'Necklace',
+    'Pendentif Lockit Key Louis Vuitton de seconde main en or blanc 18 carats (750/1000) présentant deux clés habillées de diamants retenues par un anneau carré dont la tranche extérieure est sertie de diamants.
+
+     Deux clés entièrement pavées de diamants qui rappellent les clés des emblématiques bagages Louis Vuitton, à porter en collier ou bracelet. Le modèle présenté est accompagné d’une chaîne délicate en or blanc.
+
+     Deux clés tout en diamants qui symbolisent l’amour scellé. A offrir d’urgence.
+
+     Etat : Seconde Main de Catégorie A : Excellent Etat avec peu de traces d’usage visibles.',
+    2000.00,
+    'Or Blanc, Diamant',
+    NULL,
+    45,
+    3,
+    'resources/jewelry/necklaces/lockit_key_louis_vuitton.png'
 );
 
-CREATE TABLE Cart_Items (
-    cart_id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT,
-    product_id INT,
-    quantity INT,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
-    FOREIGN KEY (product_id) REFERENCES products(id)
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    'Bague Jonc Vintage Poiray',
+    'Poiray',
+    'Ring',
+    'Bague Jonc Vintage Poiray de seconde main en or jaune 18 carats (750/1000). Bague présentant une pierre Améthyste en serti clos sur un jonc légèrement bombé.
+
+     Une bague indémodable avec un joli sertissage de la pierre qui souligne sa couleur et lui donne une élégance classique.
+
+     Si vous deviez choisir un jonc intemporel signé par une grande maison, ce serait celui-ci.
+
+     Etat : Seconde Main de Catégorie A : Excellent Etat avec peu de traces d’usage visibles.',
+    850.00,
+    'Or Jaune, Améthyste',
+    50,
+    NULL,
+    1,
+    'resources/jewelry/rings/jonc_vintage_poiray.png'
 );
+
+
+
+
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    'Pendentif Bean Elsa Peretti',
+    'Tiffany & Co',
+    'Necklace',
+    'Pendentif Bean Tiffany & Co de seconde main en argent 925/1000 dessiné par Elsa Peretti. Le motif en forme de pépite ou haricot est glissé sur une chaîne argent maille forçat.
+
+     Le motif « Bean » est à la fois une ode au design le plus pur et un hommage à la nature : simplicité de la forme, élégance naturelle, beauté de la nature. Signé Tiffany & Co et Elsa Peretti.
+
+     Si simple et pourtant si chic, une fois autour de votre cou vous ne pourrez plus le quitter.
+
+     Etat : Seconde Main Rénové : Excellent Etat avec peu ou pas de traces d’usage visibles.
+
+     Prix du neuf : 560 €',
+    340.00,
+    'Argent 925',
+    NULL,
+    45,
+    5,
+    'resources/jewelry/necklaces/bean_elsa_peretti_tiffany.png'  -- Adjust the image path
+);
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    'Sautoir Vintage Alhambra ',
+    'Van Cleef & Arpels',
+    'Necklace',
+    'Sautoir Vintage Alhambra signé Van Cleef & Arpels, en or jaune 18 carats (750/1000). 20 motifs fleurs en forme de trèfle ornés d’un délicat contour de perles d’or.
+
+     À porter en double ou simple tour. Le motif est non amovible. La taille du motif (15 mm) est la taille classique Alhambra Vintage. Le bracelet et les puces d’oreilles assortis sont également proposés à la vente.
+
+     Une pièce magnifique, indémodable, inégalable. L’icône des icônes.
+
+     Prix du neuf : 19 200 €',
+    19200.00,
+    'Or Jaune',
+    NULL,  -- No size needed for necklaces
+    86,  -- Standard length of Van Cleef & Arpels Alhambra sautoirs (adjust if needed)
+    3,  -- Default stock, adjust as needed
+    'resources/jewelry/necklaces/vintage_alhambra_vca.png'  -- Ensure the image exists in this path
+);
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    ' Tu es le Sel de ma Vie ',
+    'Mauboussin',
+    'Ring',
+    'Bague Tu es le sel de ma vie Mauboussin de seconde main en or blanc 18 carats (750/1000). Le solitaire présente un diamant central réhaussé par 6 petits diamants sur le corps de bague.
+
+     Misant sur la simplicité absolue, la bague Tu es le sel de ma vie est le solitaire intemporel par excellence. Mauboussin célèbre à travers lui l’amour simple qui dure toute une vie.
+
+     Adoptez la simplicité d’un intemporel Mauboussin pour célébrer vos sentiments.
+
+     Etat : Seconde Main Rénové : Excellent Etat avec peu ou pas de traces d’usage visibles.
+
+     Prix du neuf : 950 €',
+    580.00,
+    'Or Blanc, Diamant',
+    48,  -- Size T48 (French sizing)
+    NULL,  -- Length is not applicable for rings
+    6,  -- Default stock, adjust if needed
+    'resources/jewelry/rings/tu_es_le_sel_mauboussin.png'  -- Adjust the image path
+);
+INSERT INTO products (name, brand, type, description, price, material, size, length, stock, image_path)
+VALUES (
+    'Bague Trinity Cartier',
+    'Cartier',
+    'Ring',
+    'Bague Trinity Cartier de seconde main avec 3 anneaux entrelacés en Or Rose, Or Blanc et Or Jaune 18 carats (750/1000). Petit modèle.
+
+     3 anneaux simples qui ensemble créent une forme singulière immédiatement reconnaissable comme iconique de la maison Cartier.
+
+     Ne passez pas à côté de l’iconique Trinity Cartier. Passez cette bague culte à votre doigt.
+
+     Etat : Seconde Main Rénové : Excellent Etat avec peu ou pas de traces d’usage visibles.
+
+     Prix du neuf : 1 540 €',
+    1200.00,
+    'Or Rose, Or Blanc, Or Jaune',
+    52,  -- Size T52 (French sizing)
+    NULL,  -- Length is not applicable for rings
+    5,  -- Default stock, adjust if needed
+    'resources/jewelry/rings/trinity_cartier.png'  -- Ensure correct image path
+);
+
+ALTER TABLE Orders ADD FOREIGN KEY (client_id) REFERENCES client(id);
+ALTER TABLE Cart_Items ADD FOREIGN KEY (product_id) REFERENCES products(id);
+ALTER TABLE Orders ADD CONSTRAINT fk_client_orders FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE;
+ALTER TABLE Cart_Items ADD CONSTRAINT fk_cart_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE;

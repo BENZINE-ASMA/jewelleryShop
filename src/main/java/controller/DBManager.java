@@ -551,7 +551,7 @@ public class DBManager {
 		String deleteClientQuery = "DELETE FROM client WHERE id = ?";
 
 		try {
-			connection.setAutoCommit(false);  
+			connection.setAutoCommit(false);
 
 			try (PreparedStatement deleteCartItemsStmt = connection.prepareStatement(deleteCartItemsQuery)) {
 				deleteCartItemsStmt.setLong(1, clientId);

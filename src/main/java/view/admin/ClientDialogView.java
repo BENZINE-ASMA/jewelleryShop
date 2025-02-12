@@ -84,8 +84,16 @@ public class ClientDialogView extends JDialog {
         String role = (String) roleMultiselect.getSelectedItem();
         String password = passwordField.getText();
 
+        if (password.trim().isEmpty() && client != null) {
+            password = client.getPassword(); 
+        }
+
         if (client == null) {
-        	adminController.addClient(new Client(firstname,lastname,email,password,role));
+            if (password.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Password cannot be empty for new clients!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            adminController.addClient(new Client(firstname, lastname, email, password, role));
         } else {
             client.setFirstName(firstname);
             client.setLastName(lastname);
@@ -97,4 +105,5 @@ public class ClientDialogView extends JDialog {
 
         this.dispose();
     }
+
 }

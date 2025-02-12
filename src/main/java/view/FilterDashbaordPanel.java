@@ -99,12 +99,13 @@ and price ='299.99' and material='Gold';
             }
         });
         this.add(Box.createRigidArea(new Dimension(0, 10)));
+
         this.add(filterButton);
         JPanel emptyPanel = new JPanel();
         emptyPanel.setPreferredSize(new Dimension(200, 200));
         emptyPanel.setBackground(Color.WHITE);
         this.add(emptyPanel);
-        setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.LIGHT_GRAY)); // Bottom border only
+        setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, Color.LIGHT_GRAY));
 
 
     }
