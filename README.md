@@ -2,7 +2,7 @@
 
 ## Informations Utiles
 - [Explication du projet](https://github.com/BENZINE-ASMA/jewelleryShop/blob/main/Enonc%C3%A9/Gestion%20de%20Vente%20de%20produit(s).pdf)
-- **Auteur** : [Asma BEN-ZINE]
+- **Auteur** : Asma BEN-ZINE
   
 ## Description
 L'application de gestion de vente de bijoux permet aux clients de naviguer efficacement dans un catalogue en ligne, d'ajouter des articles à leur panier et de finaliser leurs commandes. Elle offre également aux administrateurs des outils avancés pour gérer les produits, suivre les commandes et administrer les factures. Grâce à une interface intuitive et des fonctionnalités de filtrage dynamiques, l'expérience utilisateur est optimisée.
